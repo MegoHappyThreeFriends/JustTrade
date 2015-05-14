@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using Database;
 
 namespace JustTrade.Controllers
 {
@@ -19,6 +20,24 @@ namespace JustTrade.Controllers
 
 			return View ();
 		}
+
+		public ActionResult Test()
+		{
+			
+			if (!System.IO.File.Exists (@"C:\nhibernate.db"))
+			{
+				NHibernateHelper.CreateDb();
+			}
+
+			UserRepository repository = new UserRepository ();
+			repository.Add(new User { Name = "Bwm", Password = "25000" });
+			repository.Add(new User { Name = "Opel", Password = "20000" });
+			repository.Add(new User { Name = "Ford", Password = "15000" });
+			var users = repository.GetAll ();
+			ViewBag.Users = users;
+			return View ("Index");
+		}
+
 	}
 }
 

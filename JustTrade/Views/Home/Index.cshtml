@@ -1,4 +1,19 @@
-﻿<h2>Welcome to ASP.NET MVC @ViewData["Version"] on @ViewData["Runtime"]!</h2>
+﻿@{
+	if(ViewBag.Users != null)
+	{
+		foreach (var user in ViewBag.Users)
+		{
+			String.Format("Product {0} price is {1} $", user.Name, user.Password);
+		}
+	}
+
+}
+
+<h2>Welcome to ASP.NET MVC @ViewData["Version"] on @ViewData["Runtime"]!</h2>
 
  Привет Алех !!!
+
+
+
+
 
