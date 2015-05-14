@@ -1,12 +1,17 @@
 ﻿@{
-	if(ViewBag.Users != null)
+var users = ViewBag.Users;
+
+}
+
+
+@{
+	if(users!=null)
 	{
-		foreach (var user in ViewBag.Users)
+		foreach(var user in users)
 		{
-			String.Format("Product {0} price is {1} $", user.Name, user.Password);
+			<div>User @user.Name -  @user.Password </div>
 		}
 	}
-
 }
 
 <h2>Welcome to ASP.NET MVC @ViewData["Version"] on @ViewData["Runtime"]!</h2>

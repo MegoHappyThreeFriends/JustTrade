@@ -61,7 +61,7 @@ namespace Database
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction())
 			{
-				list = session.Query<User>().ToList();
+				list = session.Query<User>().ToList<User>();
 				transaction.Commit();
 			}
 			return list;
