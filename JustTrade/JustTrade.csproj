@@ -72,6 +72,9 @@
     <Folder Include="Models\" />
     <Folder Include="Scripts\" />
     <Folder Include="Views\Admin\" />
+    <Folder Include="Content\css\" />
+    <Folder Include="Content\jquery_ui\" />
+    <Folder Include="Content\jquery_ui\images\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
@@ -141,6 +144,32 @@
     <Content Include="Scripts\npm.js" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
+    <Content Include="Content\css\admin.css" />
+    <Content Include="Scripts\ajax_tools.js" />
+    <Content Include="Views\Admin\Database.cshtml" />
+    <Content Include="Content\jquery_ui\jquery-ui.css" />
+    <Content Include="Content\jquery_ui\jquery-ui.min.css" />
+    <Content Include="Content\jquery_ui\jquery-ui.structure.css" />
+    <Content Include="Content\jquery_ui\jquery-ui.structure.min.css" />
+    <Content Include="Content\jquery_ui\jquery-ui.theme.css" />
+    <Content Include="Content\jquery_ui\jquery-ui.theme.min.css" />
+    <Content Include="Content\jquery_ui\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\jquery_ui\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\jquery_ui\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\jquery_ui\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\jquery_ui\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\jquery_ui\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\jquery_ui\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\jquery_ui\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\jquery_ui\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\jquery_ui\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\jquery_ui\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\jquery_ui\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\jquery_ui\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\bootstrap-select.css" />
+    <Content Include="Content\bootstrap-select.min.css" />
+    <Content Include="Scripts\bootstrap-select.js" />
+    <Content Include="Scripts\bootstrap-select.min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

@@ -12,5 +12,12 @@ namespace JastTrade.Controllers
         {
             return View ();
         }
+
+		public ActionResult Database()
+		{
+
+			return PartialView ();
+		}
+
     }
 }
