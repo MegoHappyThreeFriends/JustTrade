@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("")]
 [assembly: AssemblyProduct ("")]
-[assembly: AssemblyCopyright ("S.Ratkin")]
+[assembly: AssemblyCopyright ("gr")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 

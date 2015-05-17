@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
-using JustTrade;
-using JustTrade.Controllers;
+using JastTrade;
+using JastTrade.Controllers;
 
-namespace JustTrade.Tests
+namespace JastTrade.Tests
 {
 	[TestFixture]
 	public class HomeControllerTest

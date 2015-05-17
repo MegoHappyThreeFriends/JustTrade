@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using Database;
 
-namespace JustTrade.Controllers
+namespace JastTrade.Controllers
 {
 	public class HomeController : Controller
 	{
@@ -23,11 +23,8 @@ namespace JustTrade.Controllers
 
 		public ActionResult Test()
 		{
-			
-			if (!System.IO.File.Exists (@"C:\nhibernate.db"))
-			{
-				NHibernateHelper.CreateDb();
-			}
+
+			NHibernateHelper.CreateDb();
 
 			UserRepository repository = new UserRepository ();
 			repository.Add(new User { Name = "Bwm", Password = "25000" });
@@ -39,5 +36,6 @@ namespace JustTrade.Controllers
 		}
 
 	}
+
 }
 

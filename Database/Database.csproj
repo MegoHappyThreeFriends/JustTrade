@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B569F845-56FC-4012-B857-EE3311D0ABD2}</ProjectGuid>
+    <ProjectGuid>{368253EA-EF9D-42FF-BBD9-B85B16B7F3C0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Database</RootNamespace>
     <AssemblyName>Database</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,24 +39,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\User.cs" />
     <Compile Include="NHibernateHelper.cs" />
+    <Compile Include="Repositories\User.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="hibernate.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="app.config" />
+    <None Include="App.config" />
+    <None Include="ConfigurationTemplates\FireBird.cfg.xml" />
+    <None Include="ConfigurationTemplates\MSSQL.cfg.xml" />
+    <None Include="ConfigurationTemplates\MySql.cfg.xml" />
+    <None Include="ConfigurationTemplates\Oracle.cfg.xml" />
+    <None Include="ConfigurationTemplates\PostgreSQL.cfg.xml" />
+    <None Include="ConfigurationTemplates\SQLite.cfg.xml" />
+    <None Include="ConfigurationTemplates\SybaseASE.cfg.xml" />
+    <None Include="ConfigurationTemplates\SybaseSQLAnywhere.cfg.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Repositories\" />
     <Folder Include="Mappings\" />
+    <Folder Include="ConfigurationTemplates\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="hibernate.cfg.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Mappings\Users.hbm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Mappings\Users.hbm.xml" />
   </ItemGroup>
 </Project>
