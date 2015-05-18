@@ -1,38 +1,74 @@
 ﻿
-<ol id="database_header" class="breadcrumb">
-  Подключение к базе данных. ( Состояние: неизветно )
+<ol class="breadcrumb category-header">
+    Подключение к базе данных. ( Состояние: неизветно )
 </ol>
 
 <div id="database_block">
 
-<label> Выберите тип базы данных </label>
+    <div class="rowcol-sm-4">
+        <label for="select_database_type"> Выберите тип базы данных </label>
+        <select id="select_database_type" class="col-sm-2 selectpicker" multiple  data-max-options="1">
+            <option value="sysbaseany">SybaseSQLAnywhere</option>
+            <option value="sysbase">SybaseASE</option>
+            <option value="oracle">Oracle</option>
+            <option value="firebird">FireBird</option>
+            <option value="postgresql">PostgreSQL</option>
+            <option value="mysql">MySql</option>
+            <option value="mssql">Microsoft Sql Server</option>
+        </select>
+    </div>
 
-<select class="col-sm-2 selectpicker" multiple  data-max-options="1">
-  <option>PostgreSQL</option>
-  <option>MySql</option>
-  <option>Microsoft Sql Server</option>
-</select>
+    <div class="row ">
+        <div class="input-group col-sm-4 input-span15">
+            <span class="input-group-addon">Хост</span>
+            <input id="db_host" type="text" class="form-control" placeholder="...">
+        </div>
+    </div>
 
-<br /> <br />
+    <div class="row ">
+        <div class="input-group col-sm-4 input-span15">
+            <span class="input-group-addon">База данных</span>
+            <input id="db_name" type="text" class="form-control" placeholder="...">
+        </div>
+    </div>
 
-<div class="input-group">
-  <span class="input-group-addon">ывавыа</span>
-  <input type="text" class="form-control" placeholder="Username">
+    <div class="row ">
+        <div class="input-group col-sm-4 input-span15">
+            <span class="input-group-addon">Логин</span>
+            <input id="db_login" type="text" class="form-control" placeholder="...">
+        </div>
+    </div>
+
+    <div class="row ">
+        <div class="input-group col-sm-4 input-span15">
+            <span class="input-group-addon">Пароль</span>
+            <input id="db_password" type="password" class="form-control" placeholder="...">
+        </div>
+    </div>
+
+    <div class="row">
+        <button class="btn btn-default" type="button">Сгенерировать базу данных</button>
+    </div>
+
+    <div class="row">
+        <div id="create_db_response"></div>
+    </div>
+
 </div>
 
-<br /> <br />
+<ol class="breadcrumb category-header">
+    Еще какянить настрока :)
+</ol>
 
-<div class="input-group col-sm-6 ">
-  <span class="input-group-btn">
-    <button class="btn btn-default" type="button">Сгенерировать базу данных</button>
-  </span>
-  <input type="text" class="form-control col-sm-6" value=" ... ">
-</div>
-
-</div>
 
 <script lang="javascript">
- $(document).ready(function() {
- 	$('.selectpicker').selectpicker();
- });
+    
+    $(document).ready(function() {
+        $('.selectpicker').selectpicker();
+    });
+
+    function CreateDB(){
+
+    }
+
 </script>

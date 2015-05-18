@@ -14,3 +14,24 @@
 	font-weight: 100;
 }
 
+.row{
+	margin-top: 15px;
+	margin-left: 0px !important;
+}
+
+.input-span1 span{
+	width: 100px;
+}
+
+.input-span15 span{
+	width: 150px;
+}
+
+.input-span2 span{
+	width: 200px;
+}
+
+.category-header{
+	margin-top: 30px;
+	font-weight: 700;
+}
