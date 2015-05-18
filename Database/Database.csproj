@@ -50,14 +50,27 @@
     </None>
     <None Include="app.config" />
     <None Include="App.config" />
-    <None Include="ConfigurationTemplates\FireBird.cfg.xml" />
-    <None Include="ConfigurationTemplates\MSSQL.cfg.xml" />
-    <None Include="ConfigurationTemplates\MySql.cfg.xml" />
-    <None Include="ConfigurationTemplates\Oracle.cfg.xml" />
-    <None Include="ConfigurationTemplates\PostgreSQL.cfg.xml" />
-    <None Include="ConfigurationTemplates\SQLite.cfg.xml" />
-    <None Include="ConfigurationTemplates\SybaseASE.cfg.xml" />
-    <None Include="ConfigurationTemplates\SybaseSQLAnywhere.cfg.xml" />
+    <None Include="ConfigurationTemplates\FireBird.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigurationTemplates\MSSQL.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigurationTemplates\MySql.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigurationTemplates\Oracle.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigurationTemplates\PostgreSQL.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigurationTemplates\SybaseASE.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigurationTemplates\SybaseSQLAnywhere.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\" />
