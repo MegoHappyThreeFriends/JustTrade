@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>JastTrade.Tests</RootNamespace>
     <AssemblyName>JastTrade.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -66,16 +66,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\JastTrade\JustTrade.csproj">
-      <Project>{6EE0C4F9-3C27-46D9-91EE-B5D02A006A46}</Project>
-      <Name>JustTrade</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Controllers\HomeControllerTest.cs" />
+    <Compile Include="Tools\CheckTemplates.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JustTrade\JustTrade.csproj">
+      <Project>{6EE0C4F9-3C27-46D9-91EE-B5D02A006A46}</Project>
+      <Name>JustTrade</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Database\Database.csproj">
+      <Project>{368253EA-EF9D-42FF-BBD9-B85B16B7F3C0}</Project>
+      <Name>Database</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tools\" />
   </ItemGroup>
 </Project>

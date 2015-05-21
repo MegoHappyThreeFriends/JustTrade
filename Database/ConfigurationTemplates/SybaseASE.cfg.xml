@@ -8,7 +8,7 @@ for your own use before compiling tests in Visual Studio.
 	<session-factory name="NHibernate.Test">
 		<property name="connection.driver_class">NHibernate.Driver.SybaseAseClientDriver</property>
 		<property name="connection.connection_string">
-			Data Source=10.0.0.1;Port=5000;Database=nhibernate;User ID=nhibernate;Password=password
+			Data Source=[host];Port=5000;Database=[database];User ID=[user];Password=[password]
 		</property>
 		<property name="dialect">NHibernate.Dialect.SybaseASE15Dialect</property>
 		<property name="query.substitutions">true=1;false=0</property>

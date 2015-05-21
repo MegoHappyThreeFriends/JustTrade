@@ -8,7 +8,7 @@ for your own use before compiling tests in Visual Studio.
 	<session-factory name="NHibernate.Test">
 		<property name="connection.driver_class">NHibernate.Driver.SybaseSQLAnywhereDriver</property>
 		<property name="connection.connection_string">
-			UID=DBA;PWD=sql;Server=localhost;DBN=nhibernate;DBF=c:\nhibernate.db;ASTOP=No
+			UID=[user];PWD=[password];Server=[host];DBN=nhibernate;DBF=[database];ASTOP=No
 		</property>
 		<property name="dialect">NHibernate.Dialect.SybaseSQLAnywhere12Dialect</property>
 		<property name="query.substitutions">true=1;false=0</property>

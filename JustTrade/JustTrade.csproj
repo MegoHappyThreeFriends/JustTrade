@@ -75,6 +75,7 @@
     <Folder Include="Content\css\" />
     <Folder Include="Content\jquery_ui\" />
     <Folder Include="Content\jquery_ui\images\" />
+    <Folder Include="Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
@@ -82,6 +83,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Exceptions\FileNotFoundException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Web.config" />

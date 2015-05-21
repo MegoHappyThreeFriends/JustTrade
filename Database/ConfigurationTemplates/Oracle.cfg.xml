@@ -4,12 +4,13 @@ This template was written to work with NHibernate.Test.
 Copy the template to your NHibernate.Test project folder and rename it in hibernate.cfg.xml and change it 
 for your own use before compile tests in VisualStudio.
 -->
+<!-- Database parameter not exist [database] -->
 <!-- This is the System.Data.OracleClient.dll provider for Oracle from MS -->
 <hibernate-configuration  xmlns="urn:nhibernate-configuration-2.2" >
 	<session-factory name="NHibernate.Test">
 		<property name="connection.driver_class">NHibernate.Driver.OracleClientDriver</property>
 		<property name="connection.connection_string">
-			User ID=nhibernate;Password=nhibernate;Data Source=localhost
+			User ID=[user];Password=[password];Data Source=[host]
 		</property>
 		<property name="show_sql">false</property>
 		<property name="dialect">NHibernate.Dialect.OracleDialect</property>
