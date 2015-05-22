@@ -78,9 +78,9 @@
       <Project>{6EE0C4F9-3C27-46D9-91EE-B5D02A006A46}</Project>
       <Name>JustTrade</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Database\Database.csproj">
+    <ProjectReference Include="..\Database\JustTrade.Database.csproj">
       <Project>{368253EA-EF9D-42FF-BBD9-B85B16B7F3C0}</Project>
-      <Name>Database</Name>
+      <Name>JustTrade.Database</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

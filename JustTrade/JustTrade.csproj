@@ -182,9 +182,13 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <ProjectReference Include="..\Database\Database.csproj">
+    <ProjectReference Include="..\Database\JustTrade.Database.csproj">
       <Project>{368253EA-EF9D-42FF-BBD9-B85B16B7F3C0}</Project>
-      <Name>Database</Name>
+      <Name>JustTrade.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JustTrade.Helpers\JustTrade.Helpers.csproj">
+      <Project>{E683D92B-9995-40FE-9C68-DB0B41AF713C}</Project>
+      <Name>JustTrade.Helpers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -192,5 +196,6 @@
     <None Include="Content\bootstrap-theme.css.map" />
     <None Include="Content\bootstrap.css.map" />
     <None Include="fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Scripts\jquery.min.map" />
   </ItemGroup>
 </Project>

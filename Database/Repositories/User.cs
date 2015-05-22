@@ -5,7 +5,7 @@ using NHibernate.Linq;
 using System.Linq;
 
 
-namespace Database
+namespace JustTrade.Database
 {
 
 	public interface iUser

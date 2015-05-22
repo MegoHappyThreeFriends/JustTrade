@@ -5,7 +5,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustTrade", "JustTrade\Just
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustTrade.Tests", "JustTrade.Tests\JustTrade.Tests.csproj", "{38593778-6A28-4C1A-A365-39F0403046CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{368253EA-EF9D-42FF-BBD9-B85B16B7F3C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustTrade.Database", "Database\JustTrade.Database.csproj", "{368253EA-EF9D-42FF-BBD9-B85B16B7F3C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustTrade.Helpers", "JustTrade.Helpers\JustTrade.Helpers.csproj", "{E683D92B-9995-40FE-9C68-DB0B41AF713C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,5 +27,9 @@ Global
 		{6EE0C4F9-3C27-46D9-91EE-B5D02A006A46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EE0C4F9-3C27-46D9-91EE-B5D02A006A46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EE0C4F9-3C27-46D9-91EE-B5D02A006A46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E683D92B-9995-40FE-9C68-DB0B41AF713C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E683D92B-9995-40FE-9C68-DB0B41AF713C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E683D92B-9995-40FE-9C68-DB0B41AF713C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E683D92B-9995-40FE-9C68-DB0B41AF713C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
