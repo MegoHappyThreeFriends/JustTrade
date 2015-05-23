@@ -1,12 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Database" namespace="Database">
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Database" namespace="JustTrade.Database">
 
- <class name="User" table="users" lazy="false">
-  <id name="Id" column="id">
+ <class name="User" table="users">
+  <id name="UserId" column="user_id">
       <generator class="guid" />
     </id>
-  <property name="Name" column="name" />
-  <property name="Password" column="password" />
+  <property name="Name" column="name"  type="String" />
+  <property name="Password" column="password" type="String" />
+  <property name="IsSuperuser" column="is_superuser" type="Boolean" />
+
+  <list name="UserPermitions" cascade="save-update">
+     <key column="user_id" not-null="true" ></key>
+     <list-index column="UserPermition_list_position"></list-index>
+     <one-to-many class="Permition"/>
+  </list>
+
+  <list name="UserSession" cascade="save-update">
+     <key column="user_id" not-null="true" ></key>
+     <list-index column="UserSession_list_position"></list-index>
+     <one-to-many class="Session"/>
+  </list>
+
  </class>
 
 </hibernate-mapping>

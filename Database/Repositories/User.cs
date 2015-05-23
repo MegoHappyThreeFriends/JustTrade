@@ -18,9 +18,16 @@ namespace JustTrade.Database
 
 	public class User
 	{
-		public virtual Guid Id { get; set; }
+		public User() {
+			
+		}
+
+		public virtual Guid UserId { get; set; }
 		public virtual string Name { get; set; }
 		public virtual string Password { get; set; }
+		public virtual bool IsSuperuser { get; set; }
+		public virtual IList<Permition> UserPermitions { get; set; }
+		public virtual IList<Session> UserSession { get; set; }
 	}
 
 	public class UserRepository : iUser
