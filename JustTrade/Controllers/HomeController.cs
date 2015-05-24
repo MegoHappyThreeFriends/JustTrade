@@ -21,16 +21,28 @@ namespace JastTrade.Controllers
 			return View ();
 		}
 
+
+
 		public ActionResult Test()
 		{
+			
+			var s = new Session ();
+			s.Name = "sdfsdf";
+			s.User = Repository<User>.FindByName ("Ford");
+			if (s.User != null) {
+				Repository<Session>.Add (s);
+			}
+			var session = Repository<Session>.FindByName ("sdfsdf");
 
-			NHibernateHelper.CreateDb();
+			User uu;
+			if (session != null) {
+				uu = session.User;
+			}
 
-			UserRepository repository = new UserRepository ();
-			repository.Add(new User { Name = "Bwm", Password = "25000" });
-			repository.Add(new User { Name = "Opel", Password = "20000" });
-			repository.Add(new User { Name = "Ford", Password = "15000" });
-			var users = repository.GetAll ();
+			//Repository<User>.Add(new User { Name = "Bwm", Password = "25000" });
+			//Repository<User>.Add(new User { Name = "Opel", Password = "20000" });
+			//Repository<User>.Add(new User { Name = "Ford", Password = "15000" });
+			var users = Repository<User>.GetAll ();
 			ViewBag.Users = users;
 			return View ("Index");
 		}

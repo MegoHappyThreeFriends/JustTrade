@@ -1,26 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Database" namespace="JustTrade.Database">
 
- <class name="User" table="users">
-  <id name="UserId" column="user_id">
+ <class name="User" table="users" lazy="false">
+  <id name="Id" column="user_id">
       <generator class="guid" />
     </id>
-  <property name="Name" column="name"  type="String" />
-  <property name="Password" column="password" type="String" />
-  <property name="IsSuperuser" column="is_superuser" type="Boolean" />
 
-  <list name="UserPermitions" cascade="save-update">
-     <key column="user_id" not-null="true" ></key>
-     <list-index column="UserPermition_list_position"></list-index>
-     <one-to-many class="Permition"/>
-  </list>
+ 	<property name="Name" column="name"  type="String" />
+ 	<property name="Login" column="login"  type="String" />
+  	<property name="Password" column="password" type="String" />
+  	<property name="IsSuperuser" column="is_superuser" type="Boolean" />
 
-  <list name="UserSession" cascade="save-update">
-     <key column="user_id" not-null="true" ></key>
-     <list-index column="UserSession_list_position"></list-index>
-     <one-to-many class="Session"/>
-  </list>
+    <bag name="Sessions" cascade="all-delete-orphan" lazy="false">
+      <key column="user_id" />
+      <one-to-many class="Session" />
+    </bag>
+
+    <bag name="Permitions" cascade="all-delete-orphan" lazy="false">
+      <key column="user_id" />
+      <one-to-many class="Permition" />
+    </bag>
 
  </class>
 
 </hibernate-mapping>
+

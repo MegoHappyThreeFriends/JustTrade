@@ -34,9 +34,10 @@ namespace JustTrade.Database
 			var configuration = new Configuration ();
 			configuration.Configure ();
 			configuration.AddAssembly (typeof(User).Assembly);
-			//configuration.AddAssembly (typeof(Session).Assembly);
 			var schemaExport = new SchemaExport (configuration);
 			schemaExport.Create (false, true);
 		}
+
+
 	}
 }

@@ -43,6 +43,7 @@
     <Compile Include="Repositories\User.cs" />
     <Compile Include="Repositories\Session.cs" />
     <Compile Include="Repositories\Permition.cs" />
+    <Compile Include="Repositories\Repository.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

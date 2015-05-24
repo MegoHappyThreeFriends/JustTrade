@@ -9,13 +9,7 @@
     <div class="rowcol-sm-4">
         <label for="select_database_type"> Выберите тип базы данных </label>
         <select id="select_database_type" class="col-sm-2 selectpicker" multiple  data-max-options="1">
-            <option value="sysbaseany">SybaseSQLAnywhere</option>
-            <option value="sysbase">SybaseASE</option>
-            <option value="oracle">Oracle</option>
-            <option value="firebird">FireBird</option>
-            <option value="postgresql">PostgreSQL</option>
-            <option value="mysql">MySql</option>
-            <option value="mssql">Microsoft Sql Server</option>
+
         </select>
     </div>
 
@@ -48,11 +42,11 @@
     </div>
 
     <div class="row">
-        <button class="btn btn-default" type="button">Сгенерировать базу данных</button>
+        <button class="btn btn-default" onclick="CreateDB()" type="button">Сгенерировать базу данных</button>
     </div>
 
     <div class="row">
-        <div id="create_db_response"></div>
+        <div id="create_db_response" style="display: none" class="alert alert-danger col-sm-4 " role="alert"></div>
     </div>
 
 </div>
@@ -65,11 +59,32 @@
 <script lang="javascript">
     
     $(document).ready(function() {
+        LoadCompoBox();
         $('.selectpicker').selectpicker();
     });
 
-    function CreateDB(){
+    function LoadCompoBox(){
+        $.getJSON( "Admin/GetDatabaseTypeList", function( data ) {
+            for(var i=0;i<data.length;i++){
+                $('#select_database_type').
+                        append("<option value=\""+data[i]+"\">"+data[i].replace(".cfg.xml","")+"</option>");
+            }
+            $('.selectpicker').selectpicker("refresh");
+        });
+    }
 
+    function CreateDB(){
+    	$.post( "Admin/CreateDatabase",
+                { databaseType: $('.selectpicker').val(), host: $("#db_host").val(),
+                    database: $("#db_name").val(), user: $("#db_login").val(), password: $("#db_password").val() } )
+                .done(function( data ) {
+                    debugger;
+                    if(data.result == "success") {
+                        $("#create_db_response").addClass("alert-success");
+                    }
+                    $("#create_db_response").html(data.details);
+                    $("#create_db_response").fadeIn(1000);
+                });
     }
 
 </script>

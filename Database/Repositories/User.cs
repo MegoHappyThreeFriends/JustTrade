@@ -3,6 +3,8 @@ using NHibernate;
 using System.Collections.Generic;
 using NHibernate.Linq;
 using System.Linq;
+using NHibernate.Mapping.ByCode.Conformist;
+using NHibernate.Mapping.ByCode;
 
 
 namespace JustTrade.Database
@@ -16,63 +18,37 @@ namespace JustTrade.Database
 		ICollection<User> GetAll();
 	}
 
-	public class User
+	public class User 
 	{
-		public User() {
-			
+		IList<Session> _sessions = new List<Session>();
+		IList<Permition> _permition = new List<Permition>();
+
+		void OnCreated(){
 		}
 
-		public virtual Guid UserId { get; set; }
+		public User() {
+			OnCreated();
+		}
+
+		public virtual Guid Id { get; set; }
 		public virtual string Name { get; set; }
+		public virtual string Login { get; set; }
 		public virtual string Password { get; set; }
 		public virtual bool IsSuperuser { get; set; }
-		public virtual IList<Permition> UserPermitions { get; set; }
-		public virtual IList<Session> UserSession { get; set; }
+
+		public virtual IList<Permition> Permitions { 
+			get{ return _permition; }
+
+			set{ _permition = value; }
+		}
+
+		public virtual IList<Session> Sessions { 
+			get{ return _sessions; }
+
+			set{ _sessions = value; }
+		}
+
 	}
 
-	public class UserRepository : iUser
-	{
-		public void Add(User user)
-		{
-			using (ISession session = NHibernateHelper.OpenSession())
-			using (ITransaction transaction = session.BeginTransaction())
-			{
-				session.Save(user);
-				transaction.Commit();
-			}
-		}
-
-		public void Update(User user)
-		{
-			using (ISession session = NHibernateHelper.OpenSession())
-			using (ITransaction transaction = session.BeginTransaction())
-			{
-				session.Update (user);
-				transaction.Commit();
-			}
-		}
-
-		public void Remove(User user)
-		{
-			using (ISession session = NHibernateHelper.OpenSession())
-			using (ITransaction transaction = session.BeginTransaction())
-			{
-				session.Delete (user);
-				transaction.Commit();
-			}
-		}
-
-		public ICollection<User> GetAll()
-		{
-			ICollection<User> list;
-			using (ISession session = NHibernateHelper.OpenSession())
-			using (ITransaction transaction = session.BeginTransaction())
-			{
-				list = session.Query<User>().ToList<User>();
-				transaction.Commit();
-			}
-			return list;
-		}
-	}
 }
 
