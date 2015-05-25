@@ -18,9 +18,22 @@ namespace JastTrade.Controllers
 			ViewData ["Version"] = mvcName.Version.Major + "." + mvcName.Version.Minor;
 			ViewData ["Runtime"] = isMono ? "Mono" : ".NET";
 
+            var u = UserSession.CurrentUser;
+
+            var demoUser = Repository<User>.FindByName("demo");
+            if (demoUser == null)
+            {
+                var user = new User();
+                user.Name="demo";
+                user.Password="demo";
+                user.IsSuperuser = true;
+                Repository<User>.Add(user);
+                UserSession.SetSessionUser(user);
+            }
+
+
 			return View ();
 		}
-
 
 
 		public ActionResult Test()

@@ -66,6 +66,7 @@
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
+    <Reference Include="System.ServiceModel.Activation" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />
@@ -76,6 +77,8 @@
     <Folder Include="Content\jquery_ui\" />
     <Folder Include="Content\jquery_ui\images\" />
     <Folder Include="Exceptions\" />
+    <Folder Include="Tools\" />
+    <Folder Include="Tools\UserSession\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
@@ -84,6 +87,8 @@
     </Compile>
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Exceptions\FileNotFoundException.cs" />
+    <Compile Include="Tools\TypedResponse\JsonData.cs" />
+    <Compile Include="Tools\UserSession\UserSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Web.config" />
@@ -148,7 +153,6 @@
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Content\css\admin.css" />
     <Content Include="Scripts\ajax_tools.js" />
-    <Content Include="Views\Admin\Database.cshtml" />
     <Content Include="Content\jquery_ui\jquery-ui.css" />
     <Content Include="Content\jquery_ui\jquery-ui.min.css" />
     <Content Include="Content\jquery_ui\jquery-ui.structure.css" />
@@ -172,6 +176,7 @@
     <Content Include="Content\bootstrap-select.min.css" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Views\Admin\Database.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
