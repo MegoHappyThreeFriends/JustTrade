@@ -44,6 +44,7 @@
     <Compile Include="Repositories\Session.cs" />
     <Compile Include="Repositories\Permition.cs" />
     <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="Properties\FriendlyAssembliesInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

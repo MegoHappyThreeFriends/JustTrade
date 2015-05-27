@@ -89,6 +89,7 @@
     <Compile Include="Exceptions\FileNotFoundException.cs" />
     <Compile Include="Tools\TypedResponse\JsonData.cs" />
     <Compile Include="Tools\UserSession\UserSession.cs" />
+    <Compile Include="Tools\EssenceTemplateController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Web.config" />

@@ -1,15 +1,24 @@
 ﻿using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
+using NHibernate.Mapping;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace JustTrade.Database
 {
+    
     public class NHibernateHelper
     {
+        internal static ISession SessionForTest
+        {
+            get;
+            set;
+        }
+
         #region Private
 
         private static ISessionFactory _sessionFactory;
-
         private static ISessionFactory SessionFactory
         {
             get
@@ -29,7 +38,9 @@ namespace JustTrade.Database
 
         public static ISession OpenSession()
         {
-            return SessionFactory.OpenSession();
+            return SessionForTest != null?
+                SessionForTest :
+                SessionFactory.OpenSession();
         }
 
         public static void CreateDb()
@@ -50,9 +61,11 @@ namespace JustTrade.Database
                 Login = "demo",
                 Password = "demo",
                 IsSuperuser = true,
-                Permitions = new Permition()
-                {
-                    Name = "Full permition"
+                Permitions = new List<Permition>()
+                { new Permition()
+                    {
+                        Name = "Full permition"
+                    }
                 }
             };
             Repository<User>.Add(user);

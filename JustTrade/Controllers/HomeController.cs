@@ -8,7 +8,7 @@ using JustTrade.Database;
 
 namespace JastTrade.Controllers
 {
-	public class HomeController : Controller
+    public class HomeController : EssenceTemplateController<User>
 	{
 		public ActionResult Index ()
 		{
@@ -23,12 +23,7 @@ namespace JastTrade.Controllers
             var demoUser = Repository<User>.FindByName("demo");
             if (demoUser == null)
             {
-                var user = new User();
-                user.Name="demo";
-                user.Password="demo";
-                user.IsSuperuser = true;
-                Repository<User>.Add(user);
-                UserSession.SetSessionUser(user);
+                //UserSession.SetSessionUser(user);
             }
 
 
