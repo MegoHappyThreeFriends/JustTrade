@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace JastTrade
+namespace JustTrade
 {
 	public class MvcApplication : System.Web.HttpApplication
 	{

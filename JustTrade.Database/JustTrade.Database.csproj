@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BE8706BF-07DF-47C9-ABB9-C35D5F4856B5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>JustTrade.Database</RootNamespace>
+    <AssemblyName>JustTrade.Database</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MyClass.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\Permition.cs" />
+    <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="Repositories\Session.cs" />
+    <Compile Include="Repositories\User.cs" />
+    <Compile Include="NHibernateHelper.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="ConfigurationTemplates\FireBird.cfg.xml" />
+    <None Include="ConfigurationTemplates\MSSQL.cfg.xml" />
+    <None Include="ConfigurationTemplates\MySql.cfg.xml" />
+    <None Include="ConfigurationTemplates\Oracle.cfg.xml" />
+    <None Include="ConfigurationTemplates\PostgreSQL.cfg.xml" />
+    <None Include="ConfigurationTemplates\SybaseASE.cfg.xml" />
+    <None Include="ConfigurationTemplates\SybaseSQLAnywhere.cfg.xml" />
+    <None Include="hibernate.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ConfigurationTemplates\" />
+    <Folder Include="Mappings\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mappings\Permition.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Sessions.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Users.hbm.xml" />
+  </ItemGroup>
+</Project>

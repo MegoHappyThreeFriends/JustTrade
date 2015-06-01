@@ -1,2 +1,2 @@
-﻿<%@ Application Inherits="JastTrade.MvcApplication" %>
+﻿<%@ Application Inherits="JustTrade.MvcApplication" %>
 

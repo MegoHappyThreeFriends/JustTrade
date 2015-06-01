@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E683D92B-9995-40FE-9C68-DB0B41AF713C}</ProjectGuid>
+    <ProjectGuid>{E0203C6C-B04F-42E6-AD3E-C1CF0F7D559C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>JustTrade.Helpers</RootNamespace>
     <AssemblyName>JustTrade.Helpers</AssemblyName>
@@ -30,19 +30,19 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MyClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Lang.cs" />
     <Compile Include="AppSettings.cs" />
     <Compile Include="FileUtils.cs" />
+    <Compile Include="Lang.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Language\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Language\rus.lang" />
+    <None Include="Language\rus.lang" />
   </ItemGroup>
 </Project>

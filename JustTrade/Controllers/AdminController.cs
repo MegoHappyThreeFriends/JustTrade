@@ -11,33 +11,33 @@ using JustTrade.Tools;
 
 namespace JastTrade.Controllers
 {
-    public class AdminController : Controller
-    {
-       
-        public ActionResult Index()
-        {
-            var d = HttpContext;
-            var u = UserSession.CurrentUser;
-            return View();
-        }
+	public class AdminController : Controller
+	{
 
-        public ActionResult Database()
-        {
-            return PartialView();
-        }
+		public ActionResult Index()
+		{
+			var d = HttpContext;
+			var u = UserSession.CurrentUser;
+			return View();
+		}
 
-        public ActionResult GenerateDatabase()
-        {
-            try
-            {
-                NHibernateHelper.CreateDb();
-            }
-            catch (Exception ex)
-            {
-                return Json(JsonData.Create(ex), JsonRequestBehavior.AllowGet);
-            }
-            return Json(JsonData.Create(true,"Database created"), JsonRequestBehavior.AllowGet);
-        }
+		public ActionResult Database()
+		{
+			return PartialView();
+		}
 
-    }
+		public ActionResult GenerateDatabase()
+		{
+			try
+			{
+				NHibernateHelper.CreateDb();
+			}
+			catch (Exception ex)
+			{
+				return Json(JsonData.Create(ex), JsonRequestBehavior.AllowGet);
+			}
+			return Json(JsonData.Create(true,"Database created"), JsonRequestBehavior.AllowGet);
+		}
+
+	}
 }

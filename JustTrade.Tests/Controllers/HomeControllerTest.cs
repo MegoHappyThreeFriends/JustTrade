@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
-using JastTrade;
-using JastTrade.Controllers;
+using JustTrade;
+using JustTrade.Controllers;
 using JustTrade.Database;
-using JustTrade.Tools;
-using System.Runtime.CompilerServices;
 
-namespace JastTrade.Tests
+namespace JustTrade.Tests
 {
 	[TestFixture]
 	public class HomeControllerTest
@@ -20,6 +18,9 @@ namespace JastTrade.Tests
 		{
 			// Arrange
 			var controller = new HomeController ();
+			controller.Get ();
+
+			NHibernateHelper.SessionForTest = null;
 
 			// Act
 			var result = (ViewResult)controller.Index ();
@@ -34,27 +35,5 @@ namespace JastTrade.Tests
 			Assert.AreEqual (expectedVersion, result.ViewData ["Version"]);
 			Assert.AreEqual (expectedRuntime, result.ViewData ["Runtime"]);
 		}
-
-
-        [Test]
-        public void Add_ReturnJsonSuccess ()
-        {
-            //NHibernateHelper.SessionForTest = null;
-
-            var controller = new HomeController ();
-            var user = new User();
-            user.Login = "unit_test";
-            user.Password = "unit_test";
-            var result = controller.Add(user);
-            //Assert.IsTrue(result == JsonData(true));
-
-
-        }
-
-
 	}
-
-
-
-
 }

@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{38593778-6A28-4C1A-A365-39F0403046CE}</ProjectGuid>
+    <ProjectGuid>{64C9D09D-8578-4B6F-8DB5-88C8D4A5360F}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>JastTrade.Tests</RootNamespace>
-    <AssemblyName>JastTrade.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <RootNamespace>JustTrade.Tests</RootNamespace>
+    <AssemblyName>JustTrade.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,11 +49,11 @@
     <Reference Include="System.Web.Helpers">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.WebPages">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.WebPages.Deployment">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
@@ -64,6 +64,26 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JustTrade\JustTrade.csproj">
+      <Project>{F7F9CA30-E004-415D-BF51-17D32C13C0C4}</Project>
+      <Name>JustTrade</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JustTrade.Database\JustTrade.Database.csproj">
+      <Project>{BE8706BF-07DF-47C9-ABB9-C35D5F4856B5}</Project>
+      <Name>JustTrade.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JustTrade.Helpers\JustTrade.Helpers.csproj">
+      <Project>{E0203C6C-B04F-42E6-AD3E-C1CF0F7D559C}</Project>
+      <Name>JustTrade.Helpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\HomeControllerTest.cs" />
@@ -71,18 +91,5 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\JustTrade\JustTrade.csproj">
-      <Project>{6EE0C4F9-3C27-46D9-91EE-B5D02A006A46}</Project>
-      <Name>JustTrade</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Database\JustTrade.Database.csproj">
-      <Project>{368253EA-EF9D-42FF-BBD9-B85B16B7F3C0}</Project>
-      <Name>JustTrade.Database</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tools\" />
   </ItemGroup>
 </Project>
