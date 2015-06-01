@@ -4,20 +4,21 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using JastTrade;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("JustTrade.Tests")]
 namespace JustTrade.Controllers
 {
 	public class HomeController : Controller
 	{
-		internal string Get()
-		{
-			return "";
-		}
-
 		public ActionResult Index ()
 		{
-			var mvcName = typeof(Controller).Assembly.GetName ();
+		    if (UserSession.CurrentUser == null)
+		    {
+                return RedirectToAction("Index", "Login");
+		    }
+
+		    var mvcName = typeof(Controller).Assembly.GetName ();
 			var isMono = Type.GetType ("Mono.Runtime") != null;
 
 			ViewData ["Version"] = mvcName.Version.Major + "." + mvcName.Version.Minor;

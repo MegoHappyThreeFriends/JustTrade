@@ -1,4 +1,5 @@
 ﻿using System;
+using JustTrade.Helpers;
 
 namespace JustTrade.Tools
 {
@@ -11,12 +12,12 @@ namespace JustTrade.Tools
 
 		public static object Create(bool success, string message)
 		{
-			return new { result = GetSuccess(success), message = message, details = string.Empty };
+            return new { result = GetSuccess(success), message = Lang.Get(message), details = string.Empty };
 		}
 
 		public static object Create(bool success, string message, string details)
 		{
-			return new { result = GetSuccess(success), message = message, details = details };
+            return new { result = GetSuccess(success), message = Lang.Get(message), details = details };
 		}
 
 		public static object Create(Exception ex)

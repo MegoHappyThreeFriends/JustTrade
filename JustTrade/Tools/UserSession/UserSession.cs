@@ -29,12 +29,14 @@ namespace JastTrade
 			}
 		}
 
-		public static void SetSessionUser(Session session)
-		{
-			session.SignUp = DateTime.UtcNow;
-			var currentSession = HttpContext.Current.Session;
-			currentSession["session"] = session;
-		}
+        public static void CreateSession(User user)
+	    {
+	        Session session = new Session();
+	        session.User = user;
+            session.SignUp = DateTime.UtcNow;
+            var currentSession = HttpContext.Current.Session;
+            currentSession["session"] = session;
+	    }
 
 	}
 }

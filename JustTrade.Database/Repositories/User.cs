@@ -48,6 +48,16 @@ namespace JustTrade.Database
 			set{ _sessions = value; }
 		}
 
+	    public override bool Equals(object obj)
+	    {
+	        User item = obj as User;
+	        if (item != null && item.Id == Id && item.IsSuperuser == IsSuperuser && 
+                item.Login == Login && item.Name == Name && item.Password == Password)
+	        {
+	            return true;
+	        }
+	        return false;
+	    }
 	}
 
 }
