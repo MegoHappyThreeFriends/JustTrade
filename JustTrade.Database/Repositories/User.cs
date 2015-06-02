@@ -48,7 +48,7 @@ namespace JustTrade.Database
 			set{ _sessions = value; }
 		}
 
-	    public override bool Equals(object obj)
+		public override bool Equals(object obj)
 	    {
 	        User item = obj as User;
 	        if (item != null && item.Id == Id && item.IsSuperuser == IsSuperuser && 

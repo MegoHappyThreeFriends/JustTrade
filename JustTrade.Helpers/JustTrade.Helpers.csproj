@@ -32,7 +32,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyClass.cs" />
+    <Compile Include="ExtensionMethods\StringExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppSettings.cs" />
     <Compile Include="FileUtils.cs" />
@@ -42,5 +42,11 @@
   <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Language\rus.lang" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JustTrade.Database\JustTrade.Database.csproj">
+      <Project>{be8706bf-07df-47c9-abb9-c35d5f4856b5}</Project>
+      <Name>JustTrade.Database</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

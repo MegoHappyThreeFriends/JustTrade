@@ -11,20 +11,18 @@ namespace JustTrade.Controllers
 {
 	public class HomeController : Controller
 	{
-		public ActionResult Index ()
-		{
-		    if (UserSession.CurrentUser == null)
-		    {
-                return RedirectToAction("Index", "Login");
-		    }
+		public ActionResult Index() {
+			if (UserSession.CurrentUser == null) {
+				return RedirectToAction("Index", "Login");
+			}
 
-		    var mvcName = typeof(Controller).Assembly.GetName ();
-			var isMono = Type.GetType ("Mono.Runtime") != null;
+			var mvcName = typeof(Controller).Assembly.GetName();
+			var isMono = Type.GetType("Mono.Runtime") != null;
 
-			ViewData ["Version"] = mvcName.Version.Major + "." + mvcName.Version.Minor;
-			ViewData ["Runtime"] = isMono ? "Mono" : ".NET";
+			ViewData["Version"] = mvcName.Version.Major + "." + mvcName.Version.Minor;
+			ViewData["Runtime"] = isMono ? "Mono" : ".NET";
 
-			return View ();
+			return View();
 		}
 	}
 }

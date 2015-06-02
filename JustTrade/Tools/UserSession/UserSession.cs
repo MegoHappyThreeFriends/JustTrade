@@ -5,38 +5,38 @@ using System.Web;
 namespace JastTrade
 {
 
+	/*public static class SessionExtention
+	{
+		public static User CurrentUser(this HttpSessionState session) {
+			//var currentSession = HttpContext.Current.Session;
+			var siteSession = (Session)(session["session"]);
+			if (siteSession == null) {
+				return null;
+			}
+			return siteSession.User;
+		}
+	}*/
+
 	public static class UserSession
 	{
-		private static User _user;
-		private static Session _session;
-
-		public static User CurrentUser
-		{
-			get
-			{
-				if (_session == null)
-				{
-					var currentSession = HttpContext.Current.Session;
-					var session = (Session)(currentSession["session"]==null ? null : currentSession["session"]);
-					if (session == null) 
-					{
-						return null;
-					}
-					_session = session;
-					_user = session.User;
+		public static User CurrentUser {
+			get {
+				var currentSession = HttpContext.Current.Session;
+				var session = (Session)(currentSession["session"]);
+				if (session == null) {
+					return null;
 				}
-				return _user;
+				return session.User;
 			}
 		}
 
-        public static void CreateSession(User user)
-	    {
-	        Session session = new Session();
-	        session.User = user;
-            session.SignUp = DateTime.UtcNow;
-            var currentSession = HttpContext.Current.Session;
-            currentSession["session"] = session;
-	    }
+		public static void CreateSession(User user) {
+			Session session = new Session();
+			session.User = user;
+			session.SignUp = DateTime.UtcNow;
+			var currentSession = HttpContext.Current.Session;
+			currentSession["session"] = session;
+		}
 
 	}
 }
