@@ -54,11 +54,11 @@ namespace JustTrade.Helpers
                 if (buf.Length < 2) {
                     continue;
                 }
-                string[] langItem = buf.Split (new char[]{ ':', '=' });
+                string[] langItem = buf.Split (new []{ ':', '=' });
                 if (langItem.Length != 2) {
                     throw new Exception ( string.Format( "Incorrect language item. Line number:{0}. Line data: {1} ", lineCount, buf));
                 }
-                htable.Add (langItem[0].Trim(),langItem[1].Trim());
+                htable.Add (langItem[0].Trim().ToLower(),langItem[1].Trim());
                 lineCount++;
             }
 
@@ -68,10 +68,11 @@ namespace JustTrade.Helpers
 
         public static string Get(string name){
             Load ();
-            if (!_language.ContainsKey (name)) {
+	        string nameForFind = name.ToLower();
+			if (!_language.ContainsKey(nameForFind)) {
                 return name.Replace ('_', ' ');
             }
-            string data = _language [name].ToString ();
+			string data = _language[nameForFind].ToString();
             return data;
         }
 

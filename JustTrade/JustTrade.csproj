@@ -92,6 +92,8 @@
     <Compile Include="Controllers\UserController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\login.css" />
+    <Content Include="Content\Images\login_texture.jpg" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
