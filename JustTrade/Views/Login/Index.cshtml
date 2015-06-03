@@ -31,9 +31,14 @@
 <script language="javascript">
 
 	function Login() {
-		$.getJSON("/Login/Login?login=" + $("#login").val() + "&password=" + $("#password").val(), function (data) {
-			alert(data);
-		});
+		$.ajax(
+			{
+				url: "/Login/Login?login=" + $("#login").val() + "&password=" + $("#password").val(),
+				success: function (data) {
+					$("body").append(data);
+				},
+				dataType: 'html'
+			});
 	}
 
 </script>

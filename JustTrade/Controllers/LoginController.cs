@@ -9,36 +9,34 @@ using JustTrade.Tools;
 
 namespace JustTrade.Controllers
 {
-    public class LoginController : Controller
-    {
-        //
-        // GET: /Login/
-        public ActionResult Index()
-        {
-            return View();
-        }
+	using JustTrade.Models;
 
-        public ActionResult Login(string login, string password)
-        {
-            User user = Repository<User>.FindBy("Login", login);
-            if (user != null)
-            {
-                if (user.Password == password)
-                {
-                    UserSession.CreateSession(user);
-                    return Json(JsonData.Create(true),JsonRequestBehavior.AllowGet);    
-                }
-                else
-                {
-                    return Json(JsonData.Create(false, "Password incorrect"), JsonRequestBehavior.AllowGet); 
-                }
-            }
-            else
-            {
-                return Json(JsonData.Create(false, "User not found"), JsonRequestBehavior.AllowGet); 
-            }
-        }
+	public class LoginController : Controller
+	{
+		//
+		// GET: /Login/
+		public ActionResult Index() {
+			return View();
+		}
 
-    }
+		public ActionResult Login(string login, string password) {
+			User user = Repository<User>.FindBy("Login", login);
+			if (user != null) {
+				if (user.Password == password) {
+					UserSession.CreateSession(user);
+					//return RedirectToAction("Index", "Home");
+					return Redirect("/Home");
+				} else {
+					TempData["Message"] = new Message("Test caption","Mego text");
+					
+				}
+			} else {
+				//return Json(JsonData.Create(false, "User not found"), JsonRequestBehavior.AllowGet);
+				TempData["Message"] = new Message("Test caption", "Mego text");
+			}
+			return RedirectToAction("Index", "Message");
+		}
+
+	}
 
 }

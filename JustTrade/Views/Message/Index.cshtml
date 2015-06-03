@@ -1,0 +1,37 @@
+﻿@using JustTrade.Models
+@model JustTrade.Models.Message
+@{
+	var dialogId = Guid.NewGuid();
+}
+
+<div id="dialog_@dialogId" class="message" title="@Model.Caption">
+
+	<div class="message-buttons">
+		@{
+			switch (Model.Buttons) {
+				case Message.Button.Ok: 
+					<button type="button" class="btn btn-default btn-lg">
+						<span class="glyphicon glyphicon-star" aria-hidden="true"></span> Ok
+					</button>
+				break;
+
+				case Message.Button.OkSendReport: 
+				break;
+
+				case Message.Button.RetryCancel: 
+				break;
+
+				case Message.Button.YesNo: 
+				break;
+			}
+		}
+
+	</div>
+
+</div>
+
+<script language="javascript">
+	$(document).ready(function () {
+		$("#dialog_@dialogId").dialog();
+	});
+</script>
