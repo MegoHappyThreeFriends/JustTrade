@@ -97,6 +97,7 @@
     <Content Include="Content\css\message.css" />
     <Content Include="Content\images\BusyGrid.gif" />
     <Content Include="Content\images\login_texture.jpg" />
+    <Content Include="Scripts\ShowBlockUI.js" />
     <Content Include="Scripts\jquery.blockUI.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -124,7 +125,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\npm.js" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Views\Shared\_Header.cshtml" />
+    <Content Include="Views\Shared\_AdminHeader.cshtml" />
     <Content Include="Views\Admin\Database.cshtml" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />

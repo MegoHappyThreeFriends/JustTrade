@@ -33,20 +33,7 @@
 <script language="javascript">
 
 	function Login() {
-		//$.blockUI({ message: "<h1>Remote call in progress...</h1>" });
-		$.blockUI({
-			css: {
-				border: 'none',
-				padding: '15px',
-				backgroundColor: '#000',
-				'-webkit-border-radius': '10px',
-				'-moz-border-radius': '10px',
-				opacity: .5,
-				color: '#fff'
-			},
-			message: '<img src="/Content/images/BusyGrid.gif" width="24px" /> @Lang.Get("Executing")'
-		});
-
+		ShowBlockUI.Show('@Lang.Get("Executing")');
 		$.ajax(
 			{
 				url: "/Login/Login?login=" + $("#login").val() + "&password=" + $("#password").val(),
