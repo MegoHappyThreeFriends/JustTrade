@@ -1,37 +1,124 @@
-﻿@using JustTrade.Models
-@model JustTrade.Models.Message
+﻿@using JustTrade.Helpers
+@using JustTrade.Models
+@model Message
 @{
 	var dialogId = Guid.NewGuid();
 }
+<link rel="stylesheet" href="../Content/css/message.css">
 
 <div id="dialog_@dialogId" class="message" title="@Model.Caption">
+	<div class="message-text">@Model.MessageText</div>
+	
+<ol class="breadcrumb">
+	<li>
+		<div class="message-details-toggle" onclick="DescriptionToggle()">@Lang.Get("More details")</div>
+		<div class="message-details" style="display: none">@Model.Description</div>
+	</li>
+</ol>
 
-	<div class="message-buttons">
-		@{
-			switch (Model.Buttons) {
-				case Message.Button.Ok: 
-					<button type="button" class="btn btn-default btn-lg">
-						<span class="glyphicon glyphicon-star" aria-hidden="true"></span> Ok
-					</button>
-				break;
-
-				case Message.Button.OkSendReport: 
-				break;
-
-				case Message.Button.RetryCancel: 
-				break;
-
-				case Message.Button.YesNo: 
-				break;
-			}
-		}
-
-	</div>
-
+	
 </div>
 
 <script language="javascript">
-	$(document).ready(function () {
-		$("#dialog_@dialogId").dialog();
+	$(document).ready(function() {
+		var type = '@Model.Buttons.ToString()';
+		switch (type) {
+			case "Ok":
+				ShowOkDialog();
+				break;
+
+			case "YesNo":
+				ShowYesNoDialog();
+				break;
+
+			case "OkSendReport":
+				ShowOkSendReportDialog();
+				break;
+		}
+		if ('@Model.IsError.ToString()' == "True") {
+			$(".ui-dialog-titlebar").addClass("error-message-header");
+		}
 	});
+
+	function DescriptionToggle() {
+		$(".message-details").fadeToggle();
+	}
+
+	function ShowOkDialog() {
+		$("#dialog_@dialogId").dialog({
+			resizable: true,
+			height: 400,
+			width: 750,
+			modal: true,
+			close: function () { $("#dialog_@dialogId").remove(); },
+			buttons: [
+				{
+					text: "Ok",
+					icons: {
+						primary: "ui-icon-check"
+					},
+					click: function() {
+						$(this).dialog("close");
+						$("#dialog_@dialogId").remove();
+					}
+				}
+			]
+		});
+	}
+
+	function ShowOkSendReportDialog() {
+		$("#dialog_@dialogId").dialog({
+			buttons: [
+				{
+					text: "Ok",
+					icons: {
+						primary: "ui-icon-check"
+					},
+					click: function() {
+						$(this).dialog("close");
+						$("#dialog_@dialogId").remove();
+					}
+				},
+				{
+					text: '@Lang.Get("Send report")',
+					icons: {
+						primary: "ui-icon-mail-closed"
+					},
+					click: function() {
+						$(this).dialog("close");
+						$("#dialog_@dialogId").remove();
+					}
+				}
+			]
+		});
+	}
+
+	function ShowYesNoDialog() {
+		$("#dialog_@dialogId").dialog({
+			buttons: [
+				{
+					text: '@Lang.Get("Yes")',
+					icons: {
+						primary: "ui-icon-check"
+					},
+					click: function() {
+						$(this).dialog("close");
+						$("#dialog_@dialogId").remove();
+					}
+				},
+				{
+					text: '@Lang.Get("No")',
+					icons: {
+						primary: "ui-icon-mail-closed"
+					},
+					click: function() {
+						$(this).dialog("close");
+						$("#dialog_@dialogId").remove();
+					}
+				}
+			]
+		});
+	}
+
+
 </script>

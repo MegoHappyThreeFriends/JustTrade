@@ -5,18 +5,6 @@ using System.Web;
 namespace JastTrade
 {
 
-	/*public static class SessionExtention
-	{
-		public static User CurrentUser(this HttpSessionState session) {
-			//var currentSession = HttpContext.Current.Session;
-			var siteSession = (Session)(session["session"]);
-			if (siteSession == null) {
-				return null;
-			}
-			return siteSession.User;
-		}
-	}*/
-
 	public static class UserSession
 	{
 		public static User CurrentUser {
@@ -31,13 +19,14 @@ namespace JastTrade
 		}
 
 		public static void CreateSession(User user) {
-			Session session = new Session();
-			session.User = user;
-			session.SignUp = DateTime.UtcNow;
+			var session = new Session {
+				User = user,
+				SignUp = DateTime.UtcNow
+			};
+			Repository<Session>.Add(session);
 			var currentSession = HttpContext.Current.Session;
 			currentSession["session"] = session;
 		}
-
 	}
 }
 

@@ -5,6 +5,8 @@ using System.Web;
 
 namespace JustTrade.Models
 {
+	using NUnit.Framework;
+
 	public class Message
 	{
 		public enum Button
@@ -12,11 +14,17 @@ namespace JustTrade.Models
 			Ok, YesNo, RetryCancel, OkSendReport
 		}
 
-		public Message(string caption, string messageText, string description = null, Button buttons = Button.Ok) {
+		public Message(string caption, string messageText, string description = null, bool isError=false, Button buttons = Button.Ok) {
 			Caption = caption;
 			MessageText = messageText;
 			Buttons = buttons;
 			Description = description;
+			IsError = isError;
+		}
+
+		public bool IsError {
+			get;
+			set;
 		}
 
 		public string Caption {

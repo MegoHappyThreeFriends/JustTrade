@@ -21,23 +21,50 @@
 		</div>
 
 		<button type="button" class="btn btn-default" onclick="Login()">
-			<span class="glyphicon glyphicon-send" aria-hidden="true"></span> @Lang.Get("Autorization")
+			<span class="glyphicon glyphicon-send" aria-hidden="true"></span> @Lang.Get("Authorization")
 		</button>
 
 	</div>
+	<div id="result" style="display: none"></div>
+
 </body>
 </html>
 
 <script language="javascript">
 
 	function Login() {
+		//$.blockUI({ message: "<h1>Remote call in progress...</h1>" });
+		$.blockUI({
+			css: {
+				border: 'none',
+				padding: '15px',
+				backgroundColor: '#000',
+				'-webkit-border-radius': '10px',
+				'-moz-border-radius': '10px',
+				opacity: .5,
+				color: '#fff'
+			},
+			message: '<img src="/Content/images/BusyGrid.gif" width="24px" /> @Lang.Get("Executing")'
+		});
+
 		$.ajax(
 			{
 				url: "/Login/Login?login=" + $("#login").val() + "&password=" + $("#password").val(),
 				success: function (data) {
-					$("body").append(data);
+					if (data.length > 1) {
+						$("#result").append(data);
+					} else {
+						window.location = "/Home";
+					}
 				},
-				dataType: 'html'
+				dataType: 'html',
+				complete: function() {
+					$.unblockUI();
+				},
+				error: function (xhr, status, error) {
+					var message = '@Lang.Get("Error connect to server. Message:")';
+					alert( message + error);
+				}
 			});
 	}
 

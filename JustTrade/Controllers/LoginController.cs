@@ -9,9 +9,10 @@ using JustTrade.Tools;
 
 namespace JustTrade.Controllers
 {
+	using JustTrade.Helpers;
 	using JustTrade.Models;
 
-	public class LoginController : Controller
+	public class LoginController : ControllerWithTools
 	{
 		//
 		// GET: /Login/
@@ -20,21 +21,23 @@ namespace JustTrade.Controllers
 		}
 
 		public ActionResult Login(string login, string password) {
-			User user = Repository<User>.FindBy("Login", login);
+			User user;
+			try {
+				user = Repository<User>.FindBy("Login", login);
+			} catch (Exception ex) {
+				return GenerateErrorMessage(Lang.Get("Error connect to db"), ex);
+			}
 			if (user != null) {
 				if (user.Password == password) {
-					UserSession.CreateSession(user);
-					//return RedirectToAction("Index", "Home");
-					return Redirect("/Home");
-				} else {
-					TempData["Message"] = new Message("Test caption","Mego text");
-					
+					try {
+						UserSession.CreateSession(user);
+					} catch (Exception ex) {
+						return GenerateErrorMessage(Lang.Get("Error create session"), ex);
+					}
+					return new EmptyResult();
 				}
-			} else {
-				//return Json(JsonData.Create(false, "User not found"), JsonRequestBehavior.AllowGet);
-				TempData["Message"] = new Message("Test caption", "Mego text");
 			}
-			return RedirectToAction("Index", "Message");
+			return GenerateErrorMessage(Lang.Get("Login or password is incorrect"), string.Empty);
 		}
 
 	}

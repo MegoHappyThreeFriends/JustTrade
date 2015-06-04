@@ -1,4 +1,12 @@
 ﻿<language file: russian>
-hello = привет
 Connection_to_database = Подключение к базе данных
-autorization = Авторизоваться
+Authorization = Авторизоваться
+Error connect to server. Message: = Ошибка подключение к серверу. Сообщение:
+Executing = Выполнение
+More details = Подробности
+Error create session = Ошибка создания сессии
+Error connect to db = Ошибка подключения к базе данных
+Login = Логин
+Password = Пароль
+Error = Ошибка
+Information = Информация

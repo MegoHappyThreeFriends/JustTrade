@@ -87,14 +87,17 @@
     </Compile>
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Models\Message.cs" />
+    <Compile Include="Tools\ControllerWithTools.cs" />
     <Compile Include="Tools\TypedResponse\JsonData.cs" />
     <Compile Include="Tools\UserSession\UserSession.cs" />
     <Compile Include="Controllers\UserController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\login.css" />
-    <Content Include="Content\Images\login_texture.jpg" />
-    <Content Include="Scripts\message.js" />
+    <Content Include="Content\css\message.css" />
+    <Content Include="Content\images\BusyGrid.gif" />
+    <Content Include="Content\images\login_texture.jpg" />
+    <Content Include="Scripts\jquery.blockUI.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -204,9 +207,11 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>60459</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:37255/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:37255/Home</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

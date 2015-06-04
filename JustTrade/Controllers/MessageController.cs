@@ -15,6 +15,11 @@ namespace JustTrade.Controllers
 			return View(message);
 		}
 
+		[HttpGet]
+		public ActionResult SendReport() {
+			//TODO: Реализовать отправку сообщений
+			return new EmptyResult();
+		}
 
 	}
 }
