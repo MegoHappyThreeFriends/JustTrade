@@ -4,8 +4,10 @@ using JustTrade.Database;
 
 namespace JustTrade.Controllers
 {
+	using System.Linq;
 	using JustTrade.Helpers.ExtensionMethods;
 	using JustTrade.Tools;
+	using NUnit.Framework;
 
 	public class UserController : Controller
 	{
@@ -15,7 +17,7 @@ namespace JustTrade.Controllers
 
 		[HttpPost]
 		public ActionResult Add(User user) {
-			var existingUser = Repository<User>.FindBy("Login", user.Login);
+			/*var existingUser = Repository<User>.FindBy("Login", user.Login);
 			if (existingUser != null) {
 				return Json(JsonData.Create(true,"User with same login already exist"));
 			}
@@ -25,7 +27,7 @@ namespace JustTrade.Controllers
 				Name = user.Name,
 				IsSuperuser = user.IsSuperuser
 			};
-			Repository<User>.Add(newUser);
+			Repository<User>.Add(newUser);*/
 			return Json(JsonData.Create(true));
 		}
 
@@ -38,6 +40,19 @@ namespace JustTrade.Controllers
 
 			
 			return Json(findedUser, JsonRequestBehavior.AllowGet);
+		}
+
+		[HttpGet]
+		public ActionResult Show() {
+			return PartialView("_UsersTable");
+		}
+
+		[HttpGet]
+		public ActionResult JsonList() {
+			var users = Repository<User>.GetAll();
+			var r = users.Select(x => new { x.Id, x.Name, x.Login, x.IsSuperuser }).ToList();
+			var rr = new { data = r };
+			return Json(rr, JsonRequestBehavior.AllowGet);
 		}
 
 	}

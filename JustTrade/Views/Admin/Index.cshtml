@@ -24,7 +24,7 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 						@Lang.Get("Management") <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="#">@Lang.Get("Users")</a></li>
+						<li><a href="#" onclick="GoTo('users')">@Lang.Get("Users")</a></li>
 						<li><a href="#">@Lang.Get("Permissions")</a></li>
 					</ul>
 				</li>
@@ -33,7 +33,7 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 						@Lang.Get("Databases") <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="#">@Lang.Get("Generate database")</a></li>
+						<li><a href="#" onclick="GoTo('gendb')">@Lang.Get("Generate database")</a></li>
 						<li><a href="#">@Lang.Get("Edit configuration")</a></li>
 					</ul>
 				</li>
@@ -64,19 +64,22 @@
 	</div>
 </nav>
 
+<div id="main"></div>
+
 
 <script lang="java script">
 	$(document).ready(function () {
 		LoadDefaultMenu();
 	});
 
-	function GenerateDatabase() {
-
-	}
-
 	function GoTo(location) {
+		
 		switch (location) {
 			case "users":
+				Load("User/Show");
+				break;
+			case "gendb":
+				Load("Admin/Database");
 				break;
 			case "exit":
 				window.location = "/Home";
@@ -87,8 +90,15 @@
 		}
 	}
 
+	function Load(url) {
+		ShowBlockUI.Show();
+		$("#main").load(url,function() {
+			$.unblockUI();
+		});
+	}
+
 
 	function LoadDefaultMenu() {
-		$("#main").load("Admin/Database");
+		
 	}
 </script>
