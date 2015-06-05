@@ -1,9 +1,12 @@
 ﻿<script src="Scripts/DataTables/jquery.dataTables.min.js"></script>
+<script src="Scripts/DataTables/dataTables.tableTools.js"></script>
+<script src="Scripts/DataTables/dataTables.bootstrap.js"></script>
 <link rel="stylesheet" href="../Content/css/user.css">
-<link rel="stylesheet" href="../Content/DataTables/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="../Content/DataTables/css/dataTables.tableTools.css">
+<link rel="stylesheet" href="../Content/DataTables/css/dataTables.bootstrap.css">
 
-<table id="user-data-table" class="table table-striped table-bordered" cellspacing="0"
-	width="100%">
+
+<table id="user-data-table" class="table compact hover table-striped" cellspacing="0" width="100%">
 
 	<thead>
 		<tr>
@@ -56,13 +59,14 @@
                 {
                 	data: null, render: function (data, type, row) {
                 		switch (data.IsSuperuser) {
-                			case "true": return "Да"; break;
-                			case "false": return "Нет"; break;
+                			case true: return "Да"; break;
+                			case false: return "Нет"; break;
                 			default: return "None";
                 		}
                 	}
                 }
 			],
+			"order": [[ 2, "desc" ]],
 			"columnDefs": [
                 {
                 	"targets": [0],
