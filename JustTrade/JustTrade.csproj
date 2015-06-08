@@ -311,7 +311,8 @@
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Message\Index.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
-    <Content Include="Views\User\_UsersTable.cshtml" />
+    <Content Include="Views\User\_List.cshtml" />
+    <Content Include="Views\User\_AddForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JustTrade.Database\JustTrade.Database.csproj">

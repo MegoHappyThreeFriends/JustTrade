@@ -30,20 +30,27 @@ namespace JustTrade.Controllers
 			return Json(JsonData.Create(true));
 		}
 
+
+
 		[HttpGet]
 		public ActionResult GetItem(string id) {
 			var findedUser = Repository<User>.FindById(new Guid(id));
 			if (findedUser == null) {
 				return Json(JsonData.Create(false, "User not exist"), JsonRequestBehavior.AllowGet);
 			}
-
-			
 			return Json(findedUser, JsonRequestBehavior.AllowGet);
 		}
 
-		[HttpGet]
-		public ActionResult Show() {
-			return PartialView("_UsersTable");
+	    public ActionResult AddUpdateForm(string id)
+	    {
+	        id = (string.IsNullOrEmpty(id) ? Guid.Empty.ToString():id);
+            var findedUser = Repository<User>.FindById(new Guid(id));
+            return PartialView("_AddForm", findedUser);
+	    }
+
+	    [HttpGet]
+		public ActionResult List() {
+			return PartialView("_List");
 		}
 
 		[HttpGet]

@@ -15,6 +15,13 @@ namespace JustTrade.Tests.Tools
 
     public class FakeSession : ISession
     {
+        public FakeCriteria FCriteria;
+
+        public FakeSession()
+        {
+            FCriteria = new FakeCriteria();
+        }
+
         public void Dispose()
         {
             throw new NotImplementedException();
@@ -142,7 +149,16 @@ namespace JustTrade.Tests.Tools
 
         public void SaveOrUpdate(object obj)
         {
-            throw new NotImplementedException();
+            var data = FCriteria.Data;
+            foreach (var item in data)
+            {
+                if (item.Equals(obj))
+                {
+                    data.Remove(item);
+                    break;
+                }
+            }
+            FCriteria.Data.Add(obj);
         }
 
         public void SaveOrUpdate(string entityName, object obj)
@@ -272,7 +288,7 @@ namespace JustTrade.Tests.Tools
 
         public ICriteria CreateCriteria(Type persistentClass)
         {
-            throw new NotImplementedException();
+            return FCriteria;
         }
 
         public ICriteria CreateCriteria(Type persistentClass, string alias)

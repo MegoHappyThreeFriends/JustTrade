@@ -19,3 +19,6 @@ Contacts = Контакты
 Databases = База данных
 Administrate = Администрирование
 Exit = Выход
+Login or password is incorrect = Логин или пароль не верны
+Add = Добавить
+Cancel = Отмена
