@@ -26,3 +26,7 @@ User Name = ФИО
 IsSuperuser = Администратор
 Reply password = Повторить пароль
 Add user = Добавить пользователя
+Edit = Редактировать
+Select all = Выделить
+Unselect all = Снять выделение
+Refresh = Обновить

@@ -153,6 +153,7 @@
     <Content Include="Content\DataTables\swf\copy_csv_xls_pdf.swf" />
     <Content Include="Content\images\BusyGrid.gif" />
     <Content Include="Content\images\login_texture.jpg" />
+    <Content Include="Scripts\context.menu.js" />
     <Content Include="Scripts\DataTables\dataTables.autoFill.js" />
     <Content Include="Scripts\DataTables\dataTables.autoFill.min.js" />
     <Content Include="Scripts\DataTables\dataTables.bootstrap.js" />

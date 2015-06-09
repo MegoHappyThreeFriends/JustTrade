@@ -2,113 +2,167 @@
 <script src="Scripts/DataTables/jquery.dataTables.min.js"></script>
 <script src="Scripts/DataTables/dataTables.tableTools.js"></script>
 <script src="Scripts/DataTables/dataTables.bootstrap.js"></script>
+<script src="Scripts/context.menu.js"></script>
 <link rel="stylesheet" href="../Content/css/user.css">
 
+<table id="userDataTable" class="table compact hover table-striped" cellspacing="0" width="100%">
 
-
-<input type="button" value="AddUser" onclick="AddUser()" />
-
-<table id="user-data-table" class="table compact hover table-striped" cellspacing="0"
-	width="100%">
-
-	<thead>
-		<tr>
-			<th>id</th>
-			<th>ФИО</th>
-			<th>Логин</th>
-			<th>Администратор</th>
-		</tr>
-	</thead>
+    <thead>
+        <tr id="tr_head">
+            <th>id</th>
+            <th>ФИО</th>
+            <th>Логин</th>
+            <th>Администратор</th>
+        </tr>
+    </thead>
 
 </table>
 
 <div id="json_data" style="display: none"></div>
 
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li><a target="add" >@Lang.Get("Add")</a></li>
+    <li><a target="edit" >@Lang.Get("Edit")</a></li>
+    <li><a target="remove">@Lang.Get("Remove")</a></li>
+    <li class="divider"></li>
+    <li><a target="select" >@Lang.Get("Select all")</a></li>
+    <li><a target="unselect" >@Lang.Get("Unselect all")</a></li>
+    <li class="divider"></li>
+    <li><a target="refresh" >@Lang.Get("Refresh")</a></li>
+</ul>
+
 <script language="javascript">
-	var table;
-	$(document).ready(function () {
-		CreateDatatable();
+    var table;
+    $(document).ready(function () {
+        CreateDatatable();
 
-		$('#user-data-table tbody').on('click', 'tr', function () {
-			$(this).toggleClass('selected');
-		});
-	});
+        $('#userDataTable tbody').on('click', 'tr', function () {
+            $(this).toggleClass('selected');
+        });
 
-	function AjaxResult(request, action) {
-		if (request == "AddUser" && action == "refresh") {
-			table.ajax.reload();
-		}
-	}
+        $('#userDataTable').on('draw.dt', function () {
+            $("#userDataTable tr").contextMenu({
+                menuSelector: "#contextMenu",
+                menuSelected: function (id, selectedMenu) {
+                    var action = selectedMenu[0].target;
 
-	function AddUser() {
-		$.ajax(
+                    switch (action) {
+                        case "add":
+                            AddUser(); break;
+
+                        case "refresh":
+                            table.ajax.reload(); break;
+
+                        case "select":
+                            SelectAll(); break;
+
+                        case "unselect":
+                            UnselectAll(); break;
+
+                        default:
+                            alert("Error, menu not found");
+                    }
+
+                }
+            });
+        });
+
+    });
+
+    function AjaxResult(request, action) {
+        if (request === "AddUser" && action === "refresh") {
+            table.ajax.reload();
+        }
+    }
+
+    function AddUser() {
+
+
+
+        $.ajax(
              {
-             	url: "/User/AddUpdateForm",
-             	success: function (data) {
-             		$("#json_data").append(data);
-             	},
-             	dataType: 'html',
-             	complete: function () {
+                 url: "/User/AddUpdateForm",
+                 success: function (data) {
+                     $("#json_data").append(data);
+                 },
+                 dataType: 'html',
+                 complete: function () {
 
-             	},
-             	error: function (xhr, status, error) {
-             		var message = '@Lang.Get("Error connect to server. Message:")';
-             		alert(message + error);
-             	}
+                 },
+                 error: function (xhr, status, error) {
+                     var message = '@Lang.Get("Error connect to server. Message:")';
+                     alert(message + error);
+                 }
              });
-	}
+    }
 
-	function CreateDatatable() {
-		table = $('#user-data-table').DataTable({
-			ajax: "/User/JsonList",
-			lengthChange: true,
-			'iDisplayLength': 15,
-			"oLanguage": {
-				"sLoadingRecords": "Пожалуйста подождите - загружается...",
-				"sProcessing": "Подождите...",
-				"sLengthMenu": "Показать _MENU_ записей",
-				"sZeroRecords": "Записи отсутствуют.",
-				"sInfo": "Записи с _START_ до _END_ из _TOTAL_ записей",
-				"sInfoEmpty": "Записи с 0 до 0 из 0 записей",
-				"sInfoFiltered": "(отфильтровано из _MAX_ записей)",
-				"sEmptyTable": "Ничего не найдено",
-				"sInfoPostFix": "",
-				"sSearch": "Поиск:",
-				"sUrl": "",
-				"oPaginate": {
-					"sFirst": "Первая",
-					"sPrevious": "<",
-					"sNext": ">",
-					"sLast": "Последняя"
-				},
-				"oAria": {
-					"sSortAscending": ": активировать для сортировки столбца по возрастанию",
-					"sSortDescending": ": активировать для сортировки столбцов по убыванию"
-				}
-			},
-			columns: [
+    function SelectById(id) {
+        $("#" + id).parent().parent().addClass("selected");
+    }
+
+    function UnselectAll() {
+        $("#userDataTable tr:not(#tr_head)").removeClass("selected");
+    }
+
+    function SelectAll() {
+        $("#userDataTable tr:not(#tr_head)").addClass("selected");
+    }
+
+    function CreateDatatable() {
+        table = $('#userDataTable').DataTable({
+            ajax: "/User/JsonList",
+            lengthChange: true,
+            'iDisplayLength': 15,
+            "oLanguage": {
+                "sLoadingRecords": "Пожалуйста подождите - загружается...",
+                "sProcessing": "Подождите...",
+                "sLengthMenu": "Показать _MENU_ записей",
+                "sZeroRecords": "Записи отсутствуют.",
+                "sInfo": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                "sInfoEmpty": "Записи с 0 до 0 из 0 записей",
+                "sInfoFiltered": "(отфильтровано из _MAX_ записей)",
+                "sEmptyTable": "Ничего не найдено",
+                "sInfoPostFix": "",
+                "sSearch": "Поиск:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Первая",
+                    "sPrevious": "<",
+                    "sNext": ">",
+                    "sLast": "Последняя"
+                },
+                "oAria": {
+                    "sSortAscending": ": активировать для сортировки столбца по возрастанию",
+                    "sSortDescending": ": активировать для сортировки столбцов по убыванию"
+                }
+            },
+            columns: [
                 { data: "Id" },
-                { data: "Name" },
+                {
+                    data: null, render: function (data, type, row) {
+                        return "<p id='" + data.Id + "'>" + (data.Name == null ? "" : data.Name) + "</p>";
+                    }
+                },
                 { data: "Login" },
                 {
-                	data: null, render: function (data, type, row) {
-                		switch (data.IsSuperuser) {
-                			case true: return "Да"; break;
-                			case false: return "Нет"; break;
-                			default: return "None";
-                		}
-                	}
+                    data: null, render: function (data, type, row) {
+                        switch (data.IsSuperuser) {
+                            case true: return "Да"; break;
+                            case false: return "Нет"; break;
+                            default: return "None";
+                        }
+                    }
                 }
-			],
-			"order": [[2, "desc"]],
-			"columnDefs": [
+            ],
+            "order": [[2, "desc"]],
+            "columnDefs": [
                 {
-                	"targets": [0],
-                	"visible": false
+                    "targets": [0],
+                    "visible": false
                 }
-			]
-		});
+            ]
+        });
 
-	}
+    }
 
 </script>
