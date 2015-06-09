@@ -18,7 +18,7 @@ namespace JustTrade.Controllers
 		public ActionResult Add(User user) {
 			var existingUser = Repository<User>.FindBy("Login", user.Login);
 			if (existingUser != null) {
-				return Json(JsonData.Create(true,"User with same login already exist"));
+				return Json(JsonData.Create(true, "User with same login already exist"));
 			}
 			var newUser = new User() {
 				Login = user.Login,
@@ -41,14 +41,13 @@ namespace JustTrade.Controllers
 			return Json(findedUser, JsonRequestBehavior.AllowGet);
 		}
 
-	    public ActionResult AddUpdateForm(string id)
-	    {
-	        id = (string.IsNullOrEmpty(id) ? Guid.Empty.ToString():id);
-            var findedUser = Repository<User>.FindById(new Guid(id));
-            return PartialView("_AddForm", findedUser);
-	    }
+		public ActionResult AddUpdateForm(string id) {
+			id = (string.IsNullOrEmpty(id) ? Guid.Empty.ToString() : id);
+			var findedUser = Repository<User>.FindById(new Guid(id));
+			return PartialView("_AddUpdateForm", findedUser);
+		}
 
-	    [HttpGet]
+		[HttpGet]
 		public ActionResult List() {
 			return PartialView("_List");
 		}
@@ -56,7 +55,14 @@ namespace JustTrade.Controllers
 		[HttpGet]
 		public ActionResult JsonList() {
 			var users = Repository<User>.GetAll();
-			var userList = new { data = users.Select(x => new { x.Id, x.Name, x.Login, x.IsSuperuser }).ToList() };
+			var userList = new {
+				data = users.Select(x => new {
+					x.Id,
+					x.Name,
+					x.Login,
+					x.IsSuperuser
+				}).ToList()
+			};
 			return Json(userList, JsonRequestBehavior.AllowGet);
 		}
 

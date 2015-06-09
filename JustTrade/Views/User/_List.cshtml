@@ -3,101 +3,112 @@
 <script src="Scripts/DataTables/dataTables.tableTools.js"></script>
 <script src="Scripts/DataTables/dataTables.bootstrap.js"></script>
 <link rel="stylesheet" href="../Content/css/user.css">
-<link rel="stylesheet" href="../Content/DataTables/css/dataTables.tableTools.css">
-<link rel="stylesheet" href="../Content/DataTables/css/dataTables.bootstrap.css">
+
 
 
 <input type="button" value="AddUser" onclick="AddUser()" />
 
-<table id="user-data-table" class="table compact hover table-striped" cellspacing="0" width="100%">
+<table id="user-data-table" class="table compact hover table-striped" cellspacing="0"
+	width="100%">
 
-    <thead>
-        <tr>
-            <th>id</th>
-            <th>ФИО</th>
-            <th>Логин</th>
-            <th>Администратор</th>
-        </tr>
-    </thead>
+	<thead>
+		<tr>
+			<th>id</th>
+			<th>ФИО</th>
+			<th>Логин</th>
+			<th>Администратор</th>
+		</tr>
+	</thead>
 
 </table>
 
 <div id="json_data" style="display: none"></div>
 
 <script language="javascript">
-    var editor;
-    $(document).ready(function () {
-        CreateDatatable();
-    });
+	var table;
+	$(document).ready(function () {
+		CreateDatatable();
 
-    function AddUser() {
-        $.ajax(
+		$('#user-data-table tbody').on('click', 'tr', function () {
+			$(this).toggleClass('selected');
+		});
+	});
+
+	function AjaxResult(request, action) {
+		if (request == "AddUser" && action == "refresh") {
+			table.ajax.reload();
+		}
+	}
+
+	function AddUser() {
+		$.ajax(
              {
-                 url: "/User/AddUpdateForm",
-                 success: function (data) {
-                     $("#json_data").append(data);
-                 },
-                 dataType: 'html',
-                 complete: function () {
+             	url: "/User/AddUpdateForm",
+             	success: function (data) {
+             		$("#json_data").append(data);
+             	},
+             	dataType: 'html',
+             	complete: function () {
 
-                 },
-                 error: function (xhr, status, error) {
-                     var message = '@Lang.Get("Error connect to server. Message:")';
-                     alert(message + error);
-                 }
+             	},
+             	error: function (xhr, status, error) {
+             		var message = '@Lang.Get("Error connect to server. Message:")';
+             		alert(message + error);
+             	}
              });
-    }
+	}
 
-    function CreateDatatable() {
-        var table = $('#user-data-table').DataTable({
-            ajax: "/User/JsonList",
-            lengthChange: true,
-            "oLanguage": {
-                "sLoadingRecords": "Пожалуйста подождите - загружается...",
-                "sProcessing": "Подождите...",
-                "sLengthMenu": "Показать _MENU_ записей",
-                "sZeroRecords": "Записи отсутствуют.",
-                "sInfo": "Записи с _START_ до _END_ из _TOTAL_ записей",
-                "sInfoEmpty": "Записи с 0 до 0 из 0 записей",
-                "sInfoFiltered": "(отфильтровано из _MAX_ записей)",
-                "sEmptyTable": "Ничего не найдено",
-                "sInfoPostFix": "",
-                "sSearch": "Поиск:",
-                "sUrl": "",
-                "oPaginate": {
-                    "sFirst": "Первая",
-                    "sPrevious": "<",
-                    "sNext": ">",
-                    "sLast": "Последняя"
-                },
-                "oAria": {
-                    "sSortAscending": ": активировать для сортировки столбца по возрастанию",
-                    "sSortDescending": ": активировать для сортировки столбцов по убыванию"
-                }
-            },
-            columns: [
+	function CreateDatatable() {
+		table = $('#user-data-table').DataTable({
+			ajax: "/User/JsonList",
+			lengthChange: true,
+			'iDisplayLength': 15,
+			"oLanguage": {
+				"sLoadingRecords": "Пожалуйста подождите - загружается...",
+				"sProcessing": "Подождите...",
+				"sLengthMenu": "Показать _MENU_ записей",
+				"sZeroRecords": "Записи отсутствуют.",
+				"sInfo": "Записи с _START_ до _END_ из _TOTAL_ записей",
+				"sInfoEmpty": "Записи с 0 до 0 из 0 записей",
+				"sInfoFiltered": "(отфильтровано из _MAX_ записей)",
+				"sEmptyTable": "Ничего не найдено",
+				"sInfoPostFix": "",
+				"sSearch": "Поиск:",
+				"sUrl": "",
+				"oPaginate": {
+					"sFirst": "Первая",
+					"sPrevious": "<",
+					"sNext": ">",
+					"sLast": "Последняя"
+				},
+				"oAria": {
+					"sSortAscending": ": активировать для сортировки столбца по возрастанию",
+					"sSortDescending": ": активировать для сортировки столбцов по убыванию"
+				}
+			},
+			columns: [
                 { data: "Id" },
                 { data: "Name" },
                 { data: "Login" },
                 {
-                    data: null, render: function (data, type, row) {
-                        switch (data.IsSuperuser) {
-                            case true: return "Да"; break;
-                            case false: return "Нет"; break;
-                            default: return "None";
-                        }
-                    }
+                	data: null, render: function (data, type, row) {
+                		switch (data.IsSuperuser) {
+                			case true: return "Да"; break;
+                			case false: return "Нет"; break;
+                			default: return "None";
+                		}
+                	}
                 }
-            ],
-            "order": [[2, "desc"]],
-            "columnDefs": [
+			],
+			"order": [[2, "desc"]],
+			"columnDefs": [
                 {
-                    "targets": [0],
-                    "visible": false
+                	"targets": [0],
+                	"visible": false
                 }
-            ]
-        });
+			]
+		});
 
-    }
+	}
 
 </script>

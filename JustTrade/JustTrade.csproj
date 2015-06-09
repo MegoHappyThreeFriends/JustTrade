@@ -312,7 +312,7 @@
     <Content Include="Views\Message\Index.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\_List.cshtml" />
-    <Content Include="Views\User\_AddForm.cshtml" />
+    <Content Include="Views\User\_AddUpdateForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JustTrade.Database\JustTrade.Database.csproj">

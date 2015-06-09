@@ -6,3 +6,18 @@
 	right: 0;
 	margin: auto;
 }
+
+.add-update-user-form-container div span
+{
+	width: 150px;
+	margin-left: 10px;
+}
+
+#IsSuperuser {
+	width: 35px;
+	margin-left: 10px;
+}
+
+.selected {
+  background-color: #B0BED9 !important;
+}

@@ -22,3 +22,7 @@ Exit = Выход
 Login or password is incorrect = Логин или пароль не верны
 Add = Добавить
 Cancel = Отмена
+User Name = ФИО
+IsSuperuser = Администратор
+Reply password = Повторить пароль
+Add user = Добавить пользователя

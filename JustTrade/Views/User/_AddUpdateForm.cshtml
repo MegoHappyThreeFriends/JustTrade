@@ -1,0 +1,106 @@
+﻿@using JustTrade.Helpers
+@model JustTrade.Database.User
+@{
+    var dialogId = Guid.NewGuid();
+}
+<link rel="stylesheet" href="../Content/css/message.css">
+
+<div id="dialog_@dialogId" class="message" title="@Lang.Get("Add user")">
+
+	<!-- Form desctiption -->
+
+	<form id="add_user">
+		<div class="add-update-user-form-container">
+
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon">@Lang.Get("User Name")</span>
+				<input id="Name" name="Name" type="text" class="form-control" aria-describedby="basic-addon1">
+			</div>
+
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon">@Lang.Get("Login")</span>
+				<input id="Login" name="Login" type="text" class="form-control" aria-describedby="basic-addon1">
+			</div>
+
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon">@Lang.Get("IsSuperuser")</span>
+				<input id="IsSuperuser" name="IsSuperuser" type="checkbox" value="true" class="form-control" aria-describedby="basic-addon1">
+				<input type="hidden" value="false" name="IsSuperuser" />
+			</div>
+
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon">@Lang.Get("Password")</span>
+				<input id="Password" name="Password" type="password" class="form-control" aria-describedby="basic-addon1">
+			</div>
+
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon">@Lang.Get("Reply password")</span>
+				<input id="Replay_password" type="password" class="form-control" aria-describedby="basic-addon1">
+			</div>
+
+		</div>
+	</form>
+
+</div>
+
+<script language="javascript">
+	$(document).ready(function () {
+		ShowDialog();
+	});
+
+	function ShowDialog() {
+		$("#dialog_@dialogId").dialog({
+			resizable: true,
+			width: 350,
+			height: 300,
+			modal: true,
+			close: function () { $("#dialog_@dialogId").remove(); },
+			buttons: [
+                {
+                	text: '@Lang.Get("Add")',
+                	icons: {
+                		primary: "ui-icon-check"
+                	},
+                	click: function () {
+                		Add(function () {
+                			$("#dialog_@dialogId").dialog("close");
+                			$("#dialog_@dialogId").remove();
+                			AjaxResult("AddUser", "refresh");
+                		});
+                	}
+                },
+				{
+					text: "Cancel",
+					icons: {
+						primary: "ui-icon-close"
+					},
+					click: function () {
+						$(this).dialog("close");
+						$("#dialog_@dialogId").remove();
+					}
+				}
+			]
+		});
+	}
+
+	function Add(callback) {
+		$.ajax({
+			type: "POST",
+			url: "User/Add",
+			data: $("#add_user").serialize(),
+			success: function (response) {
+				//console.log(response);
+			},
+			complete: function () {
+				callback();
+			},
+			error: function (xhr, status, error) {
+				var message = '@Lang.Get("Error connect to server. Message:")';
+				alert(message + error);
+			}
+		});
+	}
+
+
+</script>
+
