@@ -8,19 +8,21 @@
 
 <div id="dialog_@dialogId" class="message" title="@Model.Caption">
 	<div class="message-text">@Model.MessageText</div>
-	
-<ol class="breadcrumb">
-	<li>
-		<div class="message-details-toggle" onclick="DescriptionToggle()">@Lang.Get("More details")</div>
-		<div class="message-details" style="display: none">@Model.Description</div>
-	</li>
-</ol>
 
-	
+	@if (Model.Description.Length > 0) {
+		<ol class="breadcrumb">
+			<li>
+				<div class="message-details-toggle" onclick=" DescriptionToggle() ">@Lang.Get("More details")
+				</div>
+				<div class="message-details" style="display: none">@Model.Description</div>
+			</li>
+		</ol>
+	}
+
 </div>
 
 <script language="javascript">
-	$(document).ready(function() {
+	$(document).ready(function () {
 		var type = '@Model.Buttons.ToString()';
 		switch (type) {
 			case "Ok":
@@ -36,7 +38,7 @@
 				break;
 		}
 		if ('@Model.IsError.ToString()' == "True") {
-			$(".ui-dialog-titlebar").addClass("error-message-header");
+			$("#dialog_@dialogId").parent().find(".ui-dialog-titlebar").addClass("error-message-header");
 		}
 	});
 
@@ -44,11 +46,17 @@
 		$(".message-details").fadeToggle();
 	}
 
+	function AjaxResultCall(parameter) {
+		if (typeof (AjaxResult) == "function") {
+			AjaxResult("Message", "close");
+		}
+	}
+
 	function ShowOkDialog() {
 		$("#dialog_@dialogId").dialog({
 			resizable: true,
-			height: 400,
-			width: 750,
+			height: @(Model.Description.Length>0?"400":"200"),
+			width: @(Model.Description.Length>0?"750":"500"),
 			modal: true,
 			close: function () { $("#dialog_@dialogId").remove(); },
 			buttons: [
@@ -57,8 +65,8 @@
 					icons: {
 						primary: "ui-icon-check"
 					},
-					click: function() {
-						$(this).dialog("close");
+					click: function () {
+						$("#dialog_@dialogId").dialog("close");
 						$("#dialog_@dialogId").remove();
 					}
 				}
@@ -74,8 +82,8 @@
 					icons: {
 						primary: "ui-icon-check"
 					},
-					click: function() {
-						$(this).dialog("close");
+					click: function () {
+						$("#dialog_@dialogId").dialog("close");
 						$("#dialog_@dialogId").remove();
 					}
 				},
@@ -84,8 +92,8 @@
 					icons: {
 						primary: "ui-icon-mail-closed"
 					},
-					click: function() {
-						$(this).dialog("close");
+					click: function () {
+						$("#dialog_@dialogId").dialog("close");
 						$("#dialog_@dialogId").remove();
 					}
 				}
@@ -101,8 +109,8 @@
 					icons: {
 						primary: "ui-icon-check"
 					},
-					click: function() {
-						$(this).dialog("close");
+					click: function () {
+						$("#dialog_@dialogId").dialog("close");
 						$("#dialog_@dialogId").remove();
 					}
 				},
@@ -111,8 +119,8 @@
 					icons: {
 						primary: "ui-icon-mail-closed"
 					},
-					click: function() {
-						$(this).dialog("close");
+					click: function () {
+						$("#dialog_@dialogId").dialog("close");
 						$("#dialog_@dialogId").remove();
 					}
 				}

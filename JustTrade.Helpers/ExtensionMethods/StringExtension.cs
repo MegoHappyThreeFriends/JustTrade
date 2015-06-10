@@ -13,6 +13,10 @@ namespace JustTrade.Helpers.ExtensionMethods
 	{
 		private static MD5 md5Hash;
 
+		public static bool NullOrEmpty(this string strData) {
+			return string.IsNullOrEmpty(strData) || string.IsNullOrWhiteSpace(strData);
+		}
+
 		public static string GetHash(this string stringData) {
 			if (md5Hash == null) {
 				md5Hash = MD5.Create();

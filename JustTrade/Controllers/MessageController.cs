@@ -12,7 +12,7 @@ namespace JustTrade.Controllers
 	{
 		public ActionResult Index() {
 			var message = (Message)TempData["Message"];
-			return View(message);
+			return PartialView(message);
 		}
 
 		[HttpGet]

@@ -5,9 +5,7 @@
 }
 <link rel="stylesheet" href="../Content/css/message.css">
 
-<div id="dialog_@dialogId" class="message" title="@Lang.Get("Add user")">
-
-	<!-- Form desctiption -->
+<div id="dialog_@dialogId" class="." title="@Lang.Get("Add user")">
 
 	<form id="add_user">
 		<div class="add-update-user-form-container">
@@ -54,7 +52,10 @@
 			width: 350,
 			height: 300,
 			modal: true,
-			close: function () { $("#dialog_@dialogId").remove(); },
+			close: function () {
+				AjaxResultAddUpdateForm();
+				$("#dialog_@dialogId").remove();
+			},
 			buttons: [
                 {
                 	text: '@Lang.Get("Add")',
@@ -65,7 +66,6 @@
                 		Add(function () {
                 			$("#dialog_@dialogId").dialog("close");
                 			$("#dialog_@dialogId").remove();
-                			AjaxResult("AddUser", "refresh");
                 		});
                 	}
                 },
@@ -75,7 +75,7 @@
 						primary: "ui-icon-close"
 					},
 					click: function () {
-						$(this).dialog("close");
+						$("#dialog_@dialogId").dialog("close");
 						$("#dialog_@dialogId").remove();
 					}
 				}
@@ -84,21 +84,33 @@
 	}
 
 	function Add(callback) {
+		$("#AddUpdateForm_add").remove();
 		$.ajax({
 			type: "POST",
 			url: "User/Add",
 			data: $("#add_user").serialize(),
 			success: function (response) {
-				//console.log(response);
+				if (response.length > 0) {
+					$("#json_data").append("<div id='AddUpdateForm_add'>" + response + "</div>");
+				} else {
+					callback();
+				}
 			},
 			complete: function () {
-				callback();
+
 			},
 			error: function (xhr, status, error) {
 				var message = '@Lang.Get("Error connect to server. Message:")';
 				alert(message + error);
 			}
 		});
+	}
+
+	function AjaxResultAddUpdateForm(parameter) {
+		if (typeof (AjaxResult) == "function") {
+			$("#AddUpdateForm_add").remove();
+			AjaxResult("AddUpdateForm", parameter);
+		}
 	}
 
 

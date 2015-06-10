@@ -13,15 +13,26 @@
 	margin-left: 10px;
 }
 
-#IsSuperuser {
+#IsSuperuser
+{
 	width: 35px;
 	margin-left: 10px;
 }
 
-.selected {
-  background-color: #B0BED9 !important;
+.selected
+{
+	background-color: #B0BED9 !important;
 }
 
-.dropdown-menu li{
-    cursor: pointer;
+.dropdown-menu li
+{
+	cursor: pointer;
+}
+
+.context-menu-checkbox > i > input
+{
+	width: 15px;
+	height: 15px;
+	margin-left: 5px;
+	
 }

@@ -7,8 +7,9 @@ using JustTrade.Helpers.ExtensionMethods;
 
 namespace JustTrade.Controllers
 {
+	using JustTrade.Helpers;
 
-	public class UserController : Controller
+	public class UserController : ControllerWithTools
 	{
 		public ActionResult Index() {
 			return View();
@@ -16,9 +17,12 @@ namespace JustTrade.Controllers
 
 		[HttpPost]
 		public ActionResult Add(User user) {
+			if(user.Login.NullOrEmpty() || user.Name.NullOrEmpty() || user.Password.NullOrEmpty()){
+				return GenerateErrorMessage(Lang.Get("You must enter Login, Name and Password"), string.Empty);
+			}
 			var existingUser = Repository<User>.FindBy("Login", user.Login);
 			if (existingUser != null) {
-				return Json(JsonData.Create(true, "User with same login already exist"));
+				return GenerateErrorMessage(Lang.Get("User with same login already exist"), string.Empty);
 			}
 			var newUser = new User() {
 				Login = user.Login,
@@ -27,10 +31,8 @@ namespace JustTrade.Controllers
 				IsSuperuser = user.IsSuperuser
 			};
 			Repository<User>.Add(newUser);
-			return Json(JsonData.Create(true));
+			return new EmptyResult();
 		}
-
-
 
 		[HttpGet]
 		public ActionResult GetItem(string id) {
