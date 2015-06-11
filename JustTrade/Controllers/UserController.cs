@@ -34,6 +34,22 @@ namespace JustTrade.Controllers
 			return new EmptyResult();
 		}
 
+		//TODO: реализовать в репозитории выбор коллекции с простым фильтром.
+		[HttpPost]
+		public ActionResult Update(User user) {
+			if (user.Login.NullOrEmpty() || user.Name.NullOrEmpty() || user.Password.NullOrEmpty()) {
+				return GenerateErrorMessage(Lang.Get("You must enter Login, Name and Password"), string.Empty);
+			}
+			var existingUser = Repository<User>.FindById(user.Id);
+			var existingUserWithSameLogin = Repository<User>.FindBy("Login", user.Login);
+			if (existingUserWithSameLogin.Id != user.Id && ) {
+				return GenerateErrorMessage(Lang.Get("User with same login already exist"), string.Empty);
+			}
+
+			return new EmptyResult();
+		}
+
+
 		[HttpGet]
 		public ActionResult GetItem(string id) {
 			var findedUser = Repository<User>.FindById(new Guid(id));

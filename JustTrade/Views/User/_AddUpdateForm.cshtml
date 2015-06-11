@@ -8,32 +8,33 @@
 <div id="dialog_@dialogId" class="." title="@Lang.Get("Add user")">
 
 	<form id="add_user">
+		<input type="hidden" value="@(Model != null ? Model.Id.ToString() : Guid.Empty.ToString())" name="Id" />
 		<div class="add-update-user-form-container">
 
 			<div class="input-group input-group-sm">
 				<span class="input-group-addon">@Lang.Get("User Name")</span>
-				<input id="Name" name="Name" type="text" class="form-control" aria-describedby="basic-addon1">
+				<input id="Name" name="Name" type="text" class="form-control" value="@(Model != null ? Model.Name : "")" aria-describedby="basic-addon1">
 			</div>
 
 			<div class="input-group input-group-sm">
 				<span class="input-group-addon">@Lang.Get("Login")</span>
-				<input id="Login" name="Login" type="text" class="form-control" aria-describedby="basic-addon1">
+				<input id="Login" name="Login" type="text" class="form-control" value="@(Model != null ? Model.Login : "")" aria-describedby="basic-addon1">
 			</div>
 
 			<div class="input-group input-group-sm">
 				<span class="input-group-addon">@Lang.Get("IsSuperuser")</span>
-				<input id="IsSuperuser" name="IsSuperuser" type="checkbox" value="true" class="form-control" aria-describedby="basic-addon1">
+				<input id="IsSuperuser" name="IsSuperuser" type="checkbox" value="true" @(Model != null && Model.IsSuperuser?"checked='checked'":"") class="form-control" aria-describedby="basic-addon1">
 				<input type="hidden" value="false" name="IsSuperuser" />
 			</div>
 
 			<div class="input-group input-group-sm">
 				<span class="input-group-addon">@Lang.Get("Password")</span>
-				<input id="Password" name="Password" type="password" class="form-control" aria-describedby="basic-addon1">
+				<input id="Password" name="Password" type="password" class="form-control" value="@(Model != null ? "123456" : "")" aria-describedby="basic-addon1">
 			</div>
 
 			<div class="input-group input-group-sm">
 				<span class="input-group-addon">@Lang.Get("Reply password")</span>
-				<input id="Replay_password" type="password" class="form-control" aria-describedby="basic-addon1">
+				<input id="Replay_password" type="password" class="form-control"  value="@(Model != null ? "123456" : "")" aria-describedby="basic-addon1">
 			</div>
 
 		</div>
@@ -63,7 +64,7 @@
                 		primary: "ui-icon-check"
                 	},
                 	click: function () {
-                		Add(function () {
+                		AddUserPost(function () {
                 			$("#dialog_@dialogId").dialog("close");
                 			$("#dialog_@dialogId").remove();
                 		});
@@ -83,7 +84,7 @@
 		});
 	}
 
-	function Add(callback) {
+	function AddUserPost(callback) {
 		$("#AddUpdateForm_add").remove();
 		$.ajax({
 			type: "POST",
@@ -92,6 +93,29 @@
 			success: function (response) {
 				if (response.length > 0) {
 					$("#json_data").append("<div id='AddUpdateForm_add'>" + response + "</div>");
+				} else {
+					callback();
+				}
+			},
+			complete: function () {
+
+			},
+			error: function (xhr, status, error) {
+				var message = '@Lang.Get("Error connect to server. Message:")';
+				alert(message + error);
+			}
+		});
+	}
+
+	function UpdateUserPost(callback) {
+		$("#UpdateUpdateForm_add").remove();
+		$.ajax({
+			type: "POST",
+			url: "User/Update",
+			data: $("#add_user").serialize(),
+			success: function (response) {
+				if (response.length > 0) {
+					$("#json_data").append("<div id='UpdateUpdateForm_add'>" + response + "</div>");
 				} else {
 					callback();
 				}
