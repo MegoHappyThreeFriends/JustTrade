@@ -10,6 +10,18 @@ namespace JustTrade.Database
 	
 	public static class Repository <T>
 	{
+		public class ParameterItem
+		{
+			public string Name {
+				get;
+				set;
+			}
+
+			public object Value {
+				get;
+				set;
+			}
+		}
 
 		public static T FindById(Guid id)
 		{
