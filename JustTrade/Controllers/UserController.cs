@@ -20,7 +20,7 @@ namespace JustTrade.Controllers
 			if(user.Login.NullOrEmpty() || user.Name.NullOrEmpty() || user.Password.NullOrEmpty()){
 				return GenerateErrorMessage(Lang.Get("You must enter Login, Name and Password"), string.Empty);
 			}
-			var existingUser = Repository<User>.FindBy("Login", user.Login);
+			var existingUser = Repository<User>.Find(new RepoFiler("Login", user.Login));
 			if (existingUser != null) {
 				return GenerateErrorMessage(Lang.Get("User with same login already exist"), string.Empty);
 			}
@@ -40,20 +40,32 @@ namespace JustTrade.Controllers
 			if (user.Login.NullOrEmpty() || user.Name.NullOrEmpty() || user.Password.NullOrEmpty()) {
 				return GenerateErrorMessage(Lang.Get("You must enter Login, Name and Password"), string.Empty);
 			}
-			var existingUser = Repository<User>.FindById(user.Id);
-			var existingUserWithSameLogin = Repository<User>.FindBy("Login", user.Login);
-			if (existingUserWithSameLogin.Id != user.Id && ) {
+			var existingUser = Repository<User>.FindById(user.Id).FirstOrDefault();
+			var existingUserWithSameLogin = Repository<User>.Find(
+				new RepoFiler("Login", user.Login), 
+				new RepoFiler("id", user.Id,RepoFilerExpr.NotEq));
+			if (existingUserWithSameLogin.Any()) {
 				return GenerateErrorMessage(Lang.Get("User with same login already exist"), string.Empty);
 			}
-
+			if (existingUser == null) {
+				return GenerateErrorMessage(Lang.Get("Required user not found"), string.Empty);
+			}
+			existingUser.IsSuperuser = user.IsSuperuser;
+			existingUser.Login = user.Login;
+			existingUser.Name = user.Name;
+			existingUser.Password = user.Password.GetHashPassword();
 			return new EmptyResult();
 		}
 
+		[HttpGet]
+		public ActionResult Delete(string id) {
+
+		}
 
 		[HttpGet]
 		public ActionResult GetItem(string id) {
 			var findedUser = Repository<User>.FindById(new Guid(id));
-			if (findedUser == null) {
+			if (!findedUser.Any()) {
 				return Json(JsonData.Create(false, "User not exist"), JsonRequestBehavior.AllowGet);
 			}
 			return Json(findedUser, JsonRequestBehavior.AllowGet);
@@ -61,7 +73,7 @@ namespace JustTrade.Controllers
 
 		public ActionResult AddUpdateForm(string id) {
 			id = (string.IsNullOrEmpty(id) ? Guid.Empty.ToString() : id);
-			var findedUser = Repository<User>.FindById(new Guid(id));
+			var findedUser = Repository<User>.FindById(new Guid(id)).FirstOrDefault();
 			return PartialView("_AddUpdateForm", findedUser);
 		}
 
@@ -72,7 +84,7 @@ namespace JustTrade.Controllers
 
 		[HttpGet]
 		public ActionResult JsonList() {
-			var users = Repository<User>.GetAll();
+			var users = Repository<User>.Find();
 			var userList = new {
 				data = users.Select(x => new {
 					x.Id,
