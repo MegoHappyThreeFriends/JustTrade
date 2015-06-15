@@ -1,49 +1,131 @@
 ﻿using System;
 using NHibernate;
 using System.Collections.Generic;
-using NHibernate.Linq;
 using System.Linq;
 using NHibernate.Criterion;
 
 namespace JustTrade.Database
 {
-	
+	using System.Collections;
+
+	public enum RepoFilerExpr
+	{
+		NotEq,
+		Eq,
+		Ge,
+		Gt,
+		In,
+		InsensitiveLike,
+		IsEmpty,
+		IsNotEmpty,
+		IsNotNull,
+		IsNull,
+		Le,
+		Lt,
+		Like
+	}
+
+	public class RepoFiler
+	{
+
+		public RepoFiler(string name, object value, RepoFilerExpr expr = RepoFilerExpr.Eq) {
+			Name = name;
+			Value = value;
+			Expr = expr;
+		}
+
+		public string Name {
+			get;
+			set;
+		}
+
+		public object Value {
+			get;
+			set;
+		}
+
+		public RepoFilerExpr Expr {
+			get;
+			set;
+		}
+	}
+
 	public static class Repository <T>
 	{
-		public class ParameterItem
-		{
-			public string Name {
-				get;
-				set;
+		private static void GenerateExpression(IEnumerable<RepoFiler> filters, ref ICriteria criteria) {
+			foreach (var repoFiler in filters) {
+				switch (repoFiler.Expr) {
+					case RepoFilerExpr.In:
+						criteria.Add(Expression.In(repoFiler.Name, ((object[]) repoFiler.Value) ));
+						break;
+					case RepoFilerExpr.Like:
+						criteria.Add(Expression.Like(repoFiler.Name, repoFiler.Value));
+						break;
+					case RepoFilerExpr.Lt:
+						criteria.Add(Expression.Lt(repoFiler.Name, repoFiler.Value));
+						break;
+					case RepoFilerExpr.Le:
+						criteria.Add(Expression.Le(repoFiler.Name, repoFiler.Value));
+						break;
+					case RepoFilerExpr.IsNull:
+						criteria.Add(Expression.IsNull(repoFiler.Name));
+						break;
+					case RepoFilerExpr.IsNotNull:
+						criteria.Add(Expression.IsNotNull(repoFiler.Name));
+						break;
+					case RepoFilerExpr.IsNotEmpty:
+						criteria.Add(Expression.IsNotEmpty(repoFiler.Name));
+						break;
+					case RepoFilerExpr.IsEmpty:
+						criteria.Add(Expression.IsEmpty(repoFiler.Name));
+						break;
+					case RepoFilerExpr.InsensitiveLike:
+						criteria.Add(Expression.InsensitiveLike(repoFiler.Name, repoFiler.Value));
+						break;
+					case RepoFilerExpr.Ge:
+						criteria.Add(Expression.Ge(repoFiler.Name, repoFiler.Value));
+						break;
+					case RepoFilerExpr.Gt:
+						criteria.Add(Expression.Gt(repoFiler.Name, repoFiler.Value));
+						break;
+					case RepoFilerExpr.Eq:
+						criteria.Add(Expression.Eq(repoFiler.Name, repoFiler.Value));
+						break;
+					case RepoFilerExpr.NotEq:
+						criteria.Add(Expression.Not(Expression.Eq(repoFiler.Name, repoFiler.Value)));
+						break;
+					default: throw new Exception("Incorrect expression !");
+				}
 			}
-
-			public object Value {
-				get;
-				set;
-			}
 		}
 
-		public static T FindById(Guid id)
-		{
-			return FindBy ("id", id);
-		}
-
-		public static T FindByName(string name)
-		{
-			return FindBy ("Name", name);
-		}
-
-		public static T FindBy(string propertyName, object propertyValue){
+		public static ICollection<T> Find(params RepoFiler[] filter) {
 			using (ISession session = NHibernateHelper.OpenSession())
-			using (ITransaction transaction = session.BeginTransaction())
-			{
+			using (ITransaction transaction = session.BeginTransaction()) {
 				ICriteria criteria = session.CreateCriteria(typeof(T));
-				criteria.Add(Expression.Eq(propertyName, propertyValue));
+				GenerateExpression(filter,ref criteria);
 				IList<T> matchingObjects = criteria.List<T>();
 				transaction.Commit();
-				return matchingObjects.FirstOrDefault ();
+				return matchingObjects;
 			}
 		}
+
+		public static ICollection<T> FindById(Guid id)
+		{
+			return Find (new RepoFiler("id", id));
+		}
+
+		//public static T FindBy(string propertyName, object propertyValue){
+		//	using (ISession session = NHibernateHelper.OpenSession())
+		//	using (ITransaction transaction = session.BeginTransaction())
+		//	{
+		//		ICriteria criteria = session.CreateCriteria(typeof(T));
+		//		criteria.Add(Expression.Eq(propertyName, propertyValue));
+		//		IList<T> matchingObjects = criteria.List<T>();
+		//		transaction.Commit();
+		//		return matchingObjects.FirstOrDefault ();
+		//	}
+		//}
 
 		public static void Add(T item)
 		{
@@ -73,19 +155,6 @@ namespace JustTrade.Database
 				session.Delete (item);
 				transaction.Commit();
 			}
-		}
-
-		public static ICollection<T> GetAll()
-		{
-			ICollection<T> list;
-			using (ISession session = NHibernateHelper.OpenSession())
-			using (ITransaction transaction = session.BeginTransaction())
-			{
-				ICriteria targetObjects = session.CreateCriteria(typeof(T));
-				list = targetObjects.List<T>();
-				transaction.Commit();
-			}
-			return list;
 		}
 
 	}
