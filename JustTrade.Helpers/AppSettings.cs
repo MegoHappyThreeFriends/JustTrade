@@ -15,6 +15,12 @@ namespace JustTrade.Helpers
             }
         }
 
+		public static string Workspace {
+			get {
+				return Setting<string>("workspace");
+			}
+		}
+
         private static T Setting<T>(string name)
         {
             string value = ConfigurationManager.AppSettings[name];

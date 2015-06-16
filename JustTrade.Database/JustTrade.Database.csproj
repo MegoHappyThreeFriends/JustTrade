@@ -47,13 +47,27 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="ConfigurationTemplates\FireBird.cfg.xml" />
-    <None Include="ConfigurationTemplates\MSSQL.cfg.xml" />
-    <None Include="ConfigurationTemplates\MySql.cfg.xml" />
-    <None Include="ConfigurationTemplates\Oracle.cfg.xml" />
-    <None Include="ConfigurationTemplates\PostgreSQL.cfg.xml" />
-    <None Include="ConfigurationTemplates\SybaseASE.cfg.xml" />
-    <None Include="ConfigurationTemplates\SybaseSQLAnywhere.cfg.xml" />
+    <None Include="ConfigurationTemplates\FireBird.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigurationTemplates\MSSQL.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigurationTemplates\MySql.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigurationTemplates\Oracle.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigurationTemplates\PostgreSQL.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigurationTemplates\SybaseASE.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigurationTemplates\SybaseSQLAnywhere.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="hibernate.cfg.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
