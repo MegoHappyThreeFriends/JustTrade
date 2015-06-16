@@ -33,7 +33,7 @@
 <script language="javascript">
 
     function Login() {
-        ShowBlockUI.Show('@Lang.Get("Executing")');
+        ShowBlockUI.Show();
         $.ajax(
 			{
 			    url: "/Login/Login?login=" + $("#login").val() + "&password=" + $("#password").val(),

@@ -51,28 +51,7 @@ namespace JustTrade.Database
             configuration.AddAssembly(typeof(User).Assembly);
             var schemaExport = new SchemaExport(configuration);
             schemaExport.Create(false, true);
-            InsertDefaultData();
         }
-
-        private static void InsertDefaultData()
-        {
-            var user = new User()
-            {
-                Name = "demo",
-                Login = "demo",
-                Password = "demo",
-                IsSuperuser = true,
-                Permitions = new List<Permition>()
-                { new Permition()
-                    {
-                        Name = "Full permition"
-                    }
-                }
-            };
-            Repository<User>.Add(user);
-        }
-
-
 
     }
 }

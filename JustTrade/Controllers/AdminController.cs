@@ -1,42 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.IO;
 using JustTrade.Database;
-using System.Text;
-using System.Threading;
 using JustTrade.Tools;
 
 namespace JastTrade.Controllers
 {
+	using JustTrade.Helpers.ExtensionMethods;
+
 	public class AdminController : Controller
 	{
 
-		public ActionResult Index()
-		{
-			var d = HttpContext;
-			var u = UserSession.CurrentUser;
+		public ActionResult Index() {
 			return View();
 		}
 
-		public ActionResult Database()
-		{
+		public ActionResult Database() {
 			return PartialView();
 		}
 
-		public ActionResult GenerateDatabase()
-		{
-			try
-			{
+		public ActionResult GenerateDatabase() {
+			try {
 				NHibernateHelper.CreateDb();
-			}
-			catch (Exception ex)
-			{
+				InsertDefaultData();
+			} catch (Exception ex) {
 				return Json(JsonData.Create(ex), JsonRequestBehavior.AllowGet);
 			}
-			return Json(JsonData.Create(true,"Database created"), JsonRequestBehavior.AllowGet);
+			return Json(JsonData.Create(true, "Database created"), JsonRequestBehavior.AllowGet);
+		}
+
+		public void InsertDefaultData() {
+			var user = new User {
+				Name = "demo",
+				Login = "demo",
+				Password = "demo".GetHashPassword(),
+				IsSuperuser = true,
+				Permitions = new List<Permition>
+                { new Permition
+                    {
+                        Name = "Full permition"
+                    }
+                }
+			};
+
+			Repository<User>.Add(user);
 		}
 
 	}

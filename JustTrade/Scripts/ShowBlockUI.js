@@ -1,9 +1,7 @@
 ﻿var ShowBlockUI = function () { }
-ShowBlockUI.Show = function (message)
+ShowBlockUI.Show = function ()
 {
-	if (typeof message == 'undefined') {
-		message = "Executing";
-	}
+	message = '@Lang.Get("Executing")';
 	$.blockUI({
 		css: {
 			border: 'none',

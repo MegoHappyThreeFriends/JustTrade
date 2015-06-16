@@ -10,6 +10,7 @@ using JustTrade.Tools;
 namespace JustTrade.Controllers
 {
 	using JustTrade.Helpers;
+	using JustTrade.Helpers.ExtensionMethods;
 	using JustTrade.Models;
 
 	public class LoginController : ControllerWithTools
@@ -28,7 +29,7 @@ namespace JustTrade.Controllers
 				return GenerateErrorMessage(Lang.Get("Error connect to db"), ex);
 			}
 			if (user != null) {
-				if (user.Password == password) {
+				if (user.Password == password.GetHashPassword()) {
 					try {
 						UserSession.CreateSession(user);
 					} catch (Exception ex) {

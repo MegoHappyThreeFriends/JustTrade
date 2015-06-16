@@ -48,26 +48,34 @@
 	});
 
 	function ShowDialog() {
+		var isUpdateUser = '@(Model != null?"true":"false")';
 		$("#dialog_@dialogId").dialog({
 			resizable: true,
 			width: 350,
 			height: 300,
 			modal: true,
 			close: function () {
-				AjaxResultAddUpdateForm();
+				AjaxResultAddUpdateForm("close");
 				$("#dialog_@dialogId").remove();
 			},
 			buttons: [
                 {
-                	text: '@Lang.Get("Add")',
+                	text: '@(Model != null?@Lang.Get("Change"):@Lang.Get("Add"))',
                 	icons: {
                 		primary: "ui-icon-check"
                 	},
                 	click: function () {
-                		AddUserPost(function () {
-                			$("#dialog_@dialogId").dialog("close");
-                			$("#dialog_@dialogId").remove();
-                		});
+                		if (isUpdateUser == "true") {
+                			UpdateUserPost(function () {
+                				$("#dialog_@dialogId").dialog("close");
+                				$("#dialog_@dialogId").remove();
+                			});
+		                }else{
+                			AddUserPost(function () {
+                				$("#dialog_@dialogId").dialog("close");
+                				$("#dialog_@dialogId").remove();
+                			});
+						}
                 	}
                 },
 				{

@@ -1,12 +1,11 @@
 ﻿using System;
 using NHibernate;
 using System.Collections.Generic;
-using System.Linq;
 using NHibernate.Criterion;
 
 namespace JustTrade.Database
 {
-	using System.Collections;
+	using System.Linq;
 
 	public enum RepoFilerExpr
 	{
@@ -56,43 +55,44 @@ namespace JustTrade.Database
 			foreach (var repoFiler in filters) {
 				switch (repoFiler.Expr) {
 					case RepoFilerExpr.In:
-						criteria.Add(Expression.In(repoFiler.Name, ((object[]) repoFiler.Value) ));
+						var data = ((Array)repoFiler.Value).Cast<object>().ToArray();
+						criteria.Add(Restrictions.In(repoFiler.Name, data));
 						break;
 					case RepoFilerExpr.Like:
-						criteria.Add(Expression.Like(repoFiler.Name, repoFiler.Value));
+						criteria.Add(Restrictions.Like(repoFiler.Name, repoFiler.Value));
 						break;
 					case RepoFilerExpr.Lt:
-						criteria.Add(Expression.Lt(repoFiler.Name, repoFiler.Value));
+						criteria.Add(Restrictions.Lt(repoFiler.Name, repoFiler.Value));
 						break;
 					case RepoFilerExpr.Le:
-						criteria.Add(Expression.Le(repoFiler.Name, repoFiler.Value));
+						criteria.Add(Restrictions.Le(repoFiler.Name, repoFiler.Value));
 						break;
 					case RepoFilerExpr.IsNull:
-						criteria.Add(Expression.IsNull(repoFiler.Name));
+						criteria.Add(Restrictions.IsNull(repoFiler.Name));
 						break;
 					case RepoFilerExpr.IsNotNull:
-						criteria.Add(Expression.IsNotNull(repoFiler.Name));
+						criteria.Add(Restrictions.IsNotNull(repoFiler.Name));
 						break;
 					case RepoFilerExpr.IsNotEmpty:
-						criteria.Add(Expression.IsNotEmpty(repoFiler.Name));
+						criteria.Add(Restrictions.IsNotEmpty(repoFiler.Name));
 						break;
 					case RepoFilerExpr.IsEmpty:
-						criteria.Add(Expression.IsEmpty(repoFiler.Name));
+						criteria.Add(Restrictions.IsEmpty(repoFiler.Name));
 						break;
 					case RepoFilerExpr.InsensitiveLike:
-						criteria.Add(Expression.InsensitiveLike(repoFiler.Name, repoFiler.Value));
+						criteria.Add(Restrictions.InsensitiveLike(repoFiler.Name, repoFiler.Value));
 						break;
 					case RepoFilerExpr.Ge:
-						criteria.Add(Expression.Ge(repoFiler.Name, repoFiler.Value));
+						criteria.Add(Restrictions.Ge(repoFiler.Name, repoFiler.Value));
 						break;
 					case RepoFilerExpr.Gt:
-						criteria.Add(Expression.Gt(repoFiler.Name, repoFiler.Value));
+						criteria.Add(Restrictions.Gt(repoFiler.Name, repoFiler.Value));
 						break;
 					case RepoFilerExpr.Eq:
-						criteria.Add(Expression.Eq(repoFiler.Name, repoFiler.Value));
+						criteria.Add(Restrictions.Eq(repoFiler.Name, repoFiler.Value));
 						break;
 					case RepoFilerExpr.NotEq:
-						criteria.Add(Expression.Not(Expression.Eq(repoFiler.Name, repoFiler.Value)));
+						criteria.Add(Restrictions.Not(Restrictions.Eq(repoFiler.Name, repoFiler.Value)));
 						break;
 					default: throw new Exception("Incorrect expression !");
 				}
@@ -115,24 +115,32 @@ namespace JustTrade.Database
 			return Find (new RepoFiler("id", id));
 		}
 
-		//public static T FindBy(string propertyName, object propertyValue){
-		//	using (ISession session = NHibernateHelper.OpenSession())
-		//	using (ITransaction transaction = session.BeginTransaction())
-		//	{
-		//		ICriteria criteria = session.CreateCriteria(typeof(T));
-		//		criteria.Add(Expression.Eq(propertyName, propertyValue));
-		//		IList<T> matchingObjects = criteria.List<T>();
-		//		transaction.Commit();
-		//		return matchingObjects.FirstOrDefault ();
-		//	}
-		//}
-
-		public static void Add(T item)
+		public static void Add(IEnumerable<T> items)
 		{
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction())
 			{
+				foreach (var item in items) {
+					session.SaveOrUpdate(item);
+				}
+				transaction.Commit();
+			}
+		}
+
+		public static void Add(T item) {
+			using (ISession session = NHibernateHelper.OpenSession())
+			using (ITransaction transaction = session.BeginTransaction()) {
 				session.SaveOrUpdate(item);
+				transaction.Commit();
+			}
+		}
+
+		public static void Update(IEnumerable<T> items) {
+			using (ISession session = NHibernateHelper.OpenSession())
+			using (ITransaction transaction = session.BeginTransaction()) {
+				foreach (var item in items) {
+					session.Update(item);
+				}
 				transaction.Commit();
 			}
 		}
@@ -147,12 +155,22 @@ namespace JustTrade.Database
 			}
 		}
 
-		public static void Remove(T item)
+		public static void Remove(IEnumerable<T> items)
 		{
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction())
 			{
-				session.Delete (item);
+				foreach (var item in items) {
+					session.Delete(item);
+				}
+				transaction.Commit();
+			}
+		}
+
+		public static void Remove(T item) {
+			using (ISession session = NHibernateHelper.OpenSession())
+			using (ITransaction transaction = session.BeginTransaction()) {
+				session.Delete(item);
 				transaction.Commit();
 			}
 		}

@@ -31,6 +31,13 @@ namespace JustTrade.Tools
 			return RedirectToAction("Index", "Message");
 		}
 
+		protected ActionResult GenerateConfirmMessage(string message, string description, string urlOnYes, string data) {
+			TempData["Message"] = new Message(Lang.Get("Information"), message, description, false, Message.Button.YesNo);
+			TempData["RequestUrlOnYes"] = urlOnYes;
+			TempData["RequestUrlOnYesData"] = data;
+			return RedirectToAction("Index", "Message");
+		}
+
 		#endregion
 
 	}

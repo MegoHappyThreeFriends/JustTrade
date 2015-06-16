@@ -3,6 +3,8 @@
 @model Message
 @{
 	var dialogId = Guid.NewGuid();
+	var urlOnYes = TempData["RequestUrlOnYes"];
+	var urlOnYesData = TempData["RequestUrlOnYesData"];
 }
 <link rel="stylesheet" href="../Content/css/message.css">
 
@@ -12,7 +14,8 @@
 	@if (Model.Description.Length > 0) {
 		<ol class="breadcrumb">
 			<li>
-				<div class="message-details-toggle" onclick=" DescriptionToggle() ">@Lang.Get("More details")
+				<div class="message-details-toggle" onclick=" DescriptionToggle() ">
+					@Lang.Get("More details")
 				</div>
 				<div class="message-details" style="display: none">@Model.Description</div>
 			</li>
@@ -20,6 +23,8 @@
 	}
 
 </div>
+
+<div id="message_data_@dialogId" style="display: none"></div>
 
 <script language="javascript">
 	$(document).ready(function () {
@@ -46,7 +51,7 @@
 		$(".message-details").fadeToggle();
 	}
 
-	function AjaxResultCall(parameter) {
+	function AjaxResultCall() {
 		if (typeof (AjaxResult) == "function") {
 			AjaxResult("Message", "close");
 		}
@@ -110,14 +115,33 @@
 						primary: "ui-icon-check"
 					},
 					click: function () {
-						$("#dialog_@dialogId").dialog("close");
-						$("#dialog_@dialogId").remove();
+						
+						$.ajax(
+							 {
+							 	type: "POST",
+							 	data: jQuery.parseJSON('@Html.Raw(urlOnYesData)'),
+							 	url: "@Html.Raw(urlOnYes)",
+							 	success: function (data) {
+							 		if (data.length > 0) {
+							 			$("#message_data_@dialogId").append(data);
+							 		}
+							 		AjaxResult("", "refresh");
+							 		$("#dialog_@dialogId").dialog("close");
+							 		$("#dialog_@dialogId").remove();
+							 	},
+							 	dataType: 'html',
+							 	error: function (xhr, status, error) {
+							 		var message = '@Lang.Get("Error connect to server. Message:")';
+							 		alert(message + error);
+							 	}
+							 });
+						
 					}
 				},
 				{
 					text: '@Lang.Get("No")',
 					icons: {
-						primary: "ui-icon-mail-closed"
+						primary: "ui-icon-close"
 					},
 					click: function () {
 						$("#dialog_@dialogId").dialog("close");
