@@ -35,7 +35,16 @@ namespace JustTrade.Helpers
 			if (!_loaded) {
 				Load();
 			}
-			return _language[name].ToString();
+			string value = name;
+			try
+			{
+				value = _language[name].ToString();
+			}
+			catch (Exception ex)
+			{
+				
+			}
+			return value;
 		}
 
 		public static string GetInformation(string name) {

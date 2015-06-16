@@ -11,7 +11,7 @@ namespace JustTrade.Controllers
 	{
 
 		[HttpGet]
-		public ActionResult GetLanguageJson() {
+		public string GetLanguageJson() {
 			string neededLang = AppSettings.Lang;
 			var filePath = AppSettings.Workspace + @"\Language\" + neededLang.ToLower() + ".json";
 			if (!System.IO.File.Exists(filePath)) {
@@ -20,7 +20,6 @@ namespace JustTrade.Controllers
 			using (TextReader reader = new StreamReader(filePath)) {
 				return reader.ReadToEnd();
 			}
-			return 
 		}
 
 	}
