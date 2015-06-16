@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustTrade", "JustTrade\JustTrade.csproj", "{F7F9CA30-E004-415D-BF51-17D32C13C0C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustTrade.Tests", "JustTrade.Tests\JustTrade.Tests.csproj", "{64C9D09D-8578-4B6F-8DB5-88C8D4A5360F}"
