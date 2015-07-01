@@ -94,9 +94,10 @@
     <Compile Include="Controllers\UserController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\admin\language.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\message.css" />
-    <Content Include="Content\css\user.css" />
+    <Content Include="Content\css\admin\user.css" />
     <Content Include="Content\DataTables\css\dataTables.autoFill.css" />
     <Content Include="Content\DataTables\css\dataTables.autoFill.min.css" />
     <Content Include="Content\DataTables\css\dataTables.bootstrap.css" />
@@ -315,6 +316,7 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\_List.cshtml" />
     <Content Include="Views\User\_AddUpdateForm.cshtml" />
+    <Content Include="Views\Language\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JustTrade.Database\JustTrade.Database.csproj">

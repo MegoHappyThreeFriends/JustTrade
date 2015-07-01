@@ -2,6 +2,7 @@
 namespace JustTrade.Controllers
 {
 	using System;
+	using System.Collections;
 	using System.IO;
 	using System.Web.Mvc;
 	using JustTrade.Helpers;
@@ -20,6 +21,11 @@ namespace JustTrade.Controllers
 			using (TextReader reader = new StreamReader(filePath)) {
 				return reader.ReadToEnd();
 			}
+		}
+
+		public ActionResult Index() {
+			IDictionary languageItemList = Lang.GetList();
+			return PartialView(languageItemList);
 		}
 
 	}

@@ -1,0 +1,41 @@
+﻿@using JustTrade.Helpers
+@model IDictionary<string, string>
+
+<link rel="stylesheet" href="../Content/css/admin/language.css">
+
+<ol class="breadcrumb admin-page-header">
+  <li> - Edit language</li>
+</ol>
+
+<div class="panel panel-default localization-info">
+  <div class="panel-heading">@Lang.Get("Language information")</div>
+  <div class="panel-body">
+	  <div class="input-group input-group-sm">
+		  <span class="input-group-addon" id="sizing-addon1">Name</span>
+		  <input type="text" class="form-control" value='@Model["LocaleInformation.LocaleName"]' aria-describedby="sizing-addon1">
+	  </div>
+
+	  <div class="input-group input-group-sm">
+		  <span class="input-group-addon" id="sizing-addon1">Version</span>
+		  <input type="text" class="form-control" value='@Model["LocaleInformation.Version"]' aria-describedby="sizing-addon1">
+	  </div>
+
+  </div>
+</div>
+
+
+<div class="panel panel-default localization-items">
+	<div class="panel-heading">@Lang.Get("Language information")</div>
+	<div class="panel-body">
+	
+		<table class="table">
+			@foreach (var item in Model) {
+				if(!item.Key.Contains("LocaleInformation")){
+					<tr><td> @item.Key </td><td> @item.Value </td></tr>
+				}
+			}
+		</table>
+
+	</div>
+</div>
+

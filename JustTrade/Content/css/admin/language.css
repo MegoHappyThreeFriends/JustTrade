@@ -1,0 +1,39 @@
+﻿.localization-info {
+  width: 430px;
+  margin-left: 5px;
+}
+
+.localization-info > div > span {
+	width: 90px;
+}
+
+.localization-info .input-group span {
+  width: 100px;
+}
+
+.localization-info .input-group input {
+  width: 300px;
+}
+
+.localization-items {
+	width: 90%;
+	margin-left: 5px;
+	font-size: 12px;
+}
+
+.localization-items .panel-heading {
+	font-size: 14px;
+}
+
+.localization-items table tr td:first-child {
+	width: 400px;
+	font-weight: bold;
+}
+
+.localization-items table tr td:last-child {
+	cursor: pointer;
+}
+
+.localization-items .table {
+	margin-bottom: 0 !important;
+}

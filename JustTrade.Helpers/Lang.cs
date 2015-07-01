@@ -31,6 +31,23 @@ namespace JustTrade.Helpers
 			_loaded = true;
 		}
 
+		public static IDictionary GetList() {
+			if (!_loaded) {
+				Load();
+			}
+			var langDict = new Dictionary<string, string>();
+			foreach (var langItem in _language) {
+				if (langItem.Key == "LocaleInformation") {
+					foreach (var item in langItem.Value.First.Parent) {
+						langDict.Add(item.Path, item.First.Value<string>());
+					}
+					continue;
+				}
+				langDict.Add(langItem.Key, langItem.Value.Value<string>());
+			}
+			return langDict;
+		}
+
 		public static string Get(string name) {
 			if (!_loaded) {
 				Load();
