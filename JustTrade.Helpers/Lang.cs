@@ -14,17 +14,30 @@ namespace JustTrade.Helpers
 	{
 		private static bool _loaded;
 		private static JObject _language;
+		private static string _filePath;
+
+		public static string LocaleName {
+			get {
+				return "LocaleInformation.LocaleName";
+			}
+		}
+
+		public static string LocaleVersion {
+			get {
+				return "LocaleInformation.Version";
+			}
+		}
 
 		internal static void Load() {
 			if (_loaded) {
 				return;
 			}
 			string neededLang = AppSettings.Lang;
-			var filePath = AppSettings.Workspace + @"\Language\" + neededLang.ToLower()+".json";
-			if (!File.Exists(filePath)) {
+			_filePath = AppSettings.Workspace + @"\Language\" + neededLang.ToLower() + ".json";
+			if (!File.Exists(_filePath)) {
 				throw new Exception("Language file not found");
 			}
-			using (TextReader reader = new StreamReader(filePath)) {
+			using (TextReader reader = new StreamReader(_filePath)) {
 				var data = reader.ReadToEnd();
 				_language = JObject.Parse(data);
 			}
@@ -62,6 +75,27 @@ namespace JustTrade.Helpers
 				
 			}
 			return value;
+		}
+
+		public static void Save(Dictionary<string, string> dictionary) {
+			if (!dictionary.ContainsKey(LocaleName) ||
+				!dictionary.ContainsKey(LocaleVersion)) {
+					throw new KeyNotFoundException(LocaleVersion);
+			}
+			using (var writer = new StreamWriter(_filePath)) {
+				writer.WriteLine("{");
+				writer.WriteLine("\t \"LocaleInformation\": {");
+				writer.WriteLine("\t\t\"LocaleName\": \"{0}\",", dictionary[LocaleName]);
+				writer.WriteLine("\t\t\"Version\": \"{0}\"", dictionary["LocaleInformation.Version"]);
+				writer.WriteLine("\t},");
+				foreach (var item in dictionary) {
+					if (item.Key == LocaleName || item.Key == LocaleVersion) {
+						continue;
+					}
+					writer.WriteLine("\t\"{0}\":\"{1}\",",item.Key, item.Value);
+				}
+				writer.WriteLine("}");
+			}
 		}
 
 		public static string GetInformation(string name) {

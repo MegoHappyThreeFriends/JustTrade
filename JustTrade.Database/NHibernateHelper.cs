@@ -1,9 +1,6 @@
 ﻿using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
-using NHibernate.Mapping;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("JustTrade.Tests")]
 namespace JustTrade.Database

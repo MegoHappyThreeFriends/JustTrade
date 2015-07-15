@@ -54,7 +54,6 @@
 			$("#userDataTable tr").contextMenu({
 				menuSelector: "#contextMenu",
 				menuSelected: function (id, selectedMenu) {
-					debugger;
 					var action = selectedMenu[0].target;
 					if (typeof action == "undefined") {
 						action = $(selectedMenu).attr("target");

@@ -12,12 +12,12 @@
   <div class="panel-body">
 	  <div class="input-group input-group-sm">
 		  <span class="input-group-addon" id="sizing-addon1">Name</span>
-		  <input type="text" class="form-control" value='@Model["LocaleInformation.LocaleName"]' aria-describedby="sizing-addon1">
+		  <input id="lang-name" type="text" class="form-control" value='@Model["LocaleInformation.LocaleName"]' aria-describedby="sizing-addon1">
 	  </div>
 
 	  <div class="input-group input-group-sm">
 		  <span class="input-group-addon" id="sizing-addon1">Version</span>
-		  <input type="text" class="form-control" value='@Model["LocaleInformation.Version"]' aria-describedby="sizing-addon1">
+		  <input id="lang-version" type="text" class="form-control" value='@Model["LocaleInformation.Version"]' aria-describedby="sizing-addon1">
 	  </div>
 
   </div>
@@ -31,11 +31,95 @@
 		<table class="table">
 			@foreach (var item in Model) {
 				if(!item.Key.Contains("LocaleInformation")){
-					<tr><td> @item.Key </td><td> @item.Value </td></tr>
+					<tr>
+						<td>
+						<!--<input class="remove-item" type="button" value="X"/>-->
+							<span class=" remove-item glyphicon glyphicon-remove"></span>
+						</td>
+						<td class="td-key">
+							<input class="lang-key" type="text" value="@item.Key"/> 
+						</td>
+						<td>
+							 <input class="lang-value" type="text" value="@item.Value"/> 
+						</td>
+					</tr>
 				}
 			}
 		</table>
 
 	</div>
 </div>
+
+<button type="button" class="btn btn-default" onclick="Save()">
+  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> @Lang.Get("Save")
+</button>
+
+<button type="button" class="btn btn-default" onclick="AddRow()">
+  <span class="glyphicon glyphicon-star" aria-hidden="true"></span> AddRow
+</button>
+
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		MarkRemoveButton();
+	});
+
+	function MarkRemoveButton() {
+		$(".remove-item").click(function () {
+			if (confirm('@Lang.Get("Do you want delete language key item ?")')) {
+				$(this).parent().parent().remove();
+			}
+		});
+	}
+
+	function Save() {
+		var data = GetLanguageData();
+		var name = $("#lang-name").val();
+		var version = $("#lang-version").val();
+		$.ajax({
+			type: "POST",
+			url: "Language/SaveLanguage",
+			data: "Value=" + data+"&Name="+name+"&Version="+version,
+			success: function(response) {
+
+			},
+			complete: function() {
+
+			},
+			error: function(xhr, status, error) {
+				var message = '@Lang.Get("Error connect to server. Message:")';
+				alert(message + error);
+			}
+		});
+	}
+
+	function AddRow() {
+		$(".localization-items .table")
+			.append('<tr>'+
+						'<td>'+
+							'<input class="remove-item" type="button" value="X"/>'+
+						'</td>'+
+						'<td class="td-key">'+
+							'<input class="lang-key" type="text" value=""/> '+
+						'</td>'+
+						'<td>'+
+							' <input class="lang-value" type="text" value=""/> '+
+						'</td>'+
+					'</tr>');
+		MarkRemoveButton();
+	}
+
+	function GetLanguageData() {
+		var result="";
+		var trCollection = $(".localization-items tr");
+		trCollection.each(function (index, data) {
+			var key = $(data).find(".lang-key").val();
+			var value = $(data).find(".lang-value").val();
+			result += key +"~"+ value+"|";
+		});
+		return result;
+	}
+
+</script>
 

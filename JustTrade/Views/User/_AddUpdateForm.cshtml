@@ -117,6 +117,7 @@
 
 	function UpdateUserPost(callback) {
 		$("#UpdateUpdateForm_add").remove();
+		console.log($("#add_user").serialize());
 		$.ajax({
 			type: "POST",
 			url: "User/Update",

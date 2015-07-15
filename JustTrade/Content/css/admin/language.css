@@ -3,6 +3,10 @@
   margin-left: 5px;
 }
 
+.localization-info .input-group:first-child {
+	margin-bottom: 5px;
+}
+
 .localization-info > div > span {
 	width: 90px;
 }
@@ -26,14 +30,37 @@
 }
 
 .localization-items table tr td:first-child {
+	width: 20px;
+}
+
+.localization-items table tr td.td-key {
 	width: 400px;
 	font-weight: bold;
 }
+
 
 .localization-items table tr td:last-child {
 	cursor: pointer;
 }
 
+.localization-items input {
+	width: 100%;
+	border: none;
+}
+
+.localization-items > input[value=''] {
+	background-color: red;
+}
+
+.localization-items .lang-key {
+	font-weight: bold;
+}
+
+
 .localization-items .table {
 	margin-bottom: 0 !important;
+}
+
+span.remove-item {
+	cursor: pointer;
 }
