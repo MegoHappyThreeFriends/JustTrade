@@ -136,9 +136,6 @@
 		trCollection.each(function (index, data) {
 			var key = $(data).find(".lang-key").val();
 			var value = $(data).find(".lang-value").val();
-			if (key == "Save") {
-				debugger;
-			}
 			if (key !== undefined && value !== undefined) {
 				result.push({ Key: key, Value: value });
 			}

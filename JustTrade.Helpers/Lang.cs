@@ -84,6 +84,7 @@ namespace JustTrade.Helpers
 				!dictionary.ContainsKey(LocaleVersion)) {
 					throw new KeyNotFoundException(LocaleVersion);
 			}
+			bool firstItem = true;
 			using (var writer = new StreamWriter(_filePath)) {
 				writer.WriteLine("{");
 				writer.WriteLine("\t \"LocaleInformation\": {");
@@ -94,9 +95,14 @@ namespace JustTrade.Helpers
 					if (item.Key == LocaleName || item.Key == LocaleVersion) {
 						continue;
 					}
-					writer.WriteLine("\t\"{0}\":\"{1}\",",item.Key, item.Value);
+					if (!firstItem) {
+						writer.Write(",\n");
+					} else {
+						firstItem = false;
+					}
+					writer.Write("\t\"{0}\":\"{1}\"",item.Key, item.Value);
 				}
-				writer.WriteLine("}");
+				writer.WriteLine("\n}");
 			}
 		}
 

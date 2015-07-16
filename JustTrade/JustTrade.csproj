@@ -183,6 +183,8 @@
     <Content Include="Scripts\DataTables\dataTables.tableTools.min.js" />
     <Content Include="Scripts\DataTables\jquery.dataTables.js" />
     <Content Include="Scripts\DataTables\jquery.dataTables.min.js" />
+    <Content Include="Scripts\debug.js" />
+    <Content Include="Scripts\language.js" />
     <Content Include="Scripts\ShowBlockUI.js" />
     <Content Include="Scripts\jquery.blockUI.js" />
     <Content Include="Views\Web.config" />
