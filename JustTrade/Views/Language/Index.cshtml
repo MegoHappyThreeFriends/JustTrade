@@ -4,19 +4,19 @@
 <link rel="stylesheet" href="../Content/css/admin/language.css">
 
 <ol class="breadcrumb admin-page-header">
-  <li> - Edit language</li>
+  <li> - @Lang.Get("Edit localization")</li>
 </ol>
 
 <div class="panel panel-default localization-info">
   <div class="panel-heading">@Lang.Get("Language information")</div>
   <div class="panel-body">
 	  <div class="input-group input-group-sm">
-		  <span class="input-group-addon" id="sizing-addon1">Name</span>
+		  <span class="input-group-addon" id="sizing-addon1">@Lang.Get("Name")</span>
 		  <input id="lang-name" type="text" class="form-control" value='@Model["LocaleInformation.LocaleName"]' aria-describedby="sizing-addon1">
 	  </div>
 
 	  <div class="input-group input-group-sm">
-		  <span class="input-group-addon" id="sizing-addon1">Version</span>
+		  <span class="input-group-addon" id="sizing-addon1">@Lang.Get("Version")</span>
 		  <input id="lang-version" type="text" class="form-control" value='@Model["LocaleInformation.Version"]' aria-describedby="sizing-addon1">
 	  </div>
 
@@ -25,7 +25,7 @@
 
 
 <div class="panel panel-default localization-items">
-	<div class="panel-heading">@Lang.Get("Language information")</div>
+	<div class="panel-heading">@Lang.Get("Language dictionary")</div>
 	<div class="panel-body">
 	
 		<table class="table">
@@ -33,7 +33,6 @@
 				if(!item.Key.Contains("LocaleInformation")){
 					<tr>
 						<td>
-						<!--<input class="remove-item" type="button" value="X"/>-->
 							<span class=" remove-item glyphicon glyphicon-remove"></span>
 						</td>
 						<td class="td-key">
@@ -45,49 +44,60 @@
 					</tr>
 				}
 			}
+			<tr id="add-row-button">
+				<td colspan="3">
+					<span class="glyphicon glyphicon-log-in" onclick="AddRow()"></span>
+				</td>
+			</tr>
 		</table>
 
 	</div>
 </div>
 
-<button type="button" class="btn btn-default" onclick="Save()">
-  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> @Lang.Get("Save")
+<button id="save_button" type="button" class="btn btn-default" onclick="Save()">
+	<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> @Lang.Get("Save")
 </button>
 
-<button type="button" class="btn btn-default" onclick="AddRow()">
-  <span class="glyphicon glyphicon-star" aria-hidden="true"></span> AddRow
-</button>
-
+<div id="json_data" style="display: none"></div>
 
 <script type="text/javascript">
 
-	$(document).ready(function() {
-		MarkRemoveButton();
-	});
+	$(document).ready(function () {
 
-	function MarkRemoveButton() {
-		$(".remove-item").click(function () {
+		$("table.table").on("click", "span.remove-item", function () {
 			if (confirm('@Lang.Get("Do you want delete language key item ?")')) {
-				$(this).parent().parent().remove();
+				var item = $(this).parent().parent();
+				item.fadeOut(500, function () {
+					$(this).remove();
+				});
 			}
 		});
-	}
+
+	});
+
 
 	function Save() {
+		ShowBlockUI.Show();
 		var data = GetLanguageData();
 		var name = $("#lang-name").val();
 		var version = $("#lang-version").val();
 		$.ajax({
 			type: "POST",
 			url: "Language/SaveLanguage",
-			data: "Value=" + data+"&Name="+name+"&Version="+version,
-			success: function(response) {
+			data: "Value=" + data + "&Name=" + name + "&Version=" + version,
+			success: function (response) {
+				$.unblockUI();
+				if (response.length > 0) {
+					$("#json_data").append("<div id='ErrorSaveLangDict'>" + response + "</div>");
+				} else {
+					GoTo("edit_locale");
+				}
+			},
+			complete: function () {
 
 			},
-			complete: function() {
-
-			},
-			error: function(xhr, status, error) {
+			error: function (xhr, status, error) {
+				$.unblockUI();
 				var message = '@Lang.Get("Error connect to server. Message:")';
 				alert(message + error);
 			}
@@ -95,30 +105,45 @@
 	}
 
 	function AddRow() {
-		$(".localization-items .table")
-			.append('<tr>'+
-						'<td>'+
-							'<input class="remove-item" type="button" value="X"/>'+
-						'</td>'+
-						'<td class="td-key">'+
-							'<input class="lang-key" type="text" value=""/> '+
-						'</td>'+
-						'<td>'+
-							' <input class="lang-value" type="text" value=""/> '+
-						'</td>'+
-					'</tr>');
-		MarkRemoveButton();
+		$("#add-row-button").fadeOut(500, function() {
+			$(this).remove();
+			$(".localization-items .table")
+						.append('<tr class="new-item">' +
+									'<td>' +
+										'<span class=" remove-item glyphicon glyphicon-remove"></span>' +
+									'</td>' +
+									'<td class="td-key">' +
+										'<input class="lang-key" type="text" value=""/> ' +
+									'</td>' +
+									'<td>' +
+										' <input class="lang-value" type="text" value=""/> ' +
+									'</td>' +
+								'</tr>');
+
+			$(".localization-items .table")
+				.append('<tr id="add-row-button" class="new-item"> <td colspan="3"> ' +
+				'<span class="glyphicon glyphicon-log-in" onclick="AddRow()"></span> </td> </tr>');
+
+			$(".new-item").fadeIn(500, function () {
+				$(this).removeClass("new-item");
+			});
+		});
 	}
 
 	function GetLanguageData() {
-		var result="";
+		var result = [];
 		var trCollection = $(".localization-items tr");
 		trCollection.each(function (index, data) {
 			var key = $(data).find(".lang-key").val();
 			var value = $(data).find(".lang-value").val();
-			result += key +"~"+ value+"|";
+			if (key == "Save") {
+				debugger;
+			}
+			if (key !== undefined && value !== undefined) {
+				result.push({ Key: key, Value: value });
+			}
 		});
-		return result;
+		return JSON.stringify(result);
 	}
 
 </script>

@@ -12,11 +12,11 @@
 }
 
 .localization-info .input-group span {
-  width: 100px;
+  width: 120px;
 }
 
 .localization-info .input-group input {
-  width: 300px;
+  width: 275px;
 }
 
 .localization-items {
@@ -63,4 +63,14 @@
 
 span.remove-item {
 	cursor: pointer;
+}
+
+.new-item {
+	display: none;
+}
+
+#save_button {
+	margin-bottom: 30px;
+	margin-left: 5px;
+	width: 150px;
 }
