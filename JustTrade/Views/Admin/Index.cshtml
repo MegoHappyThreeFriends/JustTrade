@@ -78,7 +78,9 @@
 
 <script lang="java script">
 	$(document).ready(function () {
-		LoadDefaultMenu();
+		Language.Init(function() {
+			LoadDefaultMenu();
+		});
 	});
 
 	function GoTo(location) {

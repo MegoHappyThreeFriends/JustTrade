@@ -62,15 +62,21 @@
 
 <script type="text/javascript">
 
-	$(document).ready(function () {
+	$(document).ready(function() {
 
 		$("table.table").on("click", "span.remove-item", function () {
-			if (confirm('@Lang.Get("Do you want delete language key item ?")')) {
-				var item = $(this).parent().parent();
-				item.fadeOut(500, function () {
-					$(this).remove();
-				});
-			}
+			var selectedItem = $(this);
+			var langKey = selectedItem.parent().parent().find(".lang-key").val();
+			var message = Tools.StrFormat('@Lang.Get("Do you want delete language key ({0}) item ?")', langKey);
+			var ms = new MessageBox(message, '@Lang.Get("Warning")');
+			ms.Confirm(function (isAccept) {
+				if (isAccept) {
+					var item = selectedItem.parent().parent();
+					item.fadeOut(500, function () {
+						selectedItem.remove();
+					});
+				}
+			});
 		});
 
 	});
@@ -137,7 +143,9 @@
 			var key = $(data).find(".lang-key").val();
 			var value = $(data).find(".lang-value").val();
 			if (key !== undefined && value !== undefined) {
-				result.push({ Key: key, Value: value });
+				if (key.length > 0 && value.length > 0) {
+					result.push({ Key: key, Value: value });
+				}
 			}
 		});
 		return JSON.stringify(result);

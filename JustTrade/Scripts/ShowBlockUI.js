@@ -1,7 +1,7 @@
 ﻿var ShowBlockUI = function () { }
 ShowBlockUI.Show = function ()
 {
-	message = '@Lang.Get("Executing")';
+	message = Language.Data["Executing"];
 	$.blockUI({
 		css: {
 			border: 'none',
