@@ -4,6 +4,7 @@
     var dialogId = Guid.NewGuid();
 }
 <link rel="stylesheet" href="../Content/css/message.css">
+<link rel="stylesheet" href="../Content/css/admin/user.css">
 
 <div id="dialog_@dialogId" class="." title="@Lang.Get("Add user")">
 
@@ -18,7 +19,7 @@
 
 			<div class="input-group input-group-sm">
 				<span class="input-group-addon">@Lang.Get("Login")</span>
-				<input id="Login" name="Login" type="text" class="form-control" value="@(Model != null ? Model.Login : "")" aria-describedby="basic-addon1">
+				<input id="Login" name="Login" val-type="text" val-min="6" type="text" class="form-control" value="@(Model != null ? Model.Login : "")" aria-describedby="basic-addon1">
 			</div>
 
 			<div class="input-group input-group-sm">
@@ -29,7 +30,7 @@
 
 			<div class="input-group input-group-sm">
 				<span class="input-group-addon">@Lang.Get("Password")</span>
-				<input id="Password" name="Password" type="password" class="form-control" value="@(Model != null ? "123456" : "")" aria-describedby="basic-addon1">
+				<input id="Password" val-type="text" val-min="6" name="Password" type="password" class="form-control" value="@(Model != null ? "123456" : "")" aria-describedby="basic-addon1">
 			</div>
 
 			<div class="input-group input-group-sm">
@@ -52,7 +53,7 @@
 		$("#dialog_@dialogId").dialog({
 			resizable: true,
 			width: 350,
-			height: 300,
+			height: 350,
 			modal: true,
 			close: function () {
 				AjaxResultAddUpdateForm("close");
@@ -65,17 +66,24 @@
                 		primary: "ui-icon-check"
                 	},
                 	click: function () {
-                		if (isUpdateUser == "true") {
-                			UpdateUserPost(function () {
-                				$("#dialog_@dialogId").dialog("close");
-                				$("#dialog_@dialogId").remove();
-                			});
-		                }else{
-                			AddUserPost(function () {
-                				$("#dialog_@dialogId").dialog("close");
-                				$("#dialog_@dialogId").remove();
-                			});
-						}
+
+                		var validator = new InputValidator(".add-update-user-form-container");
+		                validator.Check(function(result) {
+		                	if (result) {
+		                		if (isUpdateUser == "true") {
+		                			UpdateUserPost(function () {
+		                				$("#dialog_@dialogId").dialog("close");
+		                				$("#dialog_@dialogId").remove();
+		                			});
+		                		} else {
+		                			AddUserPost(function () {
+		                				$("#dialog_@dialogId").dialog("close");
+		                				$("#dialog_@dialogId").remove();
+		                			});
+		                		}
+			                }
+		                });
+                		
                 	}
                 },
 				{

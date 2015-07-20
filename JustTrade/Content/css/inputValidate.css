@@ -1,0 +1,10 @@
+﻿.input-validate-information {
+	/*position: absolute;*/
+	z-index: 5;
+	margin-left: 1px;
+	/*margin-top: -20px;*/
+	color: red;
+	font-weight: bold;
+	display: none;
+	font-size: 9px;
+}

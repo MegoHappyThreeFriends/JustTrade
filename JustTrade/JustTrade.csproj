@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\admin\language.css" />
+    <Content Include="Content\css\inputValidate.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\message.css" />
     <Content Include="Content\css\admin\user.css" />
@@ -184,6 +185,7 @@
     <Content Include="Scripts\DataTables\jquery.dataTables.js" />
     <Content Include="Scripts\DataTables\jquery.dataTables.min.js" />
     <Content Include="Scripts\debug.js" />
+    <Content Include="Scripts\inputValidator.js" />
     <Content Include="Scripts\language.js" />
     <Content Include="Scripts\MessageBox.js" />
     <Content Include="Scripts\ShowBlockUI.js" />

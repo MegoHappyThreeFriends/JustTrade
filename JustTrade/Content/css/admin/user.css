@@ -13,6 +13,10 @@
 	margin-left: 10px;
 }
 
+.add-update-user-form-container .input-group {
+	margin-bottom: 5px;
+}
+
 #IsSuperuser
 {
 	width: 35px;
