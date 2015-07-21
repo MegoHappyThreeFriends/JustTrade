@@ -84,7 +84,6 @@
   <ItemGroup />
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\jsTree3Controller.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
@@ -344,9 +343,6 @@
     <Content Include="Views\User\_AddUpdateForm.cshtml" />
     <Content Include="Views\Language\Index.cshtml" />
     <Content Include="Views\Permission\_Index.cshtml" />
-    <Content Include="Views\Shared\_jsTreeDemo.cshtml" />
-    <Content Include="Views\jsTree3\Demo.cshtml" />
-    <Content Include="Views\jsTree3\AJAXDemo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JustTrade.Database\JustTrade.Database.csproj">

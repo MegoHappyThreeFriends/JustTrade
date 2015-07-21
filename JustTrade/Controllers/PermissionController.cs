@@ -10,6 +10,20 @@
 	public class PermissionController : ControllerWithTools
 	{
 		public ActionResult Index() {
+
+			var type = typeof(Controller);
+			var types = AppDomain.CurrentDomain.GetAssemblies()
+				.SelectMany(s => s.GetTypes())
+				.Where(p => type.IsAssignableFrom(p));
+
+			var ll = types.FirstOrDefault(x => x.Name == "LanguageController");
+			var ppp = ll.GetMethods().Where(x => x.IsPublic && x.IsStatic == false
+				&& !x.Name.Contains("get_") && !x.Name.Contains("set_")
+				&& !x.Name.Contains("Dispose") && !x.Name.Contains("ToString")
+				&& !x.Name.Contains("Equals") && !x.Name.Contains("GetHashCode")
+				&& !x.Name.Contains("GetType"));
+
+
 			return PartialView("_Index");
 		}
 
