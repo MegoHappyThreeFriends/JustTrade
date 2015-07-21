@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="JustTrade.Database" namespace="JustTrade.Database">
 
- <class name="User" table="users" lazy="false">
+ <class name="User" table="users" lazy="true">
   <id name="Id" column="user_id">
       <generator class="guid" />
     </id>
@@ -11,14 +11,14 @@
   	<property name="Password" column="password" type="String" />
   	<property name="IsSuperuser" column="is_superuser" type="Boolean" />
 
-    <bag name="Sessions" cascade="all-delete-orphan" lazy="false">
+    <bag name="Sessions" cascade="all-delete-orphan" lazy="true">
       <key column="user_id" />
       <one-to-many class="Session" />
     </bag>
 
-    <bag name="Permitions" cascade="all-delete-orphan" lazy="false">
+    <bag name="UserPermissionBindings" cascade="all-delete-orphan" lazy="true">
       <key column="user_id" />
-      <one-to-many class="Permition" />
+      <one-to-many class="UserPermissionBinding" />
     </bag>
 
  </class>

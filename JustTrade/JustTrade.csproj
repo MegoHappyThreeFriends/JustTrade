@@ -84,13 +84,16 @@
   <ItemGroup />
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\jsTree3Controller.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
+    <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Models\jsTree3Node.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Tools\ControllerWithTools.cs" />
     <Compile Include="Tools\TypedResponse\JsonData.cs" />
@@ -99,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\admin\language.css" />
+    <Content Include="Content\css\admin\permission.css" />
     <Content Include="Content\css\inputValidate.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\message.css" />
@@ -160,6 +164,17 @@
     <Content Include="Content\DataTables\swf\copy_csv_xls_pdf.swf" />
     <Content Include="Content\images\BusyGrid.gif" />
     <Content Include="Content\images\login_texture.jpg" />
+    <Content Include="Content\jsTree\docs.css" />
+    <Content Include="Content\jsTree\themes\default-dark\32px.png" />
+    <Content Include="Content\jsTree\themes\default-dark\40px.png" />
+    <Content Include="Content\jsTree\themes\default-dark\style.css" />
+    <Content Include="Content\jsTree\themes\default-dark\style.min.css" />
+    <Content Include="Content\jsTree\themes\default-dark\throbber.gif" />
+    <Content Include="Content\jsTree\themes\default\32px.png" />
+    <Content Include="Content\jsTree\themes\default\40px.png" />
+    <Content Include="Content\jsTree\themes\default\style.css" />
+    <Content Include="Content\jsTree\themes\default\style.min.css" />
+    <Content Include="Content\jsTree\themes\default\throbber.gif" />
     <Content Include="Scripts\context.menu.js" />
     <Content Include="Scripts\DataTables\dataTables.autoFill.js" />
     <Content Include="Scripts\DataTables\dataTables.autoFill.min.js" />
@@ -186,6 +201,8 @@
     <Content Include="Scripts\DataTables\jquery.dataTables.min.js" />
     <Content Include="Scripts\debug.js" />
     <Content Include="Scripts\inputValidator.js" />
+    <Content Include="Scripts\jsTree3\jstree.js" />
+    <Content Include="Scripts\jsTree3\jstree.min.js" />
     <Content Include="Scripts\language.js" />
     <Content Include="Scripts\MessageBox.js" />
     <Content Include="Scripts\ShowBlockUI.js" />
@@ -323,10 +340,13 @@
     <None Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Message\Index.cshtml" />
-    <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\_List.cshtml" />
     <Content Include="Views\User\_AddUpdateForm.cshtml" />
     <Content Include="Views\Language\Index.cshtml" />
+    <Content Include="Views\Permission\_Index.cshtml" />
+    <Content Include="Views\Shared\_jsTreeDemo.cshtml" />
+    <Content Include="Views\jsTree3\Demo.cshtml" />
+    <Content Include="Views\jsTree3\AJAXDemo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JustTrade.Database\JustTrade.Database.csproj">

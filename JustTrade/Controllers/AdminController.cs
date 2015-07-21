@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
-using JustTrade.Database;
-using JustTrade.Tools;
-
-namespace JastTrade.Controllers
+﻿namespace JustTrade.Controllers
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Web.Mvc;
+	using JustTrade.Database;
 	using JustTrade.Helpers.ExtensionMethods;
+	using JustTrade.Tools;
 
 	public class AdminController : Controller
 	{
@@ -30,17 +29,20 @@ namespace JastTrade.Controllers
 		}
 
 		public void InsertDefaultData() {
+
 			var user = new User {
 				Name = "demo",
 				Login = "demo",
 				Password = "demo".GetHashPassword(),
 				IsSuperuser = true,
-				Permitions = new List<Permition>
-                { new Permition
-                    {
-                        Name = "Full permition"
-                    }
-                }
+				UserPermissionBindings = new List<UserPermissionBinding>() {
+					new UserPermissionBinding() {
+						PermissionTemplate = new PermissionTemplate() {
+							Name = "TestProfile",
+							PermissionRules = "bla bla"
+						}
+					}
+				}
 			};
 
 			Repository<User>.Add(user);

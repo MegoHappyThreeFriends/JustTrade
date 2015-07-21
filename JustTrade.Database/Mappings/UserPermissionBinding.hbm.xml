@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="JustTrade.Database" namespace="JustTrade.Database">
+
+	<class name="UserPermissionBinding" table="user_permission_bindings" lazy="true">
+		<id name="Id" column="id">
+			<generator class="guid" />
+		</id>
+		<many-to-one name="User" class="User" column="user_id" cascade="all" />
+		<many-to-one name="PermissionTemplate" class="PermissionTemplate" column="permission_template_id" cascade="all" />
+	</class>
+
+</hibernate-mapping>

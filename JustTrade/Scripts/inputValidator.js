@@ -38,10 +38,31 @@
 				return checkFloat(id);
 			case "mask":
 				return checkRegExp(id);
+			case "login":
+				return checkLogin(id);
 			default:
 				throw new Error("Not found validate type: "+inputType);
 		}
 	}
+
+	function checkLogin(id) {
+		debugger;
+		var regex = /^[a-zA-Z0-9]*$/;
+		var obj = $("#" + id);
+		var min = obj.attr("val-min");
+		min = min == undefined ? -100 : min;
+		var max = obj.attr("val-max");
+		max = max == undefined ? 100 : max;
+		var val = obj.val();
+		if (regex.test(val)) {
+			if (val.length >= min && val.length <= max) {
+				return true;
+			}
+		}
+		addInformLabel(id, Tools.StrFormat(Language.Data["Must be latin and number chars. Min:{0} Max:{1}"], min, max));
+		return false;
+	}
+
 
 	function checkInt(id) {
 		var regex = /^\d*$/;
@@ -60,7 +81,6 @@
 		addInformLabel(id, Tools.StrFormat(Language.Data["Incorrect numeric. Min:{0} Max:{1}"], min, max));
 		return false;
 	}
-
 
 	function checkText(id) {
 		var obj = $("#" + id);

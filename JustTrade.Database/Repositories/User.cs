@@ -1,11 +1,5 @@
 ﻿using System;
-using NHibernate;
 using System.Collections.Generic;
-using NHibernate.Linq;
-using System.Linq;
-using NHibernate.Mapping.ByCode.Conformist;
-using NHibernate.Mapping.ByCode;
-
 
 namespace JustTrade.Database
 {
@@ -21,7 +15,7 @@ namespace JustTrade.Database
 	public class User 
 	{
 		IList<Session> _sessions = new List<Session>();
-		IList<Permition> _permition = new List<Permition>();
+		IList<UserPermissionBinding> _userPermissionBindings = new List<UserPermissionBinding>();
 
 		void OnCreated(){
 		}
@@ -36,10 +30,14 @@ namespace JustTrade.Database
 		public virtual string Password { get; set; }
 		public virtual bool IsSuperuser { get; set; }
 
-		public virtual IList<Permition> Permitions { 
-			get{ return _permition; }
+		public virtual IList<UserPermissionBinding> UserPermissionBindings {
+			get {
+				return _userPermissionBindings;
+			}
 
-			set{ _permition = value; }
+			set {
+				_userPermissionBindings = value;
+			}
 		}
 
 		public virtual IList<Session> Sessions { 

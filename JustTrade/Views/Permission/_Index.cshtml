@@ -1,0 +1,158 @@
+﻿@using JustTrade.Helpers
+
+<script src="Scripts/context.menu.js"></script>
+<script src="Scripts/jsTree3/jstree.min.js"></script>
+<link rel="stylesheet" href="../Content/css/admin/permission.css">
+<link rel="stylesheet" href="../Content/jsTree/themes/default/style.min.css">
+
+
+<ol class="breadcrumb admin-page-header">
+	<li> - @Lang.Get("Permission")</li>
+</ol>
+
+<div id="template_list">
+	
+	<ol class="breadcrumb admin-page-header">
+		<li> - @Lang.Get("Permission template")</li>
+	</ol>
+
+
+	<div id="template_window">
+		<ul class="list-group">
+			<li class="list-group-item">Dapibus ac facilisis in</li>
+			<li class="list-group-item">Cras sit amet nibh libero</li>
+			<li class="list-group-item">Porta ac consectetur ac</li>
+			<li class="list-group-item">Vestibulum at eros</li>
+			<li class="list-group-item">Dapibus ac facilisis in</li>
+		</ul>
+	</div>
+
+</div>
+
+<div id="permition_list">
+	
+	<ol class="breadcrumb admin-page-header">
+		<li> - @Lang.Get("Permission parameter")</li>
+	</ol>
+
+	<div id="permition_window">
+		<div id="jstree-proton-3"></div>
+	</div>
+</div>
+
+
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display: none">
+	<li><a target="add"><i target="add" class="glyphicon glyphicon-plus"></i> @Lang.Get("Add")</a></li>
+	<li><a target="edit"><i target="edit" class="glyphicon glyphicon-pencil"></i> @Lang.Get("Edit")</a></li>
+	<li><a target="remove"><i target="remove" class="glyphicon glyphicon-trash"></i> @Lang.Get("Remove")</a></li>
+	<li class="divider"></li>
+	<li><a target="select"><i target="select" class="glyphicon glyphicon-ok"></i> @Lang.Get("Select all")</a></li>
+	<li><a target="unselect"><i target="unselect" class="glyphicon glyphicon-remove"></i> @Lang.Get("Unselect all")</a></li>
+	<li class="divider"></li>
+	<li><a target="refresh"><i target="refresh" class="glyphicon glyphicon-refresh"></i> @Lang.Get("Refresh")</a></li>
+	<li class="divider"></li>
+	<li><a target="selectmany" class="context-menu-checkbox">
+			<i target="selectmany" class="glyphicon glyphicon-menu-hamburger"><input target="selectmany" id="selectmany" type="checkbox" value="true" readonly/> 
+			</i> @Lang.Get("Select many")
+	    </a></li>
+</ul>
+
+
+
+
+<script language="javascript">
+	
+	$(document).ready(function () {
+
+		$('#template_window').on('click', 'li', function () {
+			$(this).toggleClass('selected-item');
+		});
+
+		$("#template_window li").contextMenu({
+			menuSelector: "#contextMenu",
+			menuSelected: function (id, selectedMenu) {
+				var action = selectedMenu[0].target;
+				if (typeof action == "undefined") {
+					action = $(selectedMenu).attr("target");
+				}
+
+				switch (action) {
+					case "add":
+						AddUser();
+						break;
+
+					case "edit":
+						EditUser();
+						break;
+
+					case "remove":
+						RemoveUser();
+						break;
+
+					case "refresh":
+						table.ajax.reload();
+						break;
+
+					case "select":
+						SelectAll();
+						break;
+
+					case "unselect":
+						UnselectAll();
+						break;
+
+					case "selectmany":
+						canSelectMany = !canSelectMany;
+						$('#selectmany').prop('checked', canSelectMany);
+						break;
+
+					default:
+						alert("Action: " + action + " in menu not found");
+				}
+
+			}
+		});
+
+		Draw();
+
+	});
+
+	function Draw() {
+		$('#jstree-proton-3').jstree({
+			'plugins': ["wholerow", "checkbox"],
+			'core': {
+				'data': [{
+					"text": "Wholerow with checkboxes",
+					"children": [{
+						"text": "initially selected",
+						"state": {
+							"selected": true
+						}
+					}, {
+						"text": "custom icon URL",
+						"icon": "./assets/images/tree_icon.png"
+					}, {
+						"text": "initially open",
+						"state": {
+							"opened": false
+						},
+						"children": ["Another node"]
+					}, {
+						"text": "custom icon class",
+						"icon": "glyphicon glyphicon-leaf"
+					}]
+				},
+					"And wholerow selection"
+				],
+				'themes': {
+					'name': 'default',
+					'responsive': true
+				}
+			}
+		});
+	}
+
+
+
+</script>

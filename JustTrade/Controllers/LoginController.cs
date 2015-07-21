@@ -22,9 +22,12 @@ namespace JustTrade.Controllers
 		}
 
 		public ActionResult Login(string login, string password) {
+
 			User user;
 			try {
-				user = Repository<User>.Find(new RepoFiler("Login", login)).FirstOrDefault();
+				using (var resultUser = Repository<User>.Find(new RepoFiler("Login", login))) {
+					user = resultUser.Data.FirstOrDefault();
+				}
 			} catch (Exception ex) {
 				return GenerateErrorMessage(Lang.Get("Error connect to db"), ex);
 			}

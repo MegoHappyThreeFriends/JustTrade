@@ -1,12 +1,12 @@
-﻿using System;
-using System.Web.Mvc;
-using JustTrade.Database;
-using System.Linq;
-using JustTrade.Tools;
-using JustTrade.Helpers.ExtensionMethods;
-
-namespace JustTrade.Controllers
+﻿namespace JustTrade.Controllers
 {
+	using System;
+	using System.Web.Mvc;
+	using JustTrade.Database;
+	using System.Linq;
+	using JustTrade.Tools;
+	using JustTrade.Helpers.ExtensionMethods;
+	using System.Collections.Generic;
 	using JustTrade.Helpers;
 
 	public class UserController : ControllerWithTools
@@ -21,7 +21,10 @@ namespace JustTrade.Controllers
 			if(user.Login.NullOrEmpty() || user.Name.NullOrEmpty() || user.Password.NullOrEmpty()){
 				return GenerateErrorMessage(Lang.Get("You must enter Login, Name and Password"), string.Empty);
 			}
-			var existingUser = Repository<User>.Find(new RepoFiler("Login", user.Login));
+			ICollection<User> existingUser;
+			using (var resultExistingUser = Repository<User>.Find(new RepoFiler("Login", user.Login))) {
+				existingUser = resultExistingUser.Data;
+			}
 			if (existingUser.Any()) {
 				return GenerateErrorMessage(Lang.Get("User with same login already exist"), string.Empty);
 			}
@@ -40,12 +43,16 @@ namespace JustTrade.Controllers
 			if (user.Login.NullOrEmpty() || user.Name.NullOrEmpty() || user.Password.NullOrEmpty()) {
 				return GenerateErrorMessage(Lang.Get("You must enter Login, Name and Password"), string.Empty);
 			}
-			var existingUser = Repository<User>.FindById(user.Id).FirstOrDefault();
-			var existingUserWithSameLogin = Repository<User>.Find(
-				new RepoFiler("Login", user.Login), 
-				new RepoFiler("id", user.Id,RepoFilerExpr.NotEq));
-			if (existingUserWithSameLogin.Any()) {
-				return GenerateErrorMessage(Lang.Get("User with same login already exist"), string.Empty);
+			User existingUser;
+			using (var resultExistingUser = Repository<User>.FindById(user.Id)) {
+				existingUser = resultExistingUser.Data.FirstOrDefault();
+			}
+			using (var resultExistingUserWithSameLogin = Repository<User>.Find(
+				new RepoFiler("Login", user.Login),
+				new RepoFiler("id", user.Id, RepoFilerExpr.NotEq))) {
+					if (resultExistingUserWithSameLogin.Data.Any()) {
+						return GenerateErrorMessage(Lang.Get("User with same login already exist"), string.Empty);
+					}
 			}
 			if (existingUser == null) {
 				return GenerateErrorMessage(Lang.Get("Required user not found"), string.Empty);
@@ -60,7 +67,13 @@ namespace JustTrade.Controllers
 
 		[HttpPost]
 		public ActionResult Remove(Guid[] ids, bool? accepted) {
-			var findedUsers = Repository<User>.Find(new RepoFiler("id", ids, RepoFilerExpr.In));
+			ICollection<User> findedUsers;
+			if (ids == null) {
+				return GenerateErrorMessage(Lang.Get("Required user(s) not found"), string.Empty);
+			}
+			using (var rfindedUsers = Repository<User>.Find(new RepoFiler("id", ids, RepoFilerExpr.In))) {
+				findedUsers = rfindedUsers.Data;
+			}
 			if (ids.Length != findedUsers.Count) {
 				return GenerateErrorMessage(Lang.Get("Required user(s) not found"), string.Empty);
 			}
@@ -80,7 +93,9 @@ namespace JustTrade.Controllers
 		public ActionResult AddUpdateForm(Guid? id) {
 			User findedUser=null;
 			if (id != null) {
-				findedUser = Repository<User>.FindById((Guid)id).FirstOrDefault();
+				using (var rfindedUser = Repository<User>.FindById((Guid)id)) {
+					findedUser = rfindedUser.Data.FirstOrDefault();
+				}
 			}
 			return PartialView("_AddUpdateForm", findedUser);
 		}
@@ -92,16 +107,17 @@ namespace JustTrade.Controllers
 
 		[HttpGet]
 		public ActionResult JsonList() {
-			var users = Repository<User>.Find();
-			var userList = new {
-				data = users.Select(x => new {
-					x.Id,
-					x.Name,
-					x.Login,
-					x.IsSuperuser
-				}).ToList()
-			};
-			return Json(userList, JsonRequestBehavior.AllowGet);
+			using (var users = Repository<User>.Find()) {
+				var userList = new {
+					data = users.Data.Select(x => new {
+						x.Id,
+						x.Name,
+						x.Login,
+						x.IsSuperuser
+					}).ToList()
+				};
+				return Json(userList, JsonRequestBehavior.AllowGet);
+			}
 		}
 
 	}

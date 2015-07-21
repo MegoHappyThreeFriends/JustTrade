@@ -40,3 +40,17 @@
 	margin-left: 5px;
 	
 }
+
+/* For context menu */ 
+#contextMenu li a {
+	font-size: 13px;
+}
+
+#contextMenu li {
+	cursor: pointer;
+}
+
+#contextMenu .divider {
+	margin: 3px 0px;
+}
+

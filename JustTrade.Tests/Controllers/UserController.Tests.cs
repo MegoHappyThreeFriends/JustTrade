@@ -1,7 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
-using JastTrade.Controllers;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using JustTrade.Controllers;
 using JustTrade.Database;
 using Moq;

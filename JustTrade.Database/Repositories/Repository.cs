@@ -49,8 +49,33 @@ namespace JustTrade.Database
 		}
 	}
 
+
+	public class QueryResult<T> : IDisposable
+	{
+		private bool _isDisposed;
+		private ISession _session;
+
+		public QueryResult(ICollection<T> data, ISession session) {
+			Data = data;
+			_session = session;
+		}
+
+		public ICollection<T> Data;
+
+		public void Dispose() {
+			if (!_isDisposed) {
+				_isDisposed = true;
+				if (_session.IsOpen) {
+					_session.Clear();
+				}
+				_session.Dispose();
+			}
+		}
+	}
+
 	public static class Repository <T>
 	{
+		
 		private static void GenerateExpression(IEnumerable<RepoFiler> filters, ref ICriteria criteria) {
 			foreach (var repoFiler in filters) {
 				switch (repoFiler.Expr) {
@@ -99,18 +124,18 @@ namespace JustTrade.Database
 			}
 		}
 
-		public static ICollection<T> Find(params RepoFiler[] filter) {
-			using (ISession session = NHibernateHelper.OpenSession())
+		public static QueryResult<T> Find(params RepoFiler[] filter) {
+			ISession session = NHibernateHelper.OpenSession();
 			using (ITransaction transaction = session.BeginTransaction()) {
 				ICriteria criteria = session.CreateCriteria(typeof(T));
 				GenerateExpression(filter,ref criteria);
 				IList<T> matchingObjects = criteria.List<T>();
 				transaction.Commit();
-				return matchingObjects;
+				return new QueryResult<T>(matchingObjects, session);
 			}
 		}
 
-		public static ICollection<T> FindById(Guid id)
+		public static QueryResult<T> FindById(Guid id)
 		{
 			return Find (new RepoFiler("id", id));
 		}

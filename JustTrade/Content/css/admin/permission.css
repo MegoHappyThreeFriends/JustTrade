@@ -1,0 +1,43 @@
+﻿#template_window
+{
+	width: 100%;
+	height: 500px;
+	overflow-y: scroll;
+	margin-left: 5px;
+}
+
+#template_list
+{
+	display: inline-table;
+	width: 20%;
+}
+
+#template_window li {
+	cursor: pointer;
+}
+
+.selected-item {
+	background-color: cornsilk;
+}
+
+#contextMenu li a {
+	font-size: 13px;
+}
+
+#contextMenu li {
+	cursor: pointer;
+}
+
+#contextMenu .divider {
+	margin: 3px 0px;
+}
+
+#permition_list {
+	display: inline-table;
+	margin-left: 10px;
+	width: 75%;
+}
+
+#permition_window {
+
+}

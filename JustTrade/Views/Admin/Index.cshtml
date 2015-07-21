@@ -25,7 +25,7 @@
 						@Lang.Get("Management") <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="#" onclick="GoTo('users')">@Lang.Get("Users")</a></li>
-						<li><a href="#">@Lang.Get("Permissions")</a></li>
+						<li><a href="#"  onclick="GoTo('permission')">@Lang.Get("Permissions")</a></li>
 					</ul>
 				</li>
 
@@ -86,6 +86,9 @@
 	function GoTo(location) {
 
 		switch (location) {
+			case "permission":
+				Load("Permission");
+				break;
 			case "edit_locale":
 				Load("Language");
 				break;
@@ -113,6 +116,6 @@
 
 
 	function LoadDefaultMenu() {
-		GoTo("edit_locale");
+		GoTo("permission");
 	}
 </script>
