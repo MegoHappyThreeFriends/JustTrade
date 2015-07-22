@@ -23,7 +23,7 @@
 			}
 			ICollection<User> existingUser;
 			using (var resultExistingUser = Repository<User>.Find(new RepoFiler("Login", user.Login))) {
-				existingUser = resultExistingUser.Data;
+				existingUser = resultExistingUser;
 			}
 			if (existingUser.Any()) {
 				return GenerateErrorMessage(Lang.Get("User with same login already exist"), string.Empty);
@@ -44,13 +44,13 @@
 				return GenerateErrorMessage(Lang.Get("You must enter Login, Name and Password"), string.Empty);
 			}
 			User existingUser;
-			using (var resultExistingUser = Repository<User>.FindById(user.Id)) {
-				existingUser = resultExistingUser.Data.FirstOrDefault();
+			using (var existingUsers = Repository<User>.FindById(user.Id)) {
+				existingUser = existingUsers.FirstOrDefault();
 			}
-			using (var resultExistingUserWithSameLogin = Repository<User>.Find(
+			using (var existingUserWithSameLogin = Repository<User>.Find(
 				new RepoFiler("Login", user.Login),
 				new RepoFiler("id", user.Id, RepoFilerExpr.NotEq))) {
-					if (resultExistingUserWithSameLogin.Data.Any()) {
+					if (existingUserWithSameLogin.Any()) {
 						return GenerateErrorMessage(Lang.Get("User with same login already exist"), string.Empty);
 					}
 			}
@@ -72,7 +72,7 @@
 				return GenerateErrorMessage(Lang.Get("Required user(s) not found"), string.Empty);
 			}
 			using (var rfindedUsers = Repository<User>.Find(new RepoFiler("id", ids, RepoFilerExpr.In))) {
-				findedUsers = rfindedUsers.Data;
+				findedUsers = rfindedUsers;
 			}
 			if (ids.Length != findedUsers.Count) {
 				return GenerateErrorMessage(Lang.Get("Required user(s) not found"), string.Empty);
@@ -93,8 +93,8 @@
 		public ActionResult AddUpdateForm(Guid? id) {
 			User findedUser=null;
 			if (id != null) {
-				using (var rfindedUser = Repository<User>.FindById((Guid)id)) {
-					findedUser = rfindedUser.Data.FirstOrDefault();
+				using (var findedUsers = Repository<User>.FindById((Guid)id)) {
+					findedUser = findedUsers.FirstOrDefault();
 				}
 			}
 			return PartialView("_AddUpdateForm", findedUser);
@@ -109,7 +109,7 @@
 		public ActionResult JsonList() {
 			using (var users = Repository<User>.Find()) {
 				var userList = new {
-					data = users.Data.Select(x => new {
+					data = users.Select(x => new {
 						x.Id,
 						x.Name,
 						x.Login,

@@ -5,6 +5,8 @@ using NHibernate.Criterion;
 
 namespace JustTrade.Database
 {
+	using System.Collections;
+	using System.Collections.ObjectModel;
 	using System.Linq;
 
 	public enum RepoFilerExpr
@@ -49,18 +51,15 @@ namespace JustTrade.Database
 		}
 	}
 
-
-	public class QueryResult<T> : IDisposable
+	public class ResultCollection<T> : Collection<T>, IDisposable
 	{
 		private bool _isDisposed;
 		private ISession _session;
 
-		public QueryResult(ICollection<T> data, ISession session) {
-			Data = data;
+		public ResultCollection(IList<T> list, ISession session)
+			: base(list) {
 			_session = session;
 		}
-
-		public ICollection<T> Data;
 
 		public void Dispose() {
 			if (!_isDisposed) {
@@ -124,18 +123,18 @@ namespace JustTrade.Database
 			}
 		}
 
-		public static QueryResult<T> Find(params RepoFiler[] filter) {
+		public static ResultCollection<T> Find(params RepoFiler[] filter) {
 			ISession session = NHibernateHelper.OpenSession();
 			using (ITransaction transaction = session.BeginTransaction()) {
 				ICriteria criteria = session.CreateCriteria(typeof(T));
 				GenerateExpression(filter,ref criteria);
 				IList<T> matchingObjects = criteria.List<T>();
 				transaction.Commit();
-				return new QueryResult<T>(matchingObjects, session);
+				return new ResultCollection<T>(matchingObjects, session);
 			}
 		}
 
-		public static QueryResult<T> FindById(Guid id)
+		public static ResultCollection<T> FindById(Guid id)
 		{
 			return Find (new RepoFiler("id", id));
 		}
