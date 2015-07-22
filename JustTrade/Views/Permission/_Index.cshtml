@@ -119,38 +119,56 @@
 	});
 
 	function Draw() {
-		$('#jstree-proton-3').jstree({
-			'plugins': ["wholerow", "checkbox"],
-			'core': {
-				'data': [{
-					"text": "Wholerow with checkboxes",
-					"children": [{
-						"text": "initially selected",
-						"state": {
-							"selected": true
-						}
-					}, {
-						"text": "custom icon URL",
-						"icon": "./assets/images/tree_icon.png"
-					}, {
-						"text": "initially open",
-						"state": {
-							"opened": false
-						},
-						"children": ["Another node"]
-					}, {
-						"text": "custom icon class",
-						"icon": "glyphicon glyphicon-leaf"
-					}]
-				},
-					"And wholerow selection"
-				],
-				'themes': {
-					'name': 'default',
-					'responsive': true
+
+		$.getJSON("Permission/GetJsTree3Data", function (data) {
+			
+			$('#jstree-proton-3').jstree({
+				'plugins': ["wholerow", "checkbox"],
+				'core': {
+					'data': data,
+					'themes': {
+						'name': 'default',
+						'responsive': true
+					}
 				}
-			}
+			});
+
 		});
+
+		/*
+			$('#jstree-proton-3').jstree({
+				'plugins': ["wholerow", "checkbox"],
+				'core': {
+					'data': [{
+						"text": "Wholerow with checkboxes",
+						"children": [{
+							"text": "initially selected",
+							"state": {
+								"selected": true
+							}
+						}, {
+							"text": "custom icon URL",
+							"icon": "./assets/images/tree_icon.png"
+						}, {
+							"text": "initially open",
+							"state": {
+								"opened": false
+							},
+							"children": ["Another node"]
+						}, {
+							"text": "custom icon class",
+							"icon": "glyphicon glyphicon-leaf"
+						}]
+					},
+						"And wholerow selection"
+					],
+					'themes': {
+						'name': 'default',
+						'responsive': true
+					}
+				}
+			});
+		*/
 	}
 
 

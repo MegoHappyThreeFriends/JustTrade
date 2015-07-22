@@ -10,14 +10,17 @@
 	public class AdminController : Controller
 	{
 
+		[HttpGet]
 		public ActionResult Index() {
 			return View();
 		}
 
+		[HttpGet]
 		public ActionResult Database() {
 			return PartialView();
 		}
 
+		[HttpGet]
 		public ActionResult GenerateDatabase() {
 			try {
 				NHibernateHelper.CreateDb();
@@ -28,6 +31,7 @@
 			return Json(JsonData.Create(true, "Database created"), JsonRequestBehavior.AllowGet);
 		}
 
+		[HttpGet]
 		public void InsertDefaultData() {
 
 			var user = new User {

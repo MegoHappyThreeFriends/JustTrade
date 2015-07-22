@@ -10,6 +10,7 @@ namespace JustTrade.Controllers
 
 	public class MessageController : Controller
 	{
+		[HttpGet]
 		public ActionResult Index() {
 			var message = (Message)TempData["Message"];
 			return PartialView(message);

@@ -57,6 +57,7 @@ namespace JustTrade.Controllers
 			}
 		}
 
+		[HttpGet]
 		public ActionResult Index() {
 			Dictionary<string, string> languageItemList = Lang.GetList();
 			return PartialView(languageItemList);

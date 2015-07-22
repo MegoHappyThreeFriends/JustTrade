@@ -9,34 +9,74 @@
 
 	public class PermissionController : ControllerWithTools
 	{
+		[HttpGet]
 		public ActionResult Index() {
 
-			var type = typeof(Controller);
+
+
+			var controllerType = typeof(Controller);
 			var types = AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(s => s.GetTypes())
-				.Where(p => type.IsAssignableFrom(p));
-
-			var ll = types.FirstOrDefault(x => x.Name == "LanguageController");
-			var ppp = ll.GetMethods().Where(x => x.IsPublic && x.IsStatic == false
+				.Where(p => controllerType.IsAssignableFrom(p));
+			foreach (var type in types) {
+				var methods = type.GetMethods().Where(x => x.IsPublic && x.IsStatic == false
 				&& !x.Name.Contains("get_") && !x.Name.Contains("set_")
 				&& !x.Name.Contains("Dispose") && !x.Name.Contains("ToString")
 				&& !x.Name.Contains("Equals") && !x.Name.Contains("GetHashCode")
 				&& !x.Name.Contains("GetType"));
 
+			}
+
+
+			
+
 
 			return PartialView("_Index");
 		}
 
+		[HttpGet]
 		public JsonResult GetJsTree3Data() {
 			var root = new JsTree3Node() // Create our root node and ensure it is opened
 			{
 				id = Guid.NewGuid().ToString(),
-				text = "Root Node",
+				text = "Controllers",
 				state = new State(true, false, false)
 			};
 
-			// Create a basic structure of nodes
+			var controllerType = typeof(Controller);
 			var children = new List<JsTree3Node>();
+			var types = AppDomain.CurrentDomain.GetAssemblies()
+				.SelectMany(s => s.GetTypes())
+				.Where(p => controllerType.IsAssignableFrom(p));
+			foreach (var type in types) {
+				var node = JsTree3Node.NewNode(Guid.NewGuid().ToString());
+				node.text = type.Name;
+				node.state = new State(true, false, false);
+				node.icon = "";
+				var methods = type.GetMethods().Where(x => x.IsPublic && x.IsStatic == false
+				&& !x.Name.Contains("get_") && !x.Name.Contains("set_")
+				&& !x.Name.Contains("Dispose") && !x.Name.Contains("ToString")
+				&& !x.Name.Contains("Equals") && !x.Name.Contains("GetHashCode")
+				&& !x.Name.Contains("GetType"));
+
+				if (!methods.Any()) {
+					continue;
+				}
+
+				foreach (var methodInfo in methods) {
+					var n = JsTree3Node.NewNode(Guid.NewGuid().ToString());
+					n.text = methodInfo.Name;
+					n.icon = "glyphicon glyphicon-leaf";
+					n.state = new State(true, false, false);
+					node.children.Add(n);
+				}
+				children.Add(node);
+			}
+
+			
+
+			// Create a basic structure of nodes
+			/*var children = new List<JsTree3Node>();
 			for (int i = 0; i < 5; i++) {
 				var node = JsTree3Node.NewNode(Guid.NewGuid().ToString());
 				node.state = new State(IsPrime(i), false, false);
@@ -46,10 +86,11 @@
 				}
 
 				children.Add(node);
-			}
+			}*/
 
 			// Add the sturcture to the root nodes children property
 			root.children = children;
+			 
 
 			// Return the object as JSON
 			return Json(root, JsonRequestBehavior.AllowGet);

@@ -11,7 +11,7 @@
 
 	public class UserController : ControllerWithTools
 	{
-
+		[HttpGet]
 		public ActionResult Index() {
 			return View();
 		}
@@ -90,6 +90,7 @@
 			return new EmptyResult();
 		}
 
+		[HttpGet]
 		public ActionResult AddUpdateForm(Guid? id) {
 			User findedUser=null;
 			if (id != null) {

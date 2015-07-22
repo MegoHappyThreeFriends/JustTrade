@@ -11,6 +11,7 @@ namespace JustTrade.Controllers
 {
 	public class HomeController : Controller
 	{
+		[HttpGet]
 		public ActionResult Index() {
 			if (UserSession.CurrentUser == null) {
 				return RedirectToAction("Index", "Login");

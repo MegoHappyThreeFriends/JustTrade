@@ -17,10 +17,12 @@ namespace JustTrade.Controllers
 	{
 		//
 		// GET: /Login/
+		[HttpGet]
 		public ActionResult Index() {
 			return View();
 		}
 
+		[HttpGet]
 		public ActionResult Login(string login, string password) {
 			User user;
 			try {
