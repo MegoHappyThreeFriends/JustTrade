@@ -7,10 +7,12 @@ namespace JustTrade.Helpers
 {
 	using System.Linq;
 	using System.Security.Cryptography;
+	using System.Threading;
 	using Newtonsoft.Json.Linq;
 
 	public static class Lang
 	{
+		private static bool _loading = false;
 		private static bool _loaded;
 		private static readonly Hashtable _language = new Hashtable();
 		private static string _filePath;
@@ -28,6 +30,10 @@ namespace JustTrade.Helpers
 		}
 
 		internal static void Load() {
+			while (_loading) {
+				Thread.Sleep(100);
+			}
+			_loading = true;
 			if (_loaded) {
 				return;
 			}
@@ -37,6 +43,7 @@ namespace JustTrade.Helpers
 			if (!File.Exists(_filePath)) {
 				throw new Exception("Language file not found");
 			}
+
 			using (TextReader reader = new StreamReader(_filePath)) {
 				var data = reader.ReadToEnd();
 				var language = JObject.Parse(data);
@@ -52,7 +59,9 @@ namespace JustTrade.Helpers
 					_language.Add(langItem.Key, langItem.Value.Value<string>());
 				}
 			}
+
 			_loaded = true;
+			_loading = false;
 		}
 
 		public static Dictionary<string, string> GetList() {
@@ -61,7 +70,9 @@ namespace JustTrade.Helpers
 			}
 			Dictionary<string, string> result = _language.Cast<DictionaryEntry>()
 				.ToDictionary(x => x.Key.ToString(), x => x.Value.ToString());
-			result = (from item in result orderby item.Key select item).ToDictionary(x => x.Key, x => x.Value);
+			result = (from item in result
+					  orderby item.Key
+					  select item).ToDictionary(x => x.Key, x => x.Value);
 			return result;
 		}
 
@@ -82,7 +93,7 @@ namespace JustTrade.Helpers
 			}
 			if (!dictionary.ContainsKey(LocaleName) ||
 				!dictionary.ContainsKey(LocaleVersion)) {
-					throw new KeyNotFoundException(LocaleVersion);
+				throw new KeyNotFoundException(LocaleVersion);
 			}
 			bool firstItem = true;
 			using (var writer = new StreamWriter(_filePath)) {
@@ -100,7 +111,7 @@ namespace JustTrade.Helpers
 					} else {
 						firstItem = false;
 					}
-					writer.Write("\t\"{0}\":\"{1}\"",item.Key, item.Value);
+					writer.Write("\t\"{0}\":\"{1}\"", item.Key, item.Value);
 				}
 				writer.WriteLine("\n}");
 			}

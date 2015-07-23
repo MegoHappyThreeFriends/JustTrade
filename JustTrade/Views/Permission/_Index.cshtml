@@ -35,12 +35,14 @@
 		<li> - @Lang.Get("Permission parameter")</li>
 	</ol>
 
+	<div class="square-button square-button-disabled">
+		<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+	</div>
+
 	<div id="permition_window">
 		<div id="jstree-proton-3"></div>
 	</div>
 </div>
-
-
 
 <ul id="contextMenu" class="dropdown-menu" role="menu" style="display: none">
 	<li><a target="add"><i target="add" class="glyphicon glyphicon-plus"></i> @Lang.Get("Add")</a></li>
@@ -58,20 +60,31 @@
 	    </a></li>
 </ul>
 
-
-
+<div id="json_data" style="display: none"></div>
 
 <script language="javascript">
-	
-	$(document).ready(function () {
+	canSelectMany = false;
 
-		$('#template_window').on('click', 'li', function () {
+	$(document).ready(function() {
+
+		$('#permition_list div.square-button').click(function() {
+			var isDisabled = $("div.square-button").hasClass("square-button-disabled");
+			if (!isDisabled) {
+				UpdateTemplateParameters();
+			}
+		});
+
+		$('#jstree-proton-3').on('click', 'li', function() {
+			UpdateSaveButton();
+		});
+
+		$('#template_window').on('click', 'li', function() {
 			$(this).toggleClass('selected-item');
 		});
 
 		$("#template_window li").contextMenu({
 			menuSelector: "#contextMenu",
-			menuSelected: function (id, selectedMenu) {
+			menuSelected: function(id, selectedMenu) {
 				var action = selectedMenu[0].target;
 				if (typeof action == "undefined") {
 					action = $(selectedMenu).attr("target");
@@ -79,15 +92,15 @@
 
 				switch (action) {
 					case "add":
-						AddUser();
+						AddTemplate();
 						break;
 
 					case "edit":
-						EditUser();
+						EditTemplate();
 						break;
 
 					case "remove":
-						RemoveUser();
+						RemoveTemplate();
 						break;
 
 					case "refresh":
@@ -118,10 +131,74 @@
 
 	});
 
-	function Draw() {
+	function AddTemplate() {
+		Tools.AjaxGetToBlock("#json_data", "AddUpdateTemplate", "/Permission/AddUpdateTemplate");
+	}
 
-		$.getJSON("Permission/GetJsTree3Data", function (data) {
-			
+	function EditTemplate() {
+		var ids = new Array();
+		$(".selected-item").each(function (i, v) {
+			ids.push("id="+$(v).attr("id"));
+		});
+		var idsString = ids.join("&");
+		Tools.AjaxGetToBlock("#json_data", "AddUpdateTemplate", "/Permission/AddUpdateTemplate?" + idsString);
+	}
+
+	function UnselectAll() {
+		$("#template_window li").each(function (i, v) {
+			$(v).removeClass("selected-item");
+		});
+	}
+
+	function SelectAll() {
+		$("#template_window li").each(function (i, v) {
+			$(v).addClass("selected-item");
+		});
+	}
+
+	function UpdateTemplateParameters() {
+		var ids = GetSelectionItemInTree();
+		ShowBlockUI.Show();
+		$("#UpdateTemplateForm").remove();
+		$.ajax(
+		{
+			type: "POST",
+			url: "/Permission/UpdateTemplateParameter/",
+			data: {parameters: ids, templateId: "00000000-0000-0000-0000-000000000111"},
+			success: function(data) {
+				if (data.length > 0) {
+					$("#json_data").append("<div id='UpdateTemplateForm'>" + data + "</div>");
+				}
+			},
+			dataType: 'html',
+			complete: function() {
+				$.unblockUI();
+			},
+			error: function(xhr, status, error) {
+				var message = '@Lang.Get("Error connect to server. Message:")';
+				alert(message + error);
+			}
+		});
+	}
+
+
+
+	function UpdateSaveButton() {
+		var selectedParameters = GetSelectionItemInTree();
+		if (IsMatchArray(window.initialSelectedParameter, selectedParameters)) {
+			$("div.square-button").addClass("square-button-disabled");
+		} else {
+			$("div.square-button").removeClass("square-button-disabled");
+		}
+	}
+
+	function GetSelectionItemInTree() {
+		var ids = $("#jstree-proton-3").jstree("get_selected");
+		return ids;
+	}
+
+	function Draw() {
+		$.getJSON("Permission/GetParameterTree?templateId=00000000-0000-0000-0000-000000000000", function (data) {
 			$('#jstree-proton-3').jstree({
 				'plugins': ["wholerow", "checkbox"],
 				'core': {
@@ -132,45 +209,28 @@
 					}
 				}
 			});
-
+			window.initialSelectedParameter = GetSelectionItemInTree();
+			console.log(window.initialSelectedParameter);
 		});
-
-		/*
-			$('#jstree-proton-3').jstree({
-				'plugins': ["wholerow", "checkbox"],
-				'core': {
-					'data': [{
-						"text": "Wholerow with checkboxes",
-						"children": [{
-							"text": "initially selected",
-							"state": {
-								"selected": true
-							}
-						}, {
-							"text": "custom icon URL",
-							"icon": "./assets/images/tree_icon.png"
-						}, {
-							"text": "initially open",
-							"state": {
-								"opened": false
-							},
-							"children": ["Another node"]
-						}, {
-							"text": "custom icon class",
-							"icon": "glyphicon glyphicon-leaf"
-						}]
-					},
-						"And wholerow selection"
-					],
-					'themes': {
-						'name': 'default',
-						'responsive': true
-					}
-				}
-			});
-		*/
 	}
 
-
+	function IsMatchArray(array1, array2) {
+		if (array1.length != array2.length) {
+			return false;
+		}
+		for (var i = 0; i < array1.length; i++) {
+			var exist = false;
+			for (var j = 0; j < array2.length; j++) {
+				if (array1[i] === array2[j]) {
+					exist = true;
+					break;
+				}
+			}
+			if (!exist) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 </script>

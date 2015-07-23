@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="../Content/css/message.css">
 <link rel="stylesheet" href="../Content/css/admin/user.css">
 
-<div id="dialog_@dialogId" class="." title="@Lang.Get("Add user")">
+<div id="dialog_@dialogId" class="." title="@(Model == null?Lang.Get("Add user"):Lang.Get("Edit user"))">
 
 	<form id="add_user">
 		<input type="hidden" value="@(Model != null ? Model.Id.ToString() : Guid.Empty.ToString())" name="Id" />

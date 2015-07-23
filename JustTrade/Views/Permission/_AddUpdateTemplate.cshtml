@@ -1,0 +1,44 @@
+﻿@using JustTrade.Helpers
+@model JustTrade.Database.PermissionTemplate
+
+<div id="add_update_dialog" style="display: none" title="@(Model == null?Lang.Get("Add template"):Lang.Get("Edit template"))">
+	<div class="input-group input-group-sm">
+		<span class="input-group-addon">@Lang.Get("Template name")</span>
+		<input id="template_name" type="text" class="form-control"  value="@(Model != null ? Model.Name : "")" aria-describedby="basic-addon1">
+	</div>
+</div>
+
+<script language="javascript">
+
+	$(document).ready(function() {
+		$("#add_update_dialog").dialog({
+			resizable: true,
+			height: "350",
+			width: "200",
+			modal: true,
+			close: function () { },
+			buttons: [
+				{
+					text: '@(Model != null?@Lang.Get("Change"):@Lang.Get("Add"))',
+					icons: {
+						primary: "ui-icon-check"
+					},
+					click: function () {
+
+						$("#add_update_dialog").dialog("close");
+					}
+				},
+				{
+					text: '@Lang.Get("Cancel")',
+					icons: {
+						primary: "ui-icon-close"
+					},
+					click: function () {
+						$("#add_update_dialog").dialog("close");
+					}
+				}
+			]
+		});
+	});
+
+</script>

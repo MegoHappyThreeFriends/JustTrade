@@ -343,6 +343,7 @@
     <Content Include="Views\User\_AddUpdateForm.cshtml" />
     <Content Include="Views\Language\Index.cshtml" />
     <Content Include="Views\Permission\_Index.cshtml" />
+    <Content Include="Views\Permission\_AddUpdateTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JustTrade.Database\JustTrade.Database.csproj">
