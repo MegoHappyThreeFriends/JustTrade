@@ -1,7 +1,7 @@
 ﻿@using JustTrade.Helpers
 @model JustTrade.Database.PermissionTemplate
 
-<div id="add_update_dialog" style="display: none" title="@(Model == null?Lang.Get("Add template"):Lang.Get("Edit template"))">
+<div id="add_update_permiotion_dialog" style="display: none" title="@(Model == null?Lang.Get("Add template"):Lang.Get("Edit template"))">
 	<div class="input-group input-group-sm">
 		<span class="input-group-addon">@Lang.Get("Template name")</span>
 		<input id="template_name" type="text" class="form-control"  value="@(Model != null ? Model.Name : "")" aria-describedby="basic-addon1">
@@ -10,11 +10,12 @@
 
 <script language="javascript">
 
-	$(document).ready(function() {
-		$("#add_update_dialog").dialog({
+    $(document).ready(function () {
+
+		$("#add_update_permiotion_dialog").dialog({
 			resizable: true,
-			height: "350",
-			width: "200",
+			width: "350",
+			height: "200",
 			modal: true,
 			close: function () { },
 			buttons: [
@@ -24,8 +25,9 @@
 						primary: "ui-icon-check"
 					},
 					click: function () {
-
-						$("#add_update_dialog").dialog("close");
+					    AddUpdateTemplate(function () {
+					        $("#add_update_permiotion_dialog").dialog("destroy");
+					    });
 					}
 				},
 				{
@@ -34,11 +36,39 @@
 						primary: "ui-icon-close"
 					},
 					click: function () {
-						$("#add_update_dialog").dialog("close");
+					    $("#add_update_permiotion_dialog").dialog("destroy");
 					}
 				}
 			]
 		});
+
 	});
+
+
+    function AddUpdateTemplate(callback) {
+        ShowBlockUI.Show();
+        $("#AddUpdateTempolate").remove();
+		$.ajax({
+			type: "POST",
+			url: "Permission/@(Model == null? "AddTemplate" : "UpdateTemplate")",
+		    data: { id: "@(Model==null?Guid.Empty.ToString():Model.Id.ToString())" , name: $("#template_name").val() },
+			success: function (response) {
+				if (response.length > 0) {
+					$("#json_data").append("<div id='AddUpdateTempolate'>" + response + "</div>");
+				} else {
+					callback();
+				}
+			},
+			complete: function () {
+			    $.unblockUI();
+			},
+			error: function (xhr, status, error) {
+				var message = '@Lang.Get("Error connect to server. Message:")';
+			    alert(message + error);
+			    callback();
+			}
+		});
+	}
+
 
 </script>

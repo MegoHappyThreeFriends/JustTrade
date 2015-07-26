@@ -72,12 +72,12 @@
 		                	if (result) {
 		                		if (isUpdateUser == "true") {
 		                			UpdateUserPost(function () {
-		                				$("#dialog_@dialogId").dialog("close");
+		                			    $("#dialog_@dialogId").dialog("destroy");
 		                				$("#dialog_@dialogId").remove();
 		                			});
 		                		} else {
 		                			AddUserPost(function () {
-		                				$("#dialog_@dialogId").dialog("close");
+		                			    $("#dialog_@dialogId").dialog("destroy");
 		                				$("#dialog_@dialogId").remove();
 		                			});
 		                		}
@@ -92,7 +92,7 @@
 						primary: "ui-icon-close"
 					},
 					click: function () {
-						$("#dialog_@dialogId").dialog("close");
+					    $("#dialog_@dialogId").dialog("destroy");
 						$("#dialog_@dialogId").remove();
 					}
 				}

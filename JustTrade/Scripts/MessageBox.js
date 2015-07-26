@@ -23,7 +23,7 @@
 						primary: "ui-icon-check"
 					},
 					click: function () {
-						$(dialogId).dialog("close");
+					    $(dialogId).dialog("destroy");
 					}
 				}
 			]
@@ -54,7 +54,7 @@
 					},
 					click: function () {
 						callback(true);
-						$(dialogId).dialog("close");
+						$(dialogId).dialog("destroy");
 					}
 				},
 				{
@@ -64,7 +64,7 @@
 					},
 					click: function () {
 						callback(false);
-						$(dialogId).dialog("close");
+						$(dialogId).dialog("destroy");
 					}
 				}
 			]

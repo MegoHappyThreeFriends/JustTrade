@@ -131,8 +131,14 @@
 
 	});
 
+	function DrawTemplates() {
+	    $.getJSON("Permission/GetTemlateList", function(data) {
+	       
+	    });
+	}
+
 	function AddTemplate() {
-		Tools.AjaxGetToBlock("#json_data", "AddUpdateTemplate", "/Permission/AddUpdateTemplate");
+	    Tools.AjaxGetToBlock("#json_data", "AddUpdateTemplate", "/Permission/ShowAddUpdateTemplate");
 	}
 
 	function EditTemplate() {
@@ -141,7 +147,7 @@
 			ids.push("id="+$(v).attr("id"));
 		});
 		var idsString = ids.join("&");
-		Tools.AjaxGetToBlock("#json_data", "AddUpdateTemplate", "/Permission/AddUpdateTemplate?" + idsString);
+		Tools.AjaxGetToBlock("#json_data", "AddUpdateTemplate", "/Permission/ShowAddUpdateTemplate?" + idsString);
 	}
 
 	function UnselectAll() {

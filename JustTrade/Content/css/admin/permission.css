@@ -76,3 +76,7 @@
 .selested-item {
 	background-color: #B0BED9 !important;
 }
+
+.ui-dialog {
+    font-size: 12px;
+}
