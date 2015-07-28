@@ -14,6 +14,12 @@
 
 #template_window li
 {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+#template_window li
+{
 	cursor: pointer;
 }
 
@@ -44,11 +50,8 @@
 	width: 75%;
 }
 
-#permition_window
+.square-button
 {
-}
-
-.square-button {
 	width: 25px;
 	height: 25px;
 	background-color: #33E667;
@@ -59,7 +62,8 @@
 	border-radius: 15px;
 }
 
-.square-button-disabled {
+.square-button-disabled
+{
 	background-color: darkgray;
 	cursor: default;
 }
@@ -69,14 +73,17 @@
 	margin: 5px;
 }
 
-#permition_list ol li {
-  margin-left: 20px;
+#permition_list ol li
+{
+	margin-left: 20px;
 }
 
-.selested-item {
+.selested-item
+{
 	background-color: #B0BED9 !important;
 }
 
-.ui-dialog {
-    font-size: 12px;
+.ui-dialog
+{
+	font-size: 12px;
 }

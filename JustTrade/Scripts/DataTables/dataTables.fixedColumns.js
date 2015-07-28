@@ -1,4 +1,4 @@
-/*! FixedColumns 3.0.4
+﻿/*! FixedColumns 3.0.4
  * ©2010-2014 SpryMedia Ltd - datatables.net/license
  */
 
@@ -850,7 +850,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 		this._fnCloneLeft( bAll );
 		this._fnCloneRight( bAll );
 
-		/* Draw callback function */
+		/* DrawTemplateParameter callback function */
 		if ( this.s.fnDrawCallback !== null )
 		{
 			this.s.fnDrawCallback.call( this, this.dom.clone.left, this.dom.clone.right );
@@ -1326,7 +1326,7 @@ FixedColumns.defaults = /** @lends FixedColumns.defaults */{
 	"iRightColumns": 0,
 
 	/**
-	 * Draw callback function which is called when FixedColumns has redrawn the fixed assets
+	 * DrawTemplateParameter callback function which is called when FixedColumns has redrawn the fixed assets
 	 *  @type     function(object, object):void
 	 *  @default  null
 	 *  @static

@@ -1,0 +1,8 @@
+﻿@using JustTrade.Database
+@model IList<PermissionTemplate>
+
+<ul class="list-group">
+	@foreach (var item in Model) {
+		<li id="@item.Id" class="list-group-item">@item.Name</li>
+	}
+</ul>

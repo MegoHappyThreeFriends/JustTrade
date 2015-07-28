@@ -26,7 +26,8 @@
 					},
 					click: function () {
 					    AddUpdateTemplate(function () {
-					        $("#add_update_permiotion_dialog").dialog("destroy");
+					    	$("#add_update_permiotion_dialog").dialog("destroy");
+					    	PermissionForm("RefreshTemplates");
 					    });
 					}
 				},

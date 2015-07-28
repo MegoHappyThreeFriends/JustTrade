@@ -5,6 +5,7 @@ using System.IO;
 
 namespace JustTrade.Helpers
 {
+	using System.Diagnostics;
 	using System.Linq;
 	using System.Security.Cryptography;
 	using System.Threading;
@@ -37,10 +38,13 @@ namespace JustTrade.Helpers
 			if (_loaded) {
 				return;
 			}
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
 			_language.Clear();
 			string neededLang = AppSettings.Lang;
 			_filePath = AppSettings.Workspace + @"\Language\" + neededLang.ToLower() + ".json";
 			if (!File.Exists(_filePath)) {
+				_loading = false;
 				throw new Exception("Language file not found");
 			}
 
@@ -59,7 +63,8 @@ namespace JustTrade.Helpers
 					_language.Add(langItem.Key, langItem.Value.Value<string>());
 				}
 			}
-
+			Debug.WriteLine("Loading language file {0}mls.", stopwatch.ElapsedMilliseconds);
+			stopwatch.Stop();
 			_loaded = true;
 			_loading = false;
 		}

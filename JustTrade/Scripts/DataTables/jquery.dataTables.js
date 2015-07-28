@@ -1,4 +1,4 @@
-/*! DataTables 1.10.7
+﻿/*! DataTables 1.10.7
  * ©2008-2014 SpryMedia Ltd - datatables.net/license
  */
 
@@ -1845,7 +1845,7 @@
 	
 	
 	/**
-	 * Draw the header (or footer) element based on the column visibility states. The
+	 * DrawTemplateParameter the header (or footer) element based on the column visibility states. The
 	 * methodology here is to use the layout array from _fnDetectHeader, modified for
 	 * the instantaneous column visibility, to construct the new layout. The grid is
 	 * traversed over cell at a time in a rows x columns grid fashion, although each
@@ -2082,7 +2082,7 @@
 		/* Call all required callback functions for the end of a draw */
 		_fnCallbackFire( oSettings, 'aoDrawCallback', 'draw', [oSettings] );
 	
-		/* Draw is complete, sorting and filtering must be as well */
+		/* DrawTemplateParameter is complete, sorting and filtering must be as well */
 		oSettings.bSorted = false;
 		oSettings.bFiltered = false;
 		oSettings.bDrawing = false;
@@ -3256,7 +3256,7 @@
 	
 	
 	/**
-	 * Draw the table for the first time, adding all required features
+	 * DrawTemplateParameter the table for the first time, adding all required features
 	 *  @param {object} settings dataTables settings object
 	 *  @memberof DataTable#oApi
 	 */
@@ -3335,7 +3335,7 @@
 	
 	
 	/**
-	 * Draw the table for the first time, adding all required features
+	 * DrawTemplateParameter the table for the first time, adding all required features
 	 *  @param {object} oSettings dataTables settings object
 	 *  @param {object} [json] JSON from the server that completed the table, if using Ajax source
 	 *    with client-side processing (optional)
@@ -13283,7 +13283,7 @@
 		"bDrawing": false,
 	
 		/**
-		 * Draw index (iDraw) of the last error when parsing the returned data
+		 * DrawTemplateParameter index (iDraw) of the last error when parsing the returned data
 		 *  @type int
 		 *  @default -1
 		 */
@@ -14784,7 +14784,7 @@
 
 	// Information about events fired by DataTables - for documentation.
 	/**
-	 * Draw event, fired whenever the table is redrawn on the page, at the same
+	 * DrawTemplateParameter event, fired whenever the table is redrawn on the page, at the same
 	 * point as fnDrawCallback. This may be useful for binding events or
 	 * performing calculations when the table is altered at all.
 	 *  @name DataTable#draw.dt

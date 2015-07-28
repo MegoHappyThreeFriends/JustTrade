@@ -23,7 +23,7 @@ Tools.StrFormat = function () {
 	return arguments[0];
 }
 
-Tools.AjaxGetToBlock= function (rootBlockId, blockId, url)
+Tools.AjaxGetToBlock= function (rootBlockId, blockId, url, callback)
 {
 	$("#" + blockId).remove();
 	ShowBlockUI.Show();
@@ -36,7 +36,10 @@ Tools.AjaxGetToBlock= function (rootBlockId, blockId, url)
 		 	dataType: 'html',
 		 	complete: function () {
 		 		$.unblockUI();
-		 	},
+				 if (callback !== undefined) {
+					 callback();
+				 }
+			 },
 		 	error: function (xhr, status, error) {
 		 		var message = Language.Data["Error connect to server. Message:"];
 		 		alert(message + error);

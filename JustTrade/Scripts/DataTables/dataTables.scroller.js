@@ -1,4 +1,4 @@
-/*! Scroller 1.2.2
+﻿/*! Scroller 1.2.2
  * ©2011-2014 SpryMedia Ltd - datatables.net/license
  */
 
@@ -730,7 +730,7 @@ Scroller.prototype = /** @lends Scroller.prototype */{
 
 
 	/**
-	 * Draw callback function which is fired when the DataTable is redrawn. The main function of
+	 * DrawTemplateParameter callback function which is fired when the DataTable is redrawn. The main function of
 	 * this method is to position the drawn table correctly the scrolling container for the rows
 	 * that is displays as a result of the scrolling position.
 	 *  @returns {void}
