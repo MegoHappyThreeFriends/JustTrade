@@ -41,37 +41,58 @@ namespace JustTrade
 
 	public class PermissionFilerAttribute : ActionFilterAttribute
 	{
+
+		private static HashSet<string> _freeMethods;
+		private HashSet<string> FreeMethods {
+			get {
+				if (_freeMethods == null) {
+					_freeMethods = new HashSet<string>();
+					var controllerType = typeof(Controller);
+					var types =
+						AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes()).Where(controllerType.IsAssignableFrom);
+					foreach (var type in types) {
+						var methods =
+							type.GetMethods()
+								.Where(x =>x.IsPublic && GetCustomAttributes(x).Any(y => y.TypeId.ToString().Contains("FreeAccess")));
+						if (!methods.Any()) {
+							continue;
+						}
+						var methodsList = methods.Select(methodInfo => methodInfo.Name).ToList();
+						foreach (var methodItem in methodsList) {
+							_freeMethods.Add(string.Concat(type.Name.Replace("Controller",""), ".", methodItem));
+						}
+					}
+				}
+				return _freeMethods;
+			}
+		}
+
 		public override void OnActionExecuting(ActionExecutingContext filterContext) {
 			string controller = filterContext.RouteData.Values.First(x => x.Key == "controller").Value.ToString();
 			string action = filterContext.RouteData.Values.First(x => x.Key == "action").Value.ToString();
-			List<string> permissionList = null;
-			if (UserSession.CurrentSession != null) {
-				permissionList = UserSession.CurrentSession.PermissionList;
-			}
-
-			// default permission list
-			/*if (permissionList == null) {
-				permissionList = new List<string>() {
-					"Login.Index",
-					"Login.Login",
-					"Message.Index",
-					"Message.SendReport",
-					"Language.GetLanguageJson"
-				};
-			}
-
-			if (controller != "Error") {
-				if (!permissionList.Contains(string.Concat(controller, ".", action))) {
-					filterContext.Result =
+			bool allow = IsAllowPermission(controller, action);
+			/*if (!allow) {
+				filterContext.Result =
 						new RedirectToRouteResult(new RouteValueDictionary(new {
 							controller = "Error",
 							action = "Permission"
 						}));
-				}
 			}*/
-
 			base.OnActionExecuting(filterContext);
 		}
+
+		private bool IsAllowPermission(string controller, string action) {
+			string path = string.Concat(controller, ".", action);
+			if (controller.Contains("Error")) {
+				return true;
+			}
+			bool isFreeMethod = FreeMethods.Contains(path);
+			if (isFreeMethod) {
+				return true;
+			}
+			return JustTradeSecurity.AccessIsAllowed(path);
+		}
+
 	}
 
 }

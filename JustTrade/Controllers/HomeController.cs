@@ -13,7 +13,7 @@ namespace JustTrade.Controllers
 	{
 		[HttpGet]
 		public ActionResult Index() {
-			if (UserSession.CurrentUser == null) {
+			if (JustTradeSecurity.CurrentSession == null) {
 				return RedirectToAction("Index", "Login");
 			}
 

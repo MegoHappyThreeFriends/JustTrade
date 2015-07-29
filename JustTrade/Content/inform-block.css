@@ -1,0 +1,38 @@
+﻿
+.inform-block {
+	padding: 20px;
+    margin: 20px 0;
+	-ms-border-radius: 3px;
+	border-radius: 3px;
+
+	width: 800px;
+    border-style: solid;
+    padding: 5px;
+    margin-left: 5px;
+    border-left-width: 5px;
+
+	border-top-width: 1px;
+    border-top-color: #ededed;
+    border-top-style: solid;
+
+	border-right-width: 1px;
+    border-right-color: #ededed;
+    border-right-style: solid;
+
+	border-bottom-width: 1px;
+    border-bottom-color: #ededed;
+    border-bottom-style: solid;
+}
+
+.inform-block-danger {
+    border-left-color: #ff0303;
+}
+
+.inform-block-information {
+    border-left-color: #008000;
+}
+
+.inform-block-warning {
+    border-left-color: #f4a460;
+}
+

@@ -8,6 +8,7 @@ namespace JustTrade.Controllers
 	using System.Web.Mvc;
 	using JustTrade.Helpers;
 	using JustTrade.Tools;
+	using JustTrade.Tools.Attributes;
 	using Newtonsoft.Json.Linq;
 
 	public class LanguageData
@@ -44,7 +45,7 @@ namespace JustTrade.Controllers
 
 	public class LanguageController : ControllerWithTools
 	{
-
+		[FreeAccess]
 		[HttpGet]
 		public string GetLanguageJson() {
 			string neededLang = AppSettings.Lang;

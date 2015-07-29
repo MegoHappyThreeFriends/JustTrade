@@ -12,16 +12,18 @@ namespace JustTrade.Controllers
 	using JustTrade.Helpers;
 	using JustTrade.Helpers.ExtensionMethods;
 	using JustTrade.Models;
+	using JustTrade.Tools.Attributes;
 
 	public class LoginController : ControllerWithTools
 	{
-		//
-		// GET: /Login/
+		
+		[FreeAccess]
 		[HttpGet]
 		public ActionResult Index() {
 			return View();
 		}
 
+		[FreeAccess]
 		[HttpGet]
 		public ActionResult Login(string login, string password) {
 			User user;
@@ -35,7 +37,7 @@ namespace JustTrade.Controllers
 			if (user != null) {
 				if (user.Password == password.GetHashPassword()) {
 					try {
-						UserSession.CreateSession(user);
+						JustTradeSecurity.CreateSession(user);
 					} catch (Exception ex) {
 						return GenerateErrorMessage(Lang.Get("Error create session"), ex);
 					}

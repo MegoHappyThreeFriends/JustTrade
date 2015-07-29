@@ -95,15 +95,17 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
     <Compile Include="Models\Message.cs" />
+    <Compile Include="Tools\Attributes\FreeAccessAttribute.cs" />
     <Compile Include="Tools\ControllerWithTools.cs" />
     <Compile Include="Tools\TypedResponse\JsonData.cs" />
-    <Compile Include="Tools\UserSession\UserSession.cs" />
+    <Compile Include="Tools\UserSession\JustTradeSecurity.cs" />
     <Compile Include="Controllers\UserController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\admin\database.css" />
     <Content Include="Content\css\admin\language.css" />
     <Content Include="Content\css\admin\permission.css" />
+    <Content Include="Content\css\error\permission.css" />
     <Content Include="Content\css\inputValidate.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\message.css" />
@@ -168,6 +170,7 @@
     <Content Include="Content\DataTables\swf\copy_csv_xls_pdf.swf" />
     <Content Include="Content\images\BusyGrid.gif" />
     <Content Include="Content\images\login_texture.jpg" />
+    <Content Include="Content\inform-block.css" />
     <Content Include="Content\jsTree\docs.css" />
     <Content Include="Content\jsTree\themes\default-dark\32px.png" />
     <Content Include="Content\jsTree\themes\default-dark\40px.png" />
