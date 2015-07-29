@@ -90,7 +90,7 @@
 	}
 
 	function DrawContextMenu() {
-		$("#template_window li").contextMenu({
+		$("#template_window, #template_window li").contextMenu({
 			menuSelector: "#contextMenu",
 			menuSelected: function (id, selectedMenu) {
 				var action = selectedMenu[0].target;
@@ -206,7 +206,10 @@
 
 	function UpdateTemplateParameters() {
 		var selectedItem = $(".selected-item")[0];
-		var selectedId = (selectedItem !== undefined ? $(selectedItem).attr('id') : "00000000-0000-0000-0000-000000000000");
+		if (selectedItem === undefined) {
+			return;
+		}
+		var selectedId = $(selectedItem).attr('id');
 		var ids = GetSelectionItemInTree();
 		ShowBlockUI.Show();
 		$("#UpdateTemplateForm").remove();
@@ -236,6 +239,11 @@
 
 	function UpdateSaveButton() {
 		var selectedParameters = GetSelectionItemInTree();
+		console.log("Update save button");
+		console.log(selectedParameters);
+		console.log("VS");
+		console.log(window.initialSelectedParameter);
+
 		if (IsMatchArray(window.initialSelectedParameter, selectedParameters)) {
 			$("div.square-button").addClass("square-button-disabled");
 		} else {
@@ -267,9 +275,11 @@
 						}
 					}
 				});
-				window.initialSelectedParameter = GetSelectionItemInTree();
-				UpdateSaveButton();
-				$("#jstree").fadeIn(500);
+				window.setTimeout(function () {
+					window.initialSelectedParameter = GetSelectionItemInTree();
+					UpdateSaveButton();
+				}, 500);
+				$("#jstree").fadeIn(600);
 			});
 			
 		});

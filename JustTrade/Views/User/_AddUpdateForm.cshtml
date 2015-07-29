@@ -1,7 +1,9 @@
-﻿@using JustTrade.Helpers
+﻿@using JustTrade.Controllers
+@using JustTrade.Helpers
 @model JustTrade.Database.User
 @{
     var dialogId = Guid.NewGuid();
+	var permissionList = (List<UserController.UserPermissionItem>)ViewBag.PermissionList;
 }
 <link rel="stylesheet" href="../Content/css/message.css">
 <link rel="stylesheet" href="../Content/css/admin/user.css">
@@ -9,7 +11,7 @@
 <div id="dialog_@dialogId" class="." title="@(Model == null?Lang.Get("Add user"):Lang.Get("Edit user"))">
 
 	<form id="add_user">
-		<input type="hidden" value="@(Model != null ? Model.Id.ToString() : Guid.Empty.ToString())" name="Id" />
+		<input id="userId" type="hidden" value="@(Model != null ? Model.Id.ToString() : Guid.Empty.ToString())" name="Id" />
 		<div class="add-update-user-form-container">
 
 			<div class="input-group input-group-sm">
@@ -29,6 +31,15 @@
 			</div>
 
 			<div class="input-group input-group-sm">
+				<span class="input-group-addon">@Lang.Get("Permission")</span>
+				<select id="tagPermission" class="form-control" multiple="multiple">
+					@foreach (var item in permissionList) {
+						<option @(item.IsUse?"selected='selected'":"") value="@item.Id">@item.TemplateName</option>
+					}
+				</select>
+			</div>
+
+			<div class="input-group input-group-sm">
 				<span class="input-group-addon">@Lang.Get("Password")</span>
 				<input id="Password" val-type="text" val-min="6" name="Password" type="password" class="form-control" value="@(Model != null ? "123456" : "")" aria-describedby="basic-addon1">
 			</div>
@@ -45,15 +56,18 @@
 
 <script language="javascript">
 	$(document).ready(function () {
+		$("#tagPermission").select2({
+			width: "270px",
+			closeOnSelect: true
+		});
 		ShowDialog();
 	});
 
 	function ShowDialog() {
-		var isUpdateUser = '@(Model != null?"true":"false")';
 		$("#dialog_@dialogId").dialog({
 			resizable: true,
-			width: 350,
-			height: 350,
+			width: 450,
+			height: 400,
 			modal: true,
 			close: function () {
 				AjaxResultAddUpdateForm("close");
@@ -70,17 +84,10 @@
                 		var validator = new InputValidator(".add-update-user-form-container");
 		                validator.Check(function(result) {
 		                	if (result) {
-		                		if (isUpdateUser == "true") {
-		                			UpdateUserPost(function () {
-		                			    $("#dialog_@dialogId").dialog("destroy");
-		                				$("#dialog_@dialogId").remove();
-		                			});
-		                		} else {
-		                			AddUserPost(function () {
-		                			    $("#dialog_@dialogId").dialog("destroy");
-		                				$("#dialog_@dialogId").remove();
-		                			});
-		                		}
+		                		AddUpdateUserPost(function () {
+		                		    $("#dialog_@dialogId").dialog("destroy");
+		                			$("#dialog_@dialogId").remove();
+		                		});
 			                }
 		                });
                 		
@@ -100,39 +107,16 @@
 		});
 	}
 
-	function AddUserPost(callback) {
-		$("#AddUpdateForm_add").remove();
+	function AddUpdateUserPost(callback) {
+		var permissionIds = $("#tagPermission").select2("val");
+		$("#AddUpdatePost").remove();
 		$.ajax({
 			type: "POST",
-			url: "User/Add",
-			data: $("#add_user").serialize(),
+			url: 'User/@(Model != null?"Update":"Add")',
+			data: { user: $("#add_user").serializeObject(), permissionTemplates: permissionIds },
 			success: function (response) {
 				if (response.length > 0) {
-					$("#json_data").append("<div id='AddUpdateForm_add'>" + response + "</div>");
-				} else {
-					callback();
-				}
-			},
-			complete: function () {
-
-			},
-			error: function (xhr, status, error) {
-				var message = '@Lang.Get("Error connect to server. Message:")';
-				alert(message + error);
-			}
-		});
-	}
-
-	function UpdateUserPost(callback) {
-		$("#UpdateUpdateForm_add").remove();
-		console.log($("#add_user").serialize());
-		$.ajax({
-			type: "POST",
-			url: "User/Update",
-			data: $("#add_user").serialize(),
-			success: function (response) {
-				if (response.length > 0) {
-					$("#json_data").append("<div id='UpdateUpdateForm_add'>" + response + "</div>");
+					$("#json_data").append("<div id='AddUpdatePost'>" + response + "</div>");
 				} else {
 					callback();
 				}
@@ -153,7 +137,6 @@
 			AjaxResult("AddUpdateForm", parameter);
 		}
 	}
-
 
 </script>
 

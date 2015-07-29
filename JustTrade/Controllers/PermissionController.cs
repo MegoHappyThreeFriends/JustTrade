@@ -121,7 +121,7 @@
 			using (var permission = Repository<PermissionTemplate>.FindById(templateId)) {
 				if (permission.Any()) {
 					PermissionTemplate item = permission.First();
-					if (item.PermissionRules != null) {
+					if (!string.IsNullOrEmpty(item.PermissionRules)) {
 						parameters = JArray.Parse(item.PermissionRules).ToObject<string[]>().ToList();
 					}
 				}

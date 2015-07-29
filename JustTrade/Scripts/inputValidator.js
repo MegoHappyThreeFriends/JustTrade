@@ -46,7 +46,6 @@
 	}
 
 	function checkLogin(id) {
-		debugger;
 		var regex = /^[a-zA-Z0-9]*$/;
 		var obj = $("#" + id);
 		var min = obj.attr("val-min");

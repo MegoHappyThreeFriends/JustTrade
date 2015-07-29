@@ -14,6 +14,8 @@
 	"Check the name of the template to duplicate from the list!":"Проверте имя шаблона на дубликаты в списке!",
 	"Connection_to_database":"Подключение к базе данных",
 	"Contacts":"Контакты",
+	"Database generated success":"База данных сгенерированна успешно",
+	"Database management":"Управление базой данных",
 	"Databases":"База данных",
 	"Do you want delete language key ({0}) item ?":"Вы действительно хотите языковую запись ({0}) ?",
 	"Do you want delete template(s) ({0}) ?":"Вы действительно хотите удалить шаблон(ы) ({0}) ?",
@@ -25,6 +27,7 @@
 	"Error connect to db":"Ошибка подключения к базе данных",
 	"Error connect to server. Message:":"Ошибка подключение к серверу. Сообщение:",
 	"Error create session":"Ошибка создания сессии",
+	"Error generate database":"Ошибка генерации базы данных",
 	"Error removing template(s)":"Ошибка удаления шаблона(ов)",
 	"Error save language dictionary data. Info: {0}":"Ошибка сохранения языкового словаря. Подробно: {0}",
 	"Error update item":"Ошибка обновления объекта",
@@ -69,5 +72,6 @@
 	"Version":"Версия",
 	"Warning":"Внимание",
 	"Yes":"Да",
+	"You can use database":"Вы можете смело начинать работать в системе, хорошей работы ;)",
 	"You must enter Login, Name and Password":"Вы должны ввести Логин, ФИО и Пароль"
 }

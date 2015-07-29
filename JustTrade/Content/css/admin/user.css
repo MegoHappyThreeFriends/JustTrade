@@ -7,7 +7,7 @@
 	margin: auto;
 }
 
-.add-update-user-form-container div span
+.add-update-user-form-container div span.input-group-addon
 {
 	width: 150px;
 	margin-left: 10px;
@@ -54,3 +54,6 @@
 	margin: 3px 0px;
 }
 
+div.input-group {
+	width: 420px;
+}

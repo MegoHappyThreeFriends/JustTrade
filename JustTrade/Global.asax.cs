@@ -50,7 +50,7 @@ namespace JustTrade
 			}
 
 			// default permission list
-			if (permissionList == null) {
+			/*if (permissionList == null) {
 				permissionList = new List<string>() {
 					"Login.Index",
 					"Login.Login",
@@ -68,7 +68,7 @@ namespace JustTrade
 							action = "Permission"
 						}));
 				}
-			}
+			}*/
 
 			base.OnActionExecuting(filterContext);
 		}

@@ -3,7 +3,12 @@
 <script src="Scripts/DataTables/dataTables.tableTools.js"></script>
 <script src="Scripts/DataTables/dataTables.bootstrap.js"></script>
 <script src="Scripts/context.menu.js"></script>
+
+<script src="Scripts/select2.js"></script>
+
 <link rel="stylesheet" href="../Content/css/admin/user.css">
+<link rel="stylesheet" href="../Content/css/select2.css">
+<link rel="stylesheet" href="../Content/css/select2-bootstrap.css">
 
 <table id="userDataTable" class="table compact hover table-striped" cellspacing="0"
 	width="100%">
@@ -36,6 +41,11 @@
 			</i> @Lang.Get("Select many")
 	    </a></li>
 </ul>
+
+<div class="col-md-6">
+    	<h4>Tag Picker</h4>
+      	
+    </div> 
 
 <script language="javascript">
 	var table;
@@ -153,7 +163,7 @@
 		$("#AddUpdateForm").remove();
 		$.ajax(
              {
-             	url: "/User/AddUpdateForm?id=" + ids[0],
+             	url: "/User/ShowAddUpdateForm?id=" + ids[0],
              	success: function (data) {
              		$("#json_data").append("<div id='AddUpdateForm'>" + data + "</div>");
              	},
@@ -173,7 +183,7 @@
 		ShowBlockUI.Show();
 		$.ajax(
              {
-             	url: "/User/AddUpdateForm",
+             	url: "/User/ShowAddUpdateForm",
              	success: function (data) {
              		$("#json_data").append("<div id='AddUpdateForm'>" + data + "</div>");
              	},
@@ -202,7 +212,7 @@
 
 	function CreateDatatable() {
 		table = $('#userDataTable').DataTable({
-			ajax: "/User/JsonList",
+			ajax: "/User/UsersJsonList",
 			lengthChange: true,
 			'iDisplayLength': 15,
 			"oLanguage": {
