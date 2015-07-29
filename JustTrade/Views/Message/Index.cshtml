@@ -71,6 +71,7 @@
 						primary: "ui-icon-check"
 					},
 					click: function () {
+						$("#dialog_@dialogId").dialog("close");
 					    $("#dialog_@dialogId").dialog("destroy");
 						$("#dialog_@dialogId").remove();
 					}
@@ -88,6 +89,7 @@
 						primary: "ui-icon-check"
 					},
 					click: function () {
+						$("#dialog_@dialogId").dialog("close");
 					    $("#dialog_@dialogId").dialog("destroy");
 						$("#dialog_@dialogId").remove();
 					}
@@ -98,6 +100,7 @@
 						primary: "ui-icon-mail-closed"
 					},
 					click: function () {
+						$("#dialog_@dialogId").dialog("close");
 					    $("#dialog_@dialogId").dialog("destroy");
 						$("#dialog_@dialogId").remove();
 					}
@@ -126,6 +129,7 @@
 							 			$("#message_data_@dialogId").append(data);
 							 		}
 							 		AjaxResult("", "refresh");
+							 		$("#dialog_@dialogId").dialog("close");
 							 		$("#dialog_@dialogId").dialog("destroy");
 							 		$("#dialog_@dialogId").remove();
 							 	},
@@ -144,6 +148,7 @@
 						primary: "ui-icon-close"
 					},
 					click: function () {
+						$("#dialog_@dialogId").dialog("close");
 					    $("#dialog_@dialogId").dialog("destroy");
 						$("#dialog_@dialogId").remove();
 					}

@@ -25,7 +25,8 @@
 						primary: "ui-icon-check"
 					},
 					click: function () {
-					    AddUpdateTemplate(function () {
+						AddUpdateTemplate(function () {
+							$("#add_update_permiotion_dialog").dialog("close");
 					    	$("#add_update_permiotion_dialog").dialog("destroy");
 					    	PermissionForm("RefreshTemplates");
 					    });
@@ -37,6 +38,7 @@
 						primary: "ui-icon-close"
 					},
 					click: function () {
+						$("#add_update_permiotion_dialog").dialog("close");
 					    $("#add_update_permiotion_dialog").dialog("destroy");
 					}
 				}

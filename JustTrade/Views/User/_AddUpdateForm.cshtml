@@ -70,7 +70,7 @@
 			height: 400,
 			modal: true,
 			close: function () {
-				AjaxResultAddUpdateForm("close");
+				UserForm("RefreshUser");
 				$("#dialog_@dialogId").remove();
 			},
 			buttons: [
@@ -85,6 +85,7 @@
 		                validator.Check(function(result) {
 		                	if (result) {
 		                		AddUpdateUserPost(function () {
+		                			$("#dialog_@dialogId").dialog("close");
 		                		    $("#dialog_@dialogId").dialog("destroy");
 		                			$("#dialog_@dialogId").remove();
 		                		});
@@ -99,6 +100,7 @@
 						primary: "ui-icon-close"
 					},
 					click: function () {
+						$("#dialog_@dialogId").dialog("close");
 					    $("#dialog_@dialogId").dialog("destroy");
 						$("#dialog_@dialogId").remove();
 					}

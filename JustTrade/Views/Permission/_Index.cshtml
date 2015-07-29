@@ -308,7 +308,9 @@
 		switch (action) {
 			case "RefreshTemplates":
 				DrawTemplates();
+				break;
 			default:
+				throw new Error("Can't find action '" + action + "' for UserForm");
 		}
 	}
 </script>

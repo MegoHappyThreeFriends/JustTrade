@@ -42,11 +42,6 @@
 	    </a></li>
 </ul>
 
-<div class="col-md-6">
-    	<h4>Tag Picker</h4>
-      	
-    </div> 
-
 <script language="javascript">
 	var table;
 	var canSelectMany = false;
@@ -193,9 +188,9 @@
              	},
              	error: function (xhr, status, error) {
              		var message = '@Lang.Get("Error connect to server. Message:")';
-             		alert(message + error);
-             	}
-             });
+				alert(message + error);
+			}
+		});
 	}
 
 	function SelectById(id) {
@@ -239,32 +234,49 @@
 				}
 			},
 			columns: [
-                { data: "Id" },
-                {
-                	data: null, render: function (data, type, row) {
-                		return "<p id='" + data.Id + "'>" + (data.Name == null ? "" : data.Name) + "</p>";
-                	}
-                },
-                { data: "Login" },
-                {
-                	data: null, render: function (data, type, row) {
-                		switch (data.IsSuperuser) {
-                			case true: return "Да"; break;
-                			case false: return "Нет"; break;
-                			default: return "None";
-                		}
-                	}
-                }
+				{data: "Id"},
+				{
+					data: null,
+					render: function(data, type, row) {
+						return "<p id='" + data.Id + "'>" + (data.Name == null ? "" : data.Name) + "</p>";
+					}
+				},
+				{data: "Login"},
+				{
+					data: null,
+					render: function(data, type, row) {
+						switch (data.IsSuperuser) {
+							case true:
+								return "Да";
+								break;
+							case false:
+								return "Нет";
+								break;
+							default:
+								return "None";
+						}
+					}
+				}
 			],
 			"order": [[2, "desc"]],
 			"columnDefs": [
-                {
-                	"targets": [0],
-                	"visible": false
-                }
+				{
+					"targets": [0],
+					"visible": false
+				}
 			]
 		});
 
+	}
+
+	function UserForm(action) {
+		switch (action) {
+			case "RefreshUser":
+				table.ajax.reload();
+				break;
+			default:
+				throw new Error("Can't find action '"+action+"' for UserForm");
+		}
 	}
 
 </script>
