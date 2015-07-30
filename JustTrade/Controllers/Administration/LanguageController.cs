@@ -1,5 +1,4 @@
-﻿
-namespace JustTrade.Controllers
+﻿namespace JustTrade.Controllers.Administration
 {
 	using System;
 	using System.Collections.Generic;

@@ -1,16 +1,12 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.Mvc;
-using JustTrade;
-using JustTrade.Controllers;
-using JustTrade.Database;
-using NHibernate;
 
 namespace JustTrade.Tests
 {
+	using JustTrade.Controllers;
+	using JustTrade.Controllers.Administration;
+
 	[TestFixture]
 	public class HomeControllerTest
 	{

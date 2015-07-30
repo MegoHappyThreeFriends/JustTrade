@@ -6,6 +6,8 @@ using NHibernate;
 
 namespace JustTrade.Tests
 {
+	using JustTrade.Controllers.Administration;
+
 	[TestFixture]
 	public class UserControllerTests
 	{
@@ -24,7 +26,7 @@ namespace JustTrade.Tests
 		    NHibernateHelper.SessionForTest = session.Object;
 			var controller = new UserController ();
 			User user = new User ();
-		    controller.Add(user);
+		    //controller.Add(user);
             session.Verify(x=>x.SaveOrUpdate(It.Is<User>(i=>i.Equals(user))));
 		}
 	}

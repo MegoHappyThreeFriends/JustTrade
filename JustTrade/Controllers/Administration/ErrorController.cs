@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace JustTrade.Controllers
+﻿namespace JustTrade.Controllers.Administration
 {
 	using System.Web.Mvc;
 	using JustTrade.Tools;

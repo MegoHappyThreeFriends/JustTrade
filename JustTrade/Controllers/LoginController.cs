@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using JastTrade;
-using JustTrade.Database;
-using JustTrade.Tools;
-
-namespace JustTrade.Controllers
+﻿namespace JustTrade.Controllers
 {
+	using System;
+	using System.Linq;
+	using System.Web.Mvc;
+	using JastTrade;
+	using JustTrade.Database;
 	using JustTrade.Helpers;
 	using JustTrade.Helpers.ExtensionMethods;
-	using JustTrade.Models;
+	using JustTrade.Tools;
 	using JustTrade.Tools.Attributes;
 
 	public class LoginController : ControllerWithTools

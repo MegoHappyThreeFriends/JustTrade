@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
-using JastTrade;
-
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("JustTrade.Tests")]
+﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("JustTrade.Tests")]
 namespace JustTrade.Controllers
 {
+	using System;
+	using System.Web.Mvc;
+	using JastTrade;
+
 	public class HomeController : Controller
 	{
 		[HttpGet]
