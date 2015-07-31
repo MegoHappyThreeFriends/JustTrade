@@ -1,14 +1,13 @@
 ﻿namespace JustTrade.Tests.Controllers.Administration
 {
+	using Models;
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using JustTrade.Controllers.Administration;
-	using JustTrade.Database;
-	using JustTrade.Helpers;
-	using JustTrade.Tests.Tools;
+	using Database;
+	using Tools;
 	using Moq;
-	using NHibernate;
 	using NUnit.Framework;
 
 	[TestFixture]
@@ -29,6 +28,20 @@
 			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).Returns(new ResultCollection<User>(new List<User>(), null));
 		    controller.Add(user, null);
 			db.Verify(x => x.Add(It.Is<User>(y=>y.Login == user.Login)), Times.Once);
+		}
+
+		[Test]
+		public void Add_RedirectToMessageController_WhenUserDataNotSet()
+		{
+			MockTools.SetupLanguage();
+			MockTools.SetupDefaultSysSettings();
+			var db = MockTools.SetupDb();
+			var controller = new UserController();
+			var user = new User();
+			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).Returns(new ResultCollection<User>(new List<User>(), null));
+			var result = controller.Add(user, null);
+			Message message = (Message)((System.Web.Mvc.RedirectToRouteResult) result).RouteValues["message"];
+			Assert.IsTrue(message.Caption.Equals("Error"));
 		}
 
 		[Test]
@@ -63,9 +76,9 @@
 				Name = "name",
 				Password = "password"
 			};
-			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).Returns(new ResultCollection<User>(new List<User>() { user, user }, null));
-			controller.Remove(new []{ Guid.Empty }, true);
-			db.Verify(x => x.Remove(It.Is<List<User>>(y => y[0].Login == user.Login)), Times.Once);
+			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).Returns(new ResultCollection<User>(new List<User>() { user }, null));
+			controller.Remove(new []{ Guid.Empty });
+			db.Verify(x => x.RemoveList(It.Is<ICollection<User>>(y => y.First().Login == user.Login)), Times.Once);
 		}
 
 	}

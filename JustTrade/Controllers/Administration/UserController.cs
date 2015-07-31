@@ -63,7 +63,7 @@
 		}
 
 		[HttpPost]
-		public ActionResult Remove(Guid[] ids, bool? accepted) {
+		public ActionResult Remove(Guid[] ids) {
 			ICollection<User> findedUsers;
 			if (ids == null) {
 				return GenerateErrorMessage(Lang.Get("Required user(s) not found"), string.Empty);
@@ -74,16 +74,7 @@
 			if (ids.Length != findedUsers.Count) {
 				return GenerateErrorMessage(Lang.Get("Required user(s) not found"), string.Empty);
 			}
-			accepted = accepted != null;
-			if (accepted == false) {
-				var idsArray = string.Join(", ", Array.ConvertAll(ids, x => string.Format("\"{0}\"", x)));
-				var data = string.Format("{{\"ids\":[{0}], \"accepted\":\"true\"}}", idsArray);
-				var names = string.Join(", ", findedUsers.Select(x => string.Format("{0}", x.Name)).ToArray());
-				return GenerateConfirmMessage(
-					string.Format(Lang.Get("Are you sure you want to remove a user ({0}) ?"), names),
-					string.Empty, "User/Remove", data);
-			}
-			JTSecurity.Session.Db.Remove(findedUsers);
+			JTSecurity.Session.Db.RemoveList(findedUsers);
 			return new EmptyResult();
 		}
 
@@ -181,15 +172,21 @@
 				user = users.First();
 				templateListToRemove = user.UserPermissionBindings.ToList();
 			}
-			JTSecurity.Session.Db.Remove(templateListToRemove);
+			if (templateListToRemove.Any())
+			{
+				JTSecurity.Session.Db.RemoveList(templateListToRemove);
+			}
 			using (var templates = JTSecurity.Session.Db.Find<PermissionTemplate>(new RepoFiler("id", ids, RepoFilerExpr.In))) {
 				templateList = templates.ToList();
 			}
 			var userPermissionBindingListToInsert = templateList.Select(x => new UserPermissionBinding() {
 				User = user,
 				PermissionTemplate = x
-			});
-			JTSecurity.Session.Db.Add(userPermissionBindingListToInsert);
+			}).ToList();
+			if (userPermissionBindingListToInsert.Any())
+			{
+				JTSecurity.Session.Db.AddList(userPermissionBindingListToInsert);
+			}
 			return new EmptyResult();
 		}
 

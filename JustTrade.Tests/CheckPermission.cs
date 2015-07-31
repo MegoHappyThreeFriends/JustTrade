@@ -41,9 +41,9 @@
 					}
 				}
 			}
-			Assert.IsTrue(methodsWithoutAttributes.Any(),string.Format(
+			Assert.IsFalse(methodsWithoutAttributes.Any(),string.Format(
 					"Has been found public methods without attributes! " +
-					"Fix this error to prevent security hole. Methods: {0}",
+					"Fix this error to prevent security hole. \nMethods: {0}",
 					String.Join("\n,", methodsWithoutAttributes)));
 		}
 	}

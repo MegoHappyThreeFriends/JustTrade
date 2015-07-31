@@ -139,7 +139,7 @@
 			return Find<T>(new RepoFiler("id", id));
 		}
 
-		public void Add<T>(IEnumerable<T> items) {
+		public void AddList<T>(IEnumerable<T> items) {
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
 				foreach (var item in items) {
@@ -157,7 +157,7 @@
 			}
 		}
 
-		public void Update<T>(IEnumerable<T> items) {
+		public void UpdateList<T>(IEnumerable<T> items) {
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
 				foreach (var item in items) {
@@ -175,7 +175,7 @@
 			}
 		}
 
-		public void Remove<T>(IEnumerable<T> items) {
+		public void RemoveList<T>(IEnumerable<T> items) {
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
 				foreach (var item in items) {

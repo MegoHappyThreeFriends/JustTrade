@@ -118,7 +118,7 @@
 		}
 	}
 
-	function GetSelectedItems() {
+	function GetSelectedIDs() {
 		var ids = new Array();
 		$(".selected").each(function (index, value) {
 			var id = $(value).find('td:eq(0)').find('p').attr('id');
@@ -127,31 +127,55 @@
 		return ids;
 	}
 
+	function GetSelectedNames() {
+	    var names = new Array();
+	    $(".selected").each(function (index, value) {
+	        var id = $(value).find('td:eq(0)').find('p').text();
+	        names.push(id);
+	    });
+	    return names.join(",");
+	}
+
 	function RemoveUser() {
-		var ids = GetSelectedItems();
-		ShowBlockUI.Show();
-		$("#RemoveForm").remove();
-		$.ajax(
-		{
-			type: "POST",
-			url: "/User/Remove/",
-			data: {ids:ids},
-			success: function(data) {
-				$("#json_data").append("<div id='RemoveForm'>" + data + "</div>");
-			},
-			dataType: 'html',
-			complete: function() {
-				$.unblockUI();
-			},
-			error: function(xhr, status, error) {
-				var message = '@Lang.Get("Error connect to server. Message:")';
-             		alert(message + error);
-             	}
-             });
+	    var ids = GetSelectedIDs();
+	    if (ids.length <= 0) {
+	        return;
+	    }
+	    var selectedNames = GetSelectedNames();
+	    var message =
+            Tools.StrFormat(Language.Data["Are you sure you want to remove a users ({0}) ?"], selectedNames);
+	    var msg = new MessageBox(message, Language.Data["Warning"]);
+	    msg.Confirm(function(isAccepted) {
+	        if (isAccepted) {
+	            ShowBlockUI.Show();
+	            $("#RemoveForm").remove();
+	            $.ajax(
+                {
+                    type: "POST",
+                    url: "/User/Remove/",
+                    data: { ids: ids },
+                    success: function (data) {
+                        if(data.length>0){
+                            $("#json_data").apend("<div id='RemoveForm'>" + data + "</div>");
+                        }
+                    },
+                    dataType: 'html',
+                    complete: function () {
+                        table.ajax.reload();
+                        $.unblockUI();
+                    },
+                    error: function (xhr, status, error) {
+                        var message = '@Lang.Get("Error connect to server. Message:")';
+                        alert(message + error);
+                    }
+                });
+	        }
+	    });
+		
 	}
 
 	function EditUser() {
-		var ids = GetSelectedItems();
+		var ids = GetSelectedIDs();
 		if (ids.length <= 0)
 			return;
 		ShowBlockUI.Show();

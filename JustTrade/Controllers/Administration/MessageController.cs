@@ -8,8 +8,7 @@
 	{
 		[FreeAccess]
 		[HttpGet]
-		public ActionResult Index() {
-			var message = (Message)TempData["Message"];
+		public ActionResult Index(Message message) {
 			return PartialView(message);
 		}
 
