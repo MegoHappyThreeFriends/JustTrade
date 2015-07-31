@@ -2,29 +2,20 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using JustTrade.Database;
 	using JustTrade.Helpers;
+	using JustTrade.Tools.Security;
 	using Moq;
-	using NHibernate;
-	using NUnit.Framework;
 
 	static class MockTools
 	{
 
-		#region Extend: ISession
-
-		public static Mock<ICriteria> SetupCriteria(this Mock<ISession> sessionMock) {
-			var criteria = new Mock<ICriteria>();
-			sessionMock.Setup(x => x.CreateCriteria(It.IsAny<Type>())).Returns(criteria.Object);
-			return criteria;
-		}
-
-		#endregion
-
-		public static Mock<ISession> CreateSessionMock() {
-			var session = new Mock<ISession>();
-			var transaction = new Mock<ITransaction>();
-			session.Setup(x => x.BeginTransaction()).Returns(transaction.Object);
-			return session;
+		public static Mock<IRepository> SetupDb() {
+			var dbMock = new Mock<IRepository>();
+			var userSession = new UserSession();
+			userSession.Db = dbMock.Object;
+			JTSecurity.Session = userSession;
+			return dbMock;
 		}
 
 		public static void SetupSysSettings(Dictionary<string, string> dictionary) {

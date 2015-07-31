@@ -3,12 +3,12 @@
 	using System;
 	using System.Linq;
 	using System.Web.Mvc;
-	using JastTrade;
 	using JustTrade.Database;
 	using JustTrade.Helpers;
 	using JustTrade.Helpers.ExtensionMethods;
 	using JustTrade.Tools;
 	using JustTrade.Tools.Attributes;
+	using JustTrade.Tools.Security;
 
 	public class LoginController : ControllerWithTools
 	{
@@ -24,7 +24,8 @@
 		public ActionResult Login(string login, string password) {
 			User user;
 			try {
-				using (var users = Repository<User>.Find(new RepoFiler("Login", login))) {
+				using (var users = 
+					JTSecurity.Session.Db.Find<User>(new RepoFiler("Login", login))) {
 					user = users.FirstOrDefault();
 				}
 			} catch (Exception ex) {
@@ -33,7 +34,7 @@
 			if (user != null) {
 				if (user.Password == password.GetHashPassword()) {
 					try {
-						JustTradeSecurity.CreateSession(user);
+						JTSecurity.CreateSession(user);
 					} catch (Exception ex) {
 						return GenerateErrorMessage(Lang.Get("Error create session"), ex);
 					}

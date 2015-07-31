@@ -8,6 +8,7 @@
 	using JustTrade.Helpers;
 	using JustTrade.Helpers.ExtensionMethods;
 	using JustTrade.Tools;
+	using JustTrade.Tools.Security;
 
 	public class UserController : ControllerWithTools
 	{
@@ -22,7 +23,7 @@
 				return GenerateErrorMessage(Lang.Get("You must enter Login, Name and Password"), string.Empty);
 			}
 			ICollection<User> existingUser;
-			using (var resultExistingUser = Repository<User>.Find(new RepoFiler("Login", user.Login))) {
+			using (var resultExistingUser = JTSecurity.Session.Db.Find<User>(new RepoFiler("Login", user.Login))) {
 				existingUser = resultExistingUser;
 			}
 			if (existingUser.Any()) {
@@ -34,8 +35,10 @@
 				Name = user.Name,
 				IsSuperuser = user.IsSuperuser
 			};
-			Repository<User>.Add(newUser);
-
+			JTSecurity.Session.Db.Add(newUser);
+			if (permissionTemplates == null) {
+				return new EmptyResult();
+			}
 			return UpdatePermission(GetUserIdByLogin(user.Login), permissionTemplates);
 		}
 
@@ -45,7 +48,7 @@
 				return GenerateErrorMessage(Lang.Get("You must enter Login, Name and Password"), string.Empty);
 			}
 			User existingUser;
-			using (var existingUsers = Repository<User>.FindById(user.Id)) {
+			using (var existingUsers = JTSecurity.Session.Db.FindById<User>(user.Id)) {
 				existingUser = existingUsers.FirstOrDefault();
 			}
 			if (existingUser == null) {
@@ -55,7 +58,7 @@
 			existingUser.Login = user.Login;
 			existingUser.Name = user.Name;
 			existingUser.Password = user.Password.GetHashPassword();
-			Repository<User>.Update(existingUser);
+			JTSecurity.Session.Db.Update(existingUser);
 			return UpdatePermission(user.Id, permissionTemplates);
 		}
 
@@ -65,7 +68,7 @@
 			if (ids == null) {
 				return GenerateErrorMessage(Lang.Get("Required user(s) not found"), string.Empty);
 			}
-			using (var rfindedUsers = Repository<User>.Find(new RepoFiler("id", ids, RepoFilerExpr.In))) {
+			using (var rfindedUsers = JTSecurity.Session.Db.Find<User>(new RepoFiler("id", ids, RepoFilerExpr.In))) {
 				findedUsers = rfindedUsers;
 			}
 			if (ids.Length != findedUsers.Count) {
@@ -80,7 +83,7 @@
 					string.Format(Lang.Get("Are you sure you want to remove a user ({0}) ?"), names),
 					string.Empty, "User/Remove", data);
 			}
-			Repository<User>.Remove(findedUsers);
+			JTSecurity.Session.Db.Remove(findedUsers);
 			return new EmptyResult();
 		}
 
@@ -89,7 +92,7 @@
 		public ActionResult ShowAddUpdateForm(Guid? id) {
 			var userPermissionItems = new List<UserPermissionItem>();
 
-			using (var templates = Repository<PermissionTemplate>.Find()) {
+			using (var templates = JTSecurity.Session.Db.Find<PermissionTemplate>()) {
 				userPermissionItems.AddRange(
 					templates.Select(permissionTemplate => new UserPermissionItem() 
 						{ Id = permissionTemplate.Id, TemplateName = permissionTemplate.Name, IsUse = false }));
@@ -97,7 +100,7 @@
 
 			User findedUser=null;
 			if (id != null) {
-				using (var findedUsers = Repository<User>.FindById((Guid)id)) {
+				using (var findedUsers = JTSecurity.Session.Db.FindById<User>((Guid)id)) {
 					findedUser = findedUsers.FirstOrDefault();
 
 					if (findedUser != null) {
@@ -118,7 +121,7 @@
 		
 		[HttpGet]
 		public ActionResult UsersJsonList() {
-			using (var users = Repository<User>.Find()) {
+			using (var users = JTSecurity.Session.Db.Find<User>()) {
 				var userList = new {
 					data = users.Select(x => new {
 						x.Id,
@@ -156,7 +159,7 @@
 		#region Methods: Private
 
 		private Guid GetUserIdByLogin(string login) {
-			using (var users = Repository<User>.Find(new RepoFiler("Login", login))) {
+			using (var users = JTSecurity.Session.Db.Find<User>(new RepoFiler("Login", login))) {
 				if (users.Any()) {
 					return users.First().Id;
 				}
@@ -168,22 +171,25 @@
 			User user;
 			List<PermissionTemplate> templateList;
 			List<UserPermissionBinding> templateListToRemove;
-			using (var users = Repository<User>.FindById(userId)) {
+			if (ids == null) {
+				return new EmptyResult();
+			}
+			using (var users = JTSecurity.Session.Db.FindById<User>(userId)) {
 				if (!users.Any()) {
 					return GenerateErrorMessage(Lang.Get("Required user(s) not found"), string.Empty);
 				}
 				user = users.First();
 				templateListToRemove = user.UserPermissionBindings.ToList();
 			}
-			Repository<UserPermissionBinding>.Remove(templateListToRemove);
-			using (var templates = Repository<PermissionTemplate>.Find(new RepoFiler("id", ids, RepoFilerExpr.In))) {
+			JTSecurity.Session.Db.Remove(templateListToRemove);
+			using (var templates = JTSecurity.Session.Db.Find<PermissionTemplate>(new RepoFiler("id", ids, RepoFilerExpr.In))) {
 				templateList = templates.ToList();
 			}
 			var userPermissionBindingListToInsert = templateList.Select(x => new UserPermissionBinding() {
 				User = user,
 				PermissionTemplate = x
 			});
-			Repository<UserPermissionBinding>.Add(userPermissionBindingListToInsert);
+			JTSecurity.Session.Db.Add(userPermissionBindingListToInsert);
 			return new EmptyResult();
 		}
 

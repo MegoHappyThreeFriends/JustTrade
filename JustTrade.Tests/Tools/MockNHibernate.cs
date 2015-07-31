@@ -6,7 +6,6 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Query.Dynamic;
-using JastTrade;
 using JustTrade.Database;
 using Moq;
 using NHibernate;

@@ -1,10 +1,9 @@
-﻿using JustTrade.Database;
-using System.Web;
-
-namespace JastTrade
+﻿namespace JustTrade.Tools.Security
 {
 	using System.Collections.Generic;
 	using System.Linq;
+	using System.Web;
+	using JustTrade.Database;
 	using Newtonsoft.Json.Linq;
 
 	public class UserSession
@@ -18,33 +17,54 @@ namespace JastTrade
 			get;
 			set;
 		}
+
+		private IRepository _repository;
+		public IRepository Db {
+			get {
+				return _repository ?? (_repository = new Repository());
+			}
+			internal set {
+				_repository = value;
+			}
+		}
 	}
 
-	public static class JustTradeSecurity
+	public static class JTSecurity
 	{
+		private static UserSession _mockUserSession;
+
 		public static bool AccessIsAllowed(string permission) {
-			var currentSession = HttpContext.Current.Session;
-			var session = (UserSession)(currentSession["session"]);
-			if (session == null) {
+			var session = Session;
+			if (session.PermissionList == null) {
 				return false;
 			}
 			return session.PermissionList.Contains(permission);
 		}
 
-		public static UserSession CurrentSession {
+		public static UserSession Session {
 			get {
+				if (_mockUserSession != null) {
+					return _mockUserSession;
+				}
 				var currentSession = HttpContext.Current.Session;
 				var session = (UserSession)(currentSession["session"]);
 				if (session == null) {
-					return null;
+					session = new UserSession() {
+						User = null,
+						PermissionList = null
+					};
+					currentSession["session"] = session;
 				}
 				return session;
+			}
+			internal set {
+				_mockUserSession = value;
 			}
 		}
 
 		public static void CreateSession(User user) {
 			var permissionList = new HashSet<string>();
-			using (var users = Repository<User>.FindById(user.Id)) {
+			using (var users = Session.Db.FindById<User>(user.Id)) {
 				var permissionBindings = users.First().UserPermissionBindings;
 				foreach (var userPermissionBinding in permissionBindings) {
 					if (!string.IsNullOrEmpty(userPermissionBinding.PermissionTemplate.PermissionRules)) {
@@ -56,12 +76,12 @@ namespace JastTrade
 					}
 				}
 			}
-			var nsession = new UserSession() {
+			var newSession = new UserSession() {
 				User = user,
 				PermissionList = permissionList
 			};
 			var currentSession = HttpContext.Current.Session;
-			currentSession["session"] = nsession;
+			currentSession["session"] = newSession;
 		}
 	}
 }

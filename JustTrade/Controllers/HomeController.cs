@@ -3,13 +3,13 @@ namespace JustTrade.Controllers
 {
 	using System;
 	using System.Web.Mvc;
-	using JastTrade;
+	using JustTrade.Tools.Security;
 
 	public class HomeController : Controller
 	{
 		[HttpGet]
 		public ActionResult Index() {
-			if (JustTradeSecurity.CurrentSession == null) {
+			if (JTSecurity.Session == null) {
 				return RedirectToAction("Index", "Login");
 			}
 

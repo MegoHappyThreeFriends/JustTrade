@@ -8,6 +8,7 @@
 	using JustTrade.Database;
 	using JustTrade.Helpers;
 	using JustTrade.Tools;
+	using JustTrade.Tools.Security;
 	using Newtonsoft.Json;
 	using Newtonsoft.Json.Linq;
 
@@ -23,7 +24,8 @@
 		public ActionResult ShowAddUpdateTemplate(Guid?[] ids) {
 			PermissionTemplate template = null;
 			if (ids != null) {
-				using (var templateList = Repository<PermissionTemplate>.Find(new RepoFiler("id", ids, RepoFilerExpr.In))) {
+				using (var templateList = 
+					JTSecurity.Session.Db.Find<PermissionTemplate>(new RepoFiler("id", ids, RepoFilerExpr.In))) {
 					template = templateList.FirstOrDefault();
 				}
 			}
@@ -32,7 +34,7 @@
 
 		[HttpGet]
 		public ActionResult GetTemlateList() {
-			using (var templates = Repository<PermissionTemplate>.Find()) {
+			using (var templates = JTSecurity.Session.Db.Find<PermissionTemplate>()) {
 				List<PermissionTemplate> templateList = templates.ToList();
 				return PartialView("_TemplateList", templateList);
 			}
@@ -40,13 +42,13 @@
 
 		[HttpPost]
 		public ActionResult AddTemplate(string name) {
-			using (var templates = Repository<PermissionTemplate>.Find(new RepoFiler("Name", name))) {
+			using (var templates = JTSecurity.Session.Db.Find<PermissionTemplate>(new RepoFiler("Name", name))) {
 				if (templates.Any()) {
 					return GenerateErrorMessage(Lang.Get("Found a duplicate entry"), Lang.Get("Check the name of the template to duplicate from the list!"));
 				}
 			}
 			try {
-				Repository<PermissionTemplate>.Add(new PermissionTemplate() {
+				JTSecurity.Session.Db.Add(new PermissionTemplate() {
 					Name = name
 				});
 			} catch (Exception ex) {
@@ -58,7 +60,7 @@
 		[HttpPost]
 		public ActionResult UpdateTemplate(Guid id, string name) {
 			PermissionTemplate item;
-			using (var templates = Repository<PermissionTemplate>.FindById(id)) {
+			using (var templates = JTSecurity.Session.Db.FindById<PermissionTemplate>(id)) {
 				if (!templates.Any()) {
 					return GenerateErrorMessage(Lang.Get("Record not found"), "");
 				}
@@ -66,7 +68,7 @@
 				item.Name = name;
 			}
 			try {
-				Repository<PermissionTemplate>.Update(item);
+				JTSecurity.Session.Db.Update(item);
 			} catch (Exception ex) {
 				return GenerateErrorMessage("Error adding template", ex);
 			}
@@ -77,11 +79,11 @@
 		public ActionResult RemoveTemplates(Guid[] ids) {
 			try {
 				PermissionTemplate[] permissionTemplate;
-				using (var templates = Repository<PermissionTemplate>.Find(new RepoFiler("id", ids, RepoFilerExpr.In))) {
+				using (var templates = JTSecurity.Session.Db.Find<PermissionTemplate>(new RepoFiler("id", ids, RepoFilerExpr.In))) {
 					permissionTemplate = templates.ToArray();
 				}
 				foreach (PermissionTemplate template in permissionTemplate) {
-					Repository<PermissionTemplate>.Remove(template);
+					JTSecurity.Session.Db.Remove(template);
 				}
 			} catch (Exception ex) {
 				return GenerateErrorMessage("Error removing template(s)", ex);
@@ -92,7 +94,7 @@
 		[HttpPost]
 		public ActionResult UpdateTemplateParameter(string[] parameters, Guid templateId) {
 			PermissionTemplate updateItem;
-			using (var existingItems = Repository<PermissionTemplate>.FindById(templateId)) {
+			using (var existingItems = JTSecurity.Session.Db.FindById<PermissionTemplate>(templateId)) {
 				if (!existingItems.Any()) {
 					return GenerateErrorMessage(Lang.Get("Required item not found"), string.Empty);
 				}
@@ -101,7 +103,7 @@
 			var json = (parameters == null ? "" : JsonConvert.SerializeObject(parameters.Where(x => x.Contains("."))));
 			updateItem.PermissionRules = json;
 			try {
-				Repository<PermissionTemplate>.Update(updateItem);
+				JTSecurity.Session.Db.Update(updateItem);
 			} catch (Exception ex) {
 				return GenerateErrorMessage(Lang.Get("Error update item"), ex);
 			}
@@ -117,7 +119,7 @@
 
 		private JsonResult GetPermitionTreeInJsonData(Guid templateId) {
 			List<string> parameters = null;
-			using (var permission = Repository<PermissionTemplate>.FindById(templateId)) {
+			using (var permission = JTSecurity.Session.Db.FindById<PermissionTemplate>(templateId)) {
 				if (permission.Any()) {
 					PermissionTemplate item = permission.First();
 					if (!string.IsNullOrEmpty(item.PermissionRules)) {

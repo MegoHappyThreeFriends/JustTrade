@@ -8,8 +8,8 @@ using System.Web.Routing;
 
 namespace JustTrade
 {
-	using JastTrade;
 	using JustTrade.Controllers;
+	using JustTrade.Tools.Security;
 
 	public class MvcApplication : System.Web.HttpApplication
 	{
@@ -90,7 +90,7 @@ namespace JustTrade
 			if (isFreeMethod) {
 				return true;
 			}
-			return JustTradeSecurity.AccessIsAllowed(path);
+			return JTSecurity.AccessIsAllowed(path);
 		}
 
 	}
