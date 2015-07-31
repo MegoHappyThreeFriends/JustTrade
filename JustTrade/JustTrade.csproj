@@ -95,6 +95,7 @@
     <Compile Include="Controllers\Administration\AdminController.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
     <Compile Include="Models\Message.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Attributes\FreeAccessAttribute.cs" />
     <Compile Include="Tools\ControllerWithTools.cs" />
     <Compile Include="Tools\TypedResponse\JsonData.cs" />

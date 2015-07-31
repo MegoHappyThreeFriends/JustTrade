@@ -90,11 +90,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckPermission.cs" />
+    <Compile Include="Controllers\LoginController.Tests.cs" />
     <Compile Include="Tools\FakeCriteria.cs" />
     <Compile Include="Tools\FakeCriterion.cs" />
     <Compile Include="Tools\FakeSession.cs" />
+    <Compile Include="Tools\MockTools.cs" />
     <Compile Include="Tools\MockNHibernate.cs" />
-    <Compile Include="Controllers\UserController.Tests.cs" />
+    <Compile Include="Controllers\Administration\UserController.Tests.cs" />
     <Compile Include="Controllers\HomeController.Tests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

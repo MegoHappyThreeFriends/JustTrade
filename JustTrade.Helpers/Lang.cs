@@ -7,12 +7,12 @@ namespace JustTrade.Helpers
 {
 	using System.Diagnostics;
 	using System.Linq;
-	using System.Security.Cryptography;
 	using System.Threading;
 	using Newtonsoft.Json.Linq;
 
 	public static class Lang
 	{
+		internal static bool IsMock = false;
 		private static bool _loading = false;
 		private static bool _loaded;
 		private static readonly Hashtable _language = new Hashtable();
@@ -31,6 +31,10 @@ namespace JustTrade.Helpers
 		}
 
 		internal static void Load() {
+			if (IsMock) {
+				_loaded = true;
+				return;
+			}
 			while (_loading) {
 				Thread.Sleep(100);
 			}
@@ -93,6 +97,9 @@ namespace JustTrade.Helpers
 		}
 
 		public static void Save(Dictionary<string, string> dictionary) {
+			if (IsMock) {
+				return;
+			}
 			if (!_loaded) {
 				Load();
 			}
@@ -123,6 +130,9 @@ namespace JustTrade.Helpers
 		}
 
 		public static string GetInformation(string name) {
+			if (IsMock) {
+				return string.Empty;
+			}
 			if (!_loaded) {
 				Load();
 			}

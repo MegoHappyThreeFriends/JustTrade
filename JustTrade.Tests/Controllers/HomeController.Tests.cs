@@ -1,11 +1,9 @@
-﻿using NUnit.Framework;
-using System;
-using System.Web.Mvc;
-
-namespace JustTrade.Tests
+﻿namespace JustTrade.Tests.Controllers
 {
+	using System;
+	using System.Web.Mvc;
 	using JustTrade.Controllers;
-	using JustTrade.Controllers.Administration;
+	using NUnit.Framework;
 
 	[TestFixture]
 	public class HomeControllerTest

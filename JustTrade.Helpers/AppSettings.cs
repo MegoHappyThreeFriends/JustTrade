@@ -1,13 +1,22 @@
 ﻿using System;
 using System.Configuration;
-using System.Globalization;
 
 namespace JustTrade.Helpers
 {
-    public static class AppSettings 
-    {
+	using System.Collections.Generic;
 
-        public static string Lang
+	public static class AppSettings
+	{
+		static AppSettings() {
+			MockSettings = null;
+		}
+
+		internal static Dictionary<string, string> MockSettings {
+			get;
+			set;
+		}
+
+		public static string Lang
         {
             get
             {
@@ -23,14 +32,17 @@ namespace JustTrade.Helpers
 
         private static T Setting<T>(string name)
         {
-            string value = ConfigurationManager.AppSettings[name];
+	        if (MockSettings != null) {
+				return (T)Convert.ChangeType(MockSettings[name], typeof(T));
+	        }
+	        string value = ConfigurationManager.AppSettings[name];
 
             if (value == null)
             {
                 throw new Exception(String.Format("Could not find setting '{0}',", name));
             }
 
-            return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
+            return (T)Convert.ChangeType(value, typeof(T));
         }
     }
 }
