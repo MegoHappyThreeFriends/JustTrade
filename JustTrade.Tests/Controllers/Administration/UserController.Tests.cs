@@ -40,8 +40,29 @@
 			var user = new User();
 			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).Returns(new ResultCollection<User>(new List<User>(), null));
 			var result = controller.Add(user, null);
-			Message message = (Message)((System.Web.Mvc.RedirectToRouteResult) result).RouteValues["message"];
-			Assert.IsTrue(message.Caption.Equals("Error"));
+			var routeValues = ((System.Web.Mvc.RedirectToRouteResult) result).RouteValues;
+            Message message = (Message)routeValues["message"];
+			Assert.IsTrue(message.Caption.Equals("Error") && routeValues["controller"].Equals("Message"));
+		}
+
+		[Test]
+		public void Add_RedirectToMessageController_WhenDuplicateUser()
+		{
+			MockTools.SetupLanguage();
+			MockTools.SetupDefaultSysSettings();
+			var db = MockTools.SetupDb();
+			var controller = new UserController();
+			var user = new User()
+			{
+				Login = "login",
+				Name = "name",
+				Password = "password"
+			};
+			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).Returns(new ResultCollection<User>(new List<User>() { user }, null));
+			var result = controller.Add(user, null);
+			var routeValues = ((System.Web.Mvc.RedirectToRouteResult)result).RouteValues;
+			Message message = (Message)routeValues["message"];
+			Assert.IsTrue(message.Caption.Equals("Error") && routeValues["controller"].Equals("Message"));
 		}
 
 		[Test]
