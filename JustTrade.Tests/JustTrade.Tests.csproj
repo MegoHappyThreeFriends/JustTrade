@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckControllersAndMethods.cs" />
+    <Compile Include="Controllers\Administration\MessageController.tests.cs" />
     <Compile Include="Controllers\Administration\PermissionController.Tests.cs" />
     <Compile Include="Controllers\Base.Tests.cs" />
     <Compile Include="Controllers\LoginController.Tests.cs" />

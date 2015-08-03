@@ -4,6 +4,7 @@
 	using System.Linq;
 	using System.Web;
 	using JustTrade.Database;
+	using JustTrade.Helpers;
 	using Newtonsoft.Json.Linq;
 
 	public class UserSession
@@ -16,6 +17,19 @@
 		public HashSet<string> PermissionList {
 			get;
 			set;
+		}
+
+		private IMail _mail;
+		public IMail Mail {
+			get {
+				if (_mail == null) {
+					_mail = new Mail();
+				}
+				return _mail;
+			}
+			internal set {
+				_mail = value;
+			}
 		}
 
 		private IRepository _repository;

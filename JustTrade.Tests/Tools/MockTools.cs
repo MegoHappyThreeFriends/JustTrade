@@ -10,19 +10,29 @@
 	static class MockTools
 	{
 
-		public static Mock<IRepository> SetupDb() {
-			var dbMock = new Mock<IRepository>();
+		public static UserSession SetupSession() {
 			var userSession = new UserSession();
-			userSession.Db = dbMock.Object;
 			JTSecurity.Session = userSession;
+			return userSession;
+		}
+
+		public static Mock<IRepository> SetupDb(this UserSession session) {
+			var dbMock = new Mock<IRepository>();
+			session.Db = dbMock.Object;
 			return dbMock;
+		}
+
+		public static Mock<IMail> SetupMail(this UserSession session) {
+			var mailMock = new Mock<IMail>();
+			session.Mail = mailMock.Object;
+			return mailMock;
 		}
 
 		public static void SetupSysSettings(Dictionary<string, string> dictionary) {
 			AppSettings.MockSettings = dictionary;
 		}
 
-		public static void SetupDefaultSysSettings() {
+		public static void SetupDefaultAppSettings() {
 			var dictionary = new Dictionary<string, string>();
 			dictionary.Add("lang","");
 			dictionary.Add("workspace", "");

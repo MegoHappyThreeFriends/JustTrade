@@ -198,3 +198,4 @@ FakesAssemblies/
 *.opt
 /JustTrade/nhibernate.db
 web.config
+/JustTrade/web.config

@@ -29,7 +29,7 @@
 			if (existingUser.Any()) {
 				return GenerateErrorMessage(Lang.Get("User with same login already exist"), string.Empty);
 			}
-			var newUser = new User() {
+			var newUser = new User {
 				Login = user.Login,
 				Password = user.Password.GetHashPassword(),
 				Name = user.Name,
@@ -85,8 +85,7 @@
 
 			using (var templates = JTSecurity.Session.Db.Find<PermissionTemplate>()) {
 				userPermissionItems.AddRange(
-					templates.Select(permissionTemplate => new UserPermissionItem() 
-						{ Id = permissionTemplate.Id, TemplateName = permissionTemplate.Name, IsUse = false }));
+					templates.Select(permissionTemplate => new UserPermissionItem { Id = permissionTemplate.Id, TemplateName = permissionTemplate.Name, IsUse = false }));
 			}
 
 			User findedUser=null;
