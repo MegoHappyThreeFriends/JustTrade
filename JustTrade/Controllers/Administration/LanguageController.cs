@@ -10,38 +10,6 @@
 	using JustTrade.Tools.Attributes;
 	using Newtonsoft.Json.Linq;
 
-	public class LanguageData
-	{
-		public string Name {
-			get;
-			set;
-		}
-
-		public string Version {
-			get;
-			set;
-		}
-
-		public string Value {
-			get;
-			set;
-		}
-	}
-
-	internal class LanguageItem
-	{
-		public string Key {
-			get;
-			set;
-		}
-
-		public string Value {
-			get;
-			set;
-		}
-	}
-
-
 	public class LanguageController : ControllerWithTools
 	{
 		[FreeAccess]
@@ -64,22 +32,18 @@
 		}
 
 		[HttpPost]
-		public ActionResult SaveLanguage(LanguageData language) {
+		public ActionResult Save(Dictionary<string, string> langDictionary, string name, string version) {
 			try {
-				var languageDictionary =
-				JArray.Parse(language.Value).ToObject<List<LanguageItem>>().ToDictionary(x => x.Key, x => x.Value);
 				var sortedDictionary =
-					(from item in languageDictionary
-					 orderby item.Key
-					 select item).ToDictionary(x => x.Key, x => x.Value);
-				sortedDictionary.Add(Lang.LocaleName, language.Name);
-				sortedDictionary.Add(Lang.LocaleVersion, language.Version);
+						(from item in langDictionary
+						 orderby item.Key
+						 select item).ToDictionary(x => x.Key, x => x.Value);
+				sortedDictionary.Add(Lang.LocaleName, name);
+				sortedDictionary.Add(Lang.LocaleVersion, version);
 				Lang.Save(sortedDictionary);
-				
 			} catch (Exception ex) {
 				return GenerateErrorMessage(
-					string.Format(Lang.Get("Error save language dictionary data. Info: {0}"),ex.Message), 
-					string.Empty);
+					string.Format(Lang.Get("Error save language dictionary data.")), ex);
 			}
 			return new EmptyResult();
 		}

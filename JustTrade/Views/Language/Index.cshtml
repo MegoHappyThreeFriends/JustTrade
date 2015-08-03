@@ -89,8 +89,8 @@
 		var version = $("#lang-version").val();
 		$.ajax({
 			type: "POST",
-			url: "Language/SaveLanguage",
-			data: "Value=" + data + "&Name=" + name + "&Version=" + version,
+			url: "Language/Save",
+			data: { langDictionary: data, name: name, version: version },
 			success: function (response) {
 				$.unblockUI();
 				if (response.length > 0) {
@@ -137,18 +137,26 @@
 	}
 
 	function GetLanguageData() {
-		var result = [];
+		var result = {};
 		var trCollection = $(".localization-items tr");
 		trCollection.each(function (index, data) {
 			var key = $(data).find(".lang-key").val();
 			var value = $(data).find(".lang-value").val();
 			if (key !== undefined && value !== undefined) {
 				if (key.length > 0 && value.length > 0) {
-					result.push({ Key: key, Value: value });
+
+					if (result[key]) {
+						if (!result[key].push) {
+							result[key] = [result[key]];
+						}
+						result[key].push(value);
+					} else {
+						result[key] = value;
+					}
 				}
 			}
 		});
-		return JSON.stringify(result);
+		return result;
 	}
 
 </script>

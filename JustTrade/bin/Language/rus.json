@@ -29,7 +29,7 @@
 	"Error create session":"Ошибка создания сессии",
 	"Error generate database":"Ошибка генерации базы данных",
 	"Error removing template(s)":"Ошибка удаления шаблона(ов)",
-	"Error save language dictionary data. Info: {0}":"Ошибка сохранения языкового словаря. Подробно: {0}",
+	"Error save language dictionary data.":"Ошибка сохранения языкового словаря.",
 	"Error send mail":"Ошибка отправки сообщения",
 	"Error update item":"Ошибка обновления объекта",
 	"Executing":"Выполнение",
