@@ -179,7 +179,7 @@
 			using (var templates = JTSecurity.Session.Db.Find<PermissionTemplate>(new RepoFiler("id", ids, RepoFilerExpr.In))) {
 				templateList = templates.ToList();
 			}
-			var userPermissionBindingListToInsert = templateList.Select(x => new UserPermissionBinding() {
+			List<UserPermissionBinding> userPermissionBindingListToInsert = templateList.Select(x => new UserPermissionBinding() {
 				User = user,
 				PermissionTemplate = x
 			}).ToList();

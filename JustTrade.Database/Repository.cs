@@ -24,7 +24,7 @@
 		Like
 	}
 
-	public class RepoFiler
+	public class RepoFiler : IEquatable<RepoFiler>
 	{
 
 		public RepoFiler(string name, object value, RepoFilerExpr expr = RepoFilerExpr.Eq) {
@@ -46,6 +46,13 @@
 		public RepoFilerExpr Expr {
 			get;
 			set;
+		}
+
+		public bool Equals(RepoFiler other) {
+			if (Name == other.Name && Value == other.Value && Expr == other.Expr) {
+				return true;
+			}
+			return false;
 		}
 	}
 

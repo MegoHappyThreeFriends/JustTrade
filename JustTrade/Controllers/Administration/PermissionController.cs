@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using System.Reflection;
 	using System.Web.Mvc;
 	using jsTree3.Models;
 	using JustTrade.Database;
@@ -48,7 +49,7 @@
 				}
 			}
 			try {
-				JTSecurity.Session.Db.Add(new PermissionTemplate() {
+				JTSecurity.Session.Db.Add(new PermissionTemplate {
 					Name = name
 				});
 			} catch (Exception ex) {
@@ -82,8 +83,8 @@
 				using (var templates = JTSecurity.Session.Db.Find<PermissionTemplate>(new RepoFiler("id", ids, RepoFilerExpr.In))) {
 					permissionTemplate = templates.ToArray();
 				}
-				foreach (PermissionTemplate template in permissionTemplate) {
-					JTSecurity.Session.Db.Remove(template);
+				if (permissionTemplate.Any()) {
+					JTSecurity.Session.Db.RemoveList(permissionTemplate);
 				}
 			} catch (Exception ex) {
 				return GenerateErrorMessage("Error removing template(s)", ex);
@@ -130,7 +131,7 @@
 			if (parameters == null) {
 				parameters = new List<string>();
 			}
-			var root = new JsTree3Node() {
+			var root = new JsTree3Node {
 				id = Guid.Empty.ToString(),
 				text = "Controllers",
 				state = new State(true, false, false)
@@ -170,10 +171,11 @@
 						y.TypeId.ToString().Contains("HttpGetAttribute") ||
 						y.TypeId.ToString().Contains("HttpPostAttribute")
 					));
-				if (!methods.Any()) {
+				IEnumerable<MethodInfo> methodInfos = methods as MethodInfo[] ?? methods.ToArray();
+				if (!methodInfos.Any()) {
 					continue;
 				}
-				var methodsList = methods.Select(methodInfo => methodInfo.Name).ToList();
+				var methodsList = methodInfos.Select(methodInfo => methodInfo.Name).ToList();
 				resultDic.Add(type.Name, methodsList);
 			}
 			return resultDic;

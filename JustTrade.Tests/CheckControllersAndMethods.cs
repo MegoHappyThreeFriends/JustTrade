@@ -8,7 +8,7 @@
 	using NUnit.Framework;
 
 	[TestFixture]
-	class CheckPermission
+	class CheckControllersAndMethods
 	{
 		[Test]
 		public void CheckPublicMethodInControllersUsingAttributeGetOrPost() {
