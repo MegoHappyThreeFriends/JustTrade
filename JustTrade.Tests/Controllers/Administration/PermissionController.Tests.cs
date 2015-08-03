@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace JustTrade.Tests.Controllers.Administration
+﻿namespace JustTrade.Tests.Controllers.Administration
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
 	using System.Web.Mvc;
 	using jsTree3.Models;
 	using JustTrade.Controllers.Administration;

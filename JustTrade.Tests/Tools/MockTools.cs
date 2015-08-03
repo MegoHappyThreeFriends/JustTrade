@@ -33,9 +33,10 @@
 		}
 
 		public static void SetupDefaultAppSettings() {
-			var dictionary = new Dictionary<string, string>();
-			dictionary.Add("lang","");
-			dictionary.Add("workspace", "");
+			var dictionary = new Dictionary<string, string> {
+				{ "lang", "" }, 
+				{ "workspace", "" }
+			};
 			AppSettings.MockSettings = dictionary;
 		}
 

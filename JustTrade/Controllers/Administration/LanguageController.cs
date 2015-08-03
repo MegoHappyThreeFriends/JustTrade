@@ -8,7 +8,6 @@
 	using JustTrade.Helpers;
 	using JustTrade.Tools;
 	using JustTrade.Tools.Attributes;
-	using Newtonsoft.Json.Linq;
 
 	public class LanguageController : ControllerWithTools
 	{
