@@ -36,9 +36,7 @@ namespace JustTrade.Database
 
         public static ISession OpenSession()
         {
-            return SessionForTest != null?
-                SessionForTest :
-                SessionFactory.OpenSession();
+            return SessionForTest ?? SessionFactory.OpenSession();
         }
 
         public static void CreateDb()

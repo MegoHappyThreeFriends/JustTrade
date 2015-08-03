@@ -2,8 +2,8 @@
 {
 	using System;
 	using System.Web.Mvc;
-	using JustTrade.Database;
-	using JustTrade.Helpers;
+	using Database;
+	using Helpers;
 
 	public class AdminController : Controller
 	{

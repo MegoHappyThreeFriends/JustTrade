@@ -16,48 +16,20 @@ namespace JustTrade.Helpers
 			set;
 		}
 
-		public static string Lang {
-			get {
-				return Setting<string>("lang");
-			}
-		}
+		public static string Lang => Setting<string>("lang");
 
-		public static string Workspace {
-			get {
-				return Setting<string>("workspace");
-			}
-		}
+		public static string Workspace => Setting<string>("workspace");
 
-		public static string MailHost {
-			get {
-				return Setting<string>("mail_host");
-			}
-		}
+		public static string MailHost => Setting<string>("mail_host");
 
-		public static int MailPort {
-			get {
-				return Setting<int>("mail_port");
-			}
-		}
+		public static int MailPort => Setting<int>("mail_port");
 
-		public static bool MailSSL {
-			get {
-				return Setting<bool>("mail_ssl");
-			}
-		}
+		public static bool MailSSL => Setting<bool>("mail_ssl");
 
-		public static string MailUser {
-			get {
-				return Setting<string>("mail_user");
-			}
-		}
+		public static string MailUser => Setting<string>("mail_user");
 
-		public static string MailPassword {
-			get {
-				return Setting<string>("mail_password");
-			}
-		}
-		
+		public static string MailPassword => Setting<string>("mail_password");
+
 		private static T Setting<T>(string name) {
 			if (MockSettings != null) {
 				return (T)Convert.ChangeType(MockSettings[name], typeof(T));
@@ -65,7 +37,7 @@ namespace JustTrade.Helpers
 			string value = ConfigurationManager.AppSettings[name];
 
 			if (value == null) {
-				throw new Exception(String.Format("Could not find setting '{0}',", name));
+				throw new Exception($"Could not find setting '{name}',");
 			}
 
 			return (T)Convert.ChangeType(value, typeof(T));
