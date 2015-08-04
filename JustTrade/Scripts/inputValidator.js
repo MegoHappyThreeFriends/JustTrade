@@ -5,10 +5,10 @@
 		var result = true;
 		this.rootInputSelector = root + " input";
 		$(this.rootInputSelector).each(function (index, value) {
-			var id = $(value).attr("id");
-			var inputType = $("#" + id).attr("val-type");
+			var obj = $(value);
+			var inputType = obj.attr("val-type");
 			if (inputType != undefined) {
-				if (!validate(id)) {
+				if (!validate(obj)) {
 					result = false;
 				}
 			}
@@ -20,52 +20,101 @@
 					$(".input-validate-information").fadeOut(500, function () {
 						$(".input-validate-information").remove();
 					});
-				}, 1500);
+				}, 5000);
 			});
 		}
 
-		callback(result);
+		if (callback != undefined) {
+			callback(result);
+		}
+		return result;
 	}
 
-	function validate(id) {
-		var inputType = $("#" + id).attr("val-type");
+	function validate(obj) {
+		var inputType = obj.attr("val-type");
+		var result = false;
+		var ignoreMinMax = false;
 		switch (inputType) {
 			case "int":
-				return checkInt(id);
-			case "text":
-				return checkText(id);
+				result = checkInt(obj);
+				ignoreMinMax = true;
+				break;
 			case "float":
-				return checkFloat(id);
+				result = checkFloat(obj);
+				ignoreMinMax = true;
+				break;
 			case "mask":
-				return checkRegExp(id);
-			case "login":
-				return checkLogin(id);
+				result = checkRegExp(obj);
+				break;
+			case "key":
+				result = checkKey(obj);
+				break;
+			case "text":
+				break;
+			case "match":
+				result = checkMatch(obj);
+				break;
 			default:
 				throw new Error("Not found validate type: "+inputType);
 		}
-	}
 
-	function checkLogin(id) {
-		var regex = /^[a-zA-Z0-9]*$/;
-		var obj = $("#" + id);
-		var min = obj.attr("val-min");
-		min = min == undefined ? -100 : min;
-		var max = obj.attr("val-max");
-		max = max == undefined ? 100 : max;
-		var val = obj.val();
-		if (regex.test(val)) {
-			if (val.length >= min && val.length <= max) {
-				return true;
+		if (!ignoreMinMax) {
+			var min = obj.attr("val-min");
+			if (min != undefined) {
+				result = checkMin(obj);
+			}
+
+			var max = obj.attr("val-max");
+			if (max != undefined) {
+				result = checkMax(obj);
 			}
 		}
-		addInformLabel(id, Tools.StrFormat(Language.Data["Must be latin and number chars. Min:{0} Max:{1}"], min, max));
+
+		return result;
+	}
+
+	function checkMin(obj) {
+		var min = parseInt(obj.attr("val-min"));
+		var val = obj.val();
+		var valid = (val.length >= min);
+		if (!valid) {
+			addInformLabelExtra(obj, Tools.StrFormat(Language.Data["Minimum number of characters:{0}"], min));
+		}
+		return valid;
+	}
+
+	function checkMax(obj) {
+		var max = parseInt(obj.attr("val-max"));
+		var val = obj.val();
+		var valid = (val.length <= max);
+		if (!valid) {
+			addInformLabelExtra(obj, Tools.StrFormat(Language.Data["Maximum number of characters:{0}"], max));
+		}
+		return valid;
+	}
+
+	function checkMatch(obj) {
+		var matchId = obj.attr("val-match");
+		var matchObj = $("#" + matchId);
+		if (matchObj.val() == obj.val()) {
+			return true;
+		}
+		addInformLabel(obj, Language.Data["Data not match."]);
 		return false;
 	}
 
+	function checkKey(obj) {
+		var regex = /^[a-zA-Z0-9-_]*$/;
+		var val = obj.val();
+		if (regex.test(val)) {
+			return true;
+		}
+		addInformLabel(obj, Language.Data["Must be latin and number chars."]);
+		return false;
+	}
 
-	function checkInt(id) {
+	function checkInt(obj) {
 		var regex = /^\d*$/;
-		var obj = $("#" + id);
 		var min = obj.attr("val-min");
 		min = min == undefined ? -100 : min;
 		var max = obj.attr("val-max");
@@ -73,70 +122,74 @@
 		var val = obj.val();
 		if (regex.test(val)) {
 			var intVal = parseInt(val);
-			if (intVal >= min && intVal <= max) {
-				return true;
+			if (intVal < min) {
+				addInformLabel(obj, Tools.StrFormat(Language.Data["Minimum value: {0}"], min));
+				return false;
 			}
-		}
-		addInformLabel(id, Tools.StrFormat(Language.Data["Incorrect numeric. Min:{0} Max:{1}"], min, max));
-		return false;
-	}
-
-	function checkText(id) {
-		var obj = $("#" + id);
-		var min = obj.attr("val-min");
-		min = min == undefined ? 0 : min;
-		var max = obj.attr("val-max");
-		max = max == undefined ? 5000 : max;
-		var val = obj.val();
-		if (val.length >= min && val.length <= max) {
+			if (intVal > max) {
+				addInformLabel(obj, Tools.StrFormat(Language.Data["Maximum value: {0}"], min));
+				return false;
+			}
 			return true;
 		}
-		addInformLabel(id, Tools.StrFormat(Language.Data["Incorrect text. Min:{0} Max:{1}"], min, max));
+		addInformLabel(obj, Language.Data["Incorrect numeric."]);
 		return false;
 	}
 
-	function checkFloat(id) {
+	function checkFloat(obj) {
 		var regex = /^-?\d*(\.\d+)?$/;
-		var obj = $("#" + id);
 		var min = obj.attr("val-min");
 		min = min == undefined ? -100 : min;
 		var max = obj.attr("val-max");
 		max = max == undefined ? 100 : max;
 		var val = obj.val();
 		if (regex.test(val)) {
-			var intVal = parseFloat(val);
-			if (intVal >= min && intVal <= max) {
-				return true;
+			var floatVal = parseFloat(val);
+			if (floatVal < min) {
+				addInformLabel(obj, Tools.StrFormat(Language.Data["Minimum value: {0}"], min));
+				return false;
 			}
+			if (floatVal > max) {
+				addInformLabel(obj, Tools.StrFormat(Language.Data["Maximum value: {0}"], min));
+				return false;
+			}
+			return true;
 		}
-		addInformLabel(id, Tools.StrFormat(Language.Data["Incorrect float. Min:{0} Max:{1}"], min, max));
+		addInformLabel(obj, Language.Data["Incorrect float."]);
 		return false;
 	}
 
-	function checkRegExp(id) {
-		var obj = $("#" + id);
-		var min = obj.attr("val-min");
-		min = min == undefined ? -100 : min;
-		var max = obj.attr("val-max");
-		max = max == undefined ? 100 : max;
+	function checkRegExp(obj) {
 		var mask = obj.attr("val-mask");
 		var maskExample = obj.attr("val-mask-example");
 		var regex = new RegExp(mask);
 		var val = obj.val();
 		if (regex.test(val)) {
-			if (val.length >= min && val.length <= max) {
-				return true;
-			}
+			return true;
 		}
-		addInformLabel(id, Tools.StrFormat(Language.Data["Need format: {0}"], maskExample));
+		addInformLabel(obj, Tools.StrFormat(Language.Data["Need format: {0}"], maskExample));
 		return false;
 	}
 
-
-	function addInformLabel(id, text) {
-		var obj = $("#" + id).parent();
-		obj.before("<div class='input-validate-information'> " + text + " </div>");
+	function addInformLabel(obj, text) {
+		var errorMessage = obj.attr("val-error-msg");
+		if (errorMessage != undefined) {
+			text = errorMessage;
+		}
+		var parentObj = obj.parent();
+		if ($(parentObj).hasClass("input-group")) {
+			parentObj.before("<div class='input-validate-information'> " + text + " </div>");
+		} else {
+			obj.before("<div class='input-validate-information'> " + text + " </div>");
+		}
 	}
 
-
+	function addInformLabelExtra(obj, text) {
+		var parentObj = obj.parent();
+		if ($(parentObj).hasClass("input-group")) {
+			parentObj.before("<div class='input-validate-information'> " + text + " </div>");
+		} else {
+			obj.before("<div class='input-validate-information'> " + text + " </div>");
+		}
+	}
 }

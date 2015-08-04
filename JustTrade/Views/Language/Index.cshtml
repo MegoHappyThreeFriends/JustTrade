@@ -92,11 +92,15 @@
 			url: "Language/Save",
 			data: { langDictionary: data, name: name, version: version },
 			success: function (response) {
-				$.unblockUI();
+				
 				if (response.length > 0) {
+					$.unblockUI();
 					$("#json_data").append("<div id='ErrorSaveLangDict'>" + response + "</div>");
 				} else {
-					GoTo("edit_locale");
+					setTimeout(function () {
+						$.unblockUI();
+						GoTo("edit_locale");
+					},1500);
 				}
 			},
 			complete: function () {
