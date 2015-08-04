@@ -13,7 +13,7 @@
 		[FreeAccess]
 		[HttpGet]
 		public ActionResult Index(Message message) {
-			return PartialView(message);
+			return PartialView("../Administrator/Message/_Index", message);
 		}
 
 		[FreeAccess]

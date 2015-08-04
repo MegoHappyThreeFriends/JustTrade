@@ -6,10 +6,10 @@
 	using System.Reflection;
 	using System.Web.Mvc;
 	using jsTree3.Models;
-	using JustTrade.Database;
-	using JustTrade.Helpers;
-	using JustTrade.Tools;
-	using JustTrade.Tools.Security;
+	using Database;
+	using Helpers;
+	using Tools;
+	using Tools.Security;
 	using Newtonsoft.Json;
 	using Newtonsoft.Json.Linq;
 
@@ -18,7 +18,7 @@
 
 		[HttpGet]
 		public ActionResult Index() {
-			return PartialView("_Index");
+			return PartialView("../Administrator/Permission/_Index");
 		}
 
 		[HttpGet]
@@ -30,14 +30,14 @@
 					template = templateList.FirstOrDefault();
 				}
 			}
-			return PartialView("_AddUpdateTemplate", template);
+			return PartialView("../Administrator/Permission/_AddUpdateTemplate", template);
 		}
 
 		[HttpGet]
 		public ActionResult GetTemlateList() {
 			using (var templates = JTSecurity.Session.Db.Find<PermissionTemplate>()) {
 				List<PermissionTemplate> templateList = templates.ToList();
-				return PartialView("_TemplateList", templateList);
+				return PartialView("../Administrator/Permission/_TemplateList", templateList);
 			}
 		}
 

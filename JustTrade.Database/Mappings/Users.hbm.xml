@@ -7,7 +7,7 @@
     </id>
 
  	<property name="Name" column="name"  type="String" />
- 	<property name="Login" column="login"  type="String" />
+ 	<property name="Login" column="login"  type="String" index="idx_login" />
   	<property name="Password" column="password" type="String" />
   	<property name="IsSuperuser" column="is_superuser" type="Boolean" />
 

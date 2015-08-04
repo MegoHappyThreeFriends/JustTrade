@@ -28,11 +28,23 @@
     border-left-color: #ff0303;
 }
 
+.inform-block-danger h4 {
+    color: #ff0303;
+}
+
 .inform-block-information {
     border-left-color: #008000;
 }
+
+.inform-block-information h4 {
+    color: #008000;
+}
+
 
 .inform-block-warning {
     border-left-color: #f4a460;
 }
 
+.inform-block-warning h4 {
+    color: #f4a460;
+}

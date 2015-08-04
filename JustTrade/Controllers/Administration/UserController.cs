@@ -4,17 +4,17 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Web.Mvc;
-	using JustTrade.Database;
-	using JustTrade.Helpers;
-	using JustTrade.Helpers.ExtensionMethods;
-	using JustTrade.Tools;
-	using JustTrade.Tools.Security;
+	using Database;
+	using Helpers;
+	using Helpers.ExtensionMethods;
+	using Tools;
+	using Tools.Security;
 
 	public class UserController : ControllerWithTools
 	{
 		[HttpGet]
 		public ActionResult Index() {
-			return PartialView("_Index");
+			return PartialView("../Administrator/User/_Index");
 		}
 
 		[HttpPost]
@@ -106,7 +106,7 @@
 				}
 			}
 			ViewBag.PermissionList = userPermissionItems;
-			return PartialView("_AddUpdateForm", findedUser);
+			return PartialView("../Administrator/User/_AddUpdateForm", findedUser);
 		}
 		
 		[HttpGet]

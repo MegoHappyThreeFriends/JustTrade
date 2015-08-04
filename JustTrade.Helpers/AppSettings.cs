@@ -1,8 +1,7 @@
-﻿using System;
-using System.Configuration;
-
-namespace JustTrade.Helpers
+﻿namespace JustTrade.Helpers
 {
+	using System;
+	using System.Configuration;
 	using System.Collections.Generic;
 
 	public static class AppSettings

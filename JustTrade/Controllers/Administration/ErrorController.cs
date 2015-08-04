@@ -1,7 +1,7 @@
 ﻿namespace JustTrade.Controllers.Administration
 {
 	using System.Web.Mvc;
-	using JustTrade.Tools;
+	using Tools;
 
 	public class ErrorController : ControllerWithTools
 	{

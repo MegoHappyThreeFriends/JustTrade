@@ -5,8 +5,8 @@
 		<id name="Id" column="id">
 			<generator class="guid" />
 		</id>
-		<many-to-one name="User" class="User" column="user_id" />
-		<many-to-one name="PermissionTemplate" class="PermissionTemplate" column="permission_template_id" />
+		<many-to-one name="User" class="User" column="user_id"  index="idx_user_id"/>
+		<many-to-one name="PermissionTemplate" class="PermissionTemplate" column="permission_template_id"  index="idx_permission_template_id"/>
 	</class>
 
 </hibernate-mapping>

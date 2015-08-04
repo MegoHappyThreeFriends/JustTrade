@@ -42,12 +42,20 @@
 						@Lang.Get("Localization") <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="#" onclick="GoTo('edit_locale')">@Lang.Get("Edit localization")</a></li>
-						<li><a href="#" onclick="GoTo('add_locale')">@Lang.Get("Add localization")</a></li>
 					</ul>
 				</li>
 
-				<li><a href="#">FAQ</a></li>
-				<li><a href="#">@Lang.Get("Contacts")</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        @Lang.Get("Settings") <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" onclick="GoTo('edit_settings')">@Lang.Get("Edit settings")</a></li>
+                    </ul>
+                </li>
+
+
+			    <li><a href="#">@Lang.Get("Contacts")</a></li>
 
 
 				<li id="exit"><a href="#" onclick="GoTo('exit')">@Lang.Get("Exit")</a></li>
@@ -84,7 +92,10 @@
 
 	function GoTo(location) {
 
-		switch (location) {
+	    switch (location) {
+	        case "edit_settings":
+	            Load("Settings");
+	            break;
 			case "permission":
 				Load("Permission");
 				break;
@@ -113,8 +124,7 @@
 		});
 	}
 
-
 	function LoadDefaultMenu() {
-		GoTo("permission");
+	    GoTo("edit_settings");
 	}
 </script>

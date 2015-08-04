@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="JustTrade.Database" namespace="JustTrade.Database">
+
+  <class name="SettingsSection" table="settings_section" lazy="true">
+    <id name="Id" column="id">
+      <generator class="guid" />
+    </id>
+
+    <property name="Name" column="name" type="String" />
+
+    <bag name="Settings" cascade="all-delete-orphan" lazy="true">
+      <key column="section_id" />
+      <one-to-many class="Setting" />
+    </bag>
+
+  </class>
+
+</hibernate-mapping>

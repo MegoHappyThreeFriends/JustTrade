@@ -5,9 +5,9 @@
 	using System.IO;
 	using System.Linq;
 	using System.Web.Mvc;
-	using JustTrade.Helpers;
-	using JustTrade.Tools;
-	using JustTrade.Tools.Attributes;
+	using Helpers;
+	using Tools;
+	using Tools.Attributes;
 
 	public class LanguageController : ControllerWithTools
 	{
@@ -27,7 +27,7 @@
 		[HttpGet]
 		public ActionResult Index() {
 			Dictionary<string, string> languageItemList = Lang.GetList();
-			return PartialView(languageItemList);
+			return PartialView("../Administrator/Language/_Index", languageItemList);
 		}
 
 		[HttpPost]

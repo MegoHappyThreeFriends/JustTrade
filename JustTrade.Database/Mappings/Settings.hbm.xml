@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="JustTrade.Database" namespace="JustTrade.Database">
+
+  <class name="Setting" table="settings" lazy="true">
+    <id name="Id" column="id">
+      <generator class="guid" />
+    </id>
+
+    <many-to-one name="Section" class="SettingsSection" column="section_id" cascade="all" index="idx_section_id"/>
+    <property name="Name" column="name"  type="String" />
+    <property name="Type" column="Type"  type="String" />
+    <property name="Value" column="value"  type="String" />
+    
+  </class>
+
+</hibernate-mapping>
