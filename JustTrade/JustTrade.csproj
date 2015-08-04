@@ -98,7 +98,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Attributes\FreeAccessAttribute.cs" />
     <Compile Include="Tools\ControllerWithTools.cs" />
-    <Compile Include="Tools\TypedResponse\JsonData.cs" />
     <Compile Include="Tools\Security\JTSecurity.cs" />
     <Compile Include="Controllers\Administration\UserController.cs" />
   </ItemGroup>

@@ -94,8 +94,11 @@
 				User = user,
 				PermissionList = permissionList
 			};
-			var currentSession = HttpContext.Current.Session;
-			currentSession["session"] = newSession;
+			// For unit test
+			if (HttpContext.Current != null) {
+				var currentSession = HttpContext.Current.Session;
+				currentSession["session"] = newSession;
+			}
 		}
 	}
 }

@@ -6,7 +6,7 @@
 		<add key="mail_host" value="smtp.gmail.com"/>
 		<add key="mail_port" value="587"/>
 		<add key="mail_ssl" value="true"/>
-		<add key="mail_user" value="jasttrage@gmail.com"/>
+		<add key="mail_user" value="JustTrageSv@gmail.com"/>
 		<add key="mail_password" value=""/>
 	</appSettings>
 	<system.web>
