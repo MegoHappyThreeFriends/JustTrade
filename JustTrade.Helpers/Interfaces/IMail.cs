@@ -1,4 +1,4 @@
-﻿namespace JustTrade.Helpers
+﻿namespace JustTrade.Helpers.Interfaces
 {
 	public interface IMail
 	{

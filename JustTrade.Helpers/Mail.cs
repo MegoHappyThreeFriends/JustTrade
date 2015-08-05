@@ -3,6 +3,7 @@
 	using System.Net;
 	using System.Net.Mail;
 	using System.Reflection;
+	using JustTrade.Helpers.Interfaces;
 
 	public class Mail : IMail
 	{

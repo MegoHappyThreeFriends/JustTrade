@@ -84,7 +84,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="Controllers\Administration\ErrorController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\Administration\SettingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Administration\LanguageController.cs" />
@@ -94,14 +94,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\Administration\AdminController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Attributes\FreeAccessAttribute.cs" />
     <Compile Include="Tools\ControllerWithTools.cs" />
-    <Compile Include="Tools\Security\JTSecurity.cs" />
     <Compile Include="Controllers\Administration\UserController.cs" />
+    <Compile Include="Tools\Security\JTSecurity.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\admin\database.css" />

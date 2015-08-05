@@ -37,7 +37,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtensionMethods\StringExtension.cs" />
-    <Compile Include="IMail.cs" />
+    <Compile Include="Interfaces\IMail.cs" />
+    <Compile Include="Interfaces\ISettings.cs" />
+    <Compile Include="JTSettings.cs" />
     <Compile Include="Mail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppSettings.cs" />

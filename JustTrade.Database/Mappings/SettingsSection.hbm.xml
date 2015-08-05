@@ -10,7 +10,7 @@
 
     <bag name="Settings" cascade="all-delete-orphan" lazy="true">
       <key column="section_id" />
-      <one-to-many class="Setting" />
+      <one-to-many class="Settings" />
     </bag>
 
   </class>

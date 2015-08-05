@@ -5,11 +5,11 @@
 
 	public class SettingsSection
 	{
-		IList<Setting> _settings = new List<Setting>();
+		IList<Settings> _settings = new List<Settings>();
 
 		public virtual Guid Id { get; set; }
 		public virtual string Name { get; set; }
-		public virtual IList<Setting> Settings
+		public virtual IList<Settings> Settings
 		{
 			get { return _settings; }
 

@@ -5,6 +5,7 @@
 	using System.Web;
 	using JustTrade.Database;
 	using JustTrade.Helpers;
+	using JustTrade.Helpers.Interfaces;
 	using Newtonsoft.Json.Linq;
 
 	public class UserSession

@@ -2,7 +2,7 @@
 {
 	using System;
 
-	public class Setting
+	public class Settings
 	{
 		private SettingsSection _settingsSection;
 

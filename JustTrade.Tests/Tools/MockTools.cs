@@ -1,9 +1,9 @@
 ﻿namespace JustTrade.Tests.Tools
 {
-	using System;
 	using System.Collections.Generic;
 	using JustTrade.Database;
 	using JustTrade.Helpers;
+	using JustTrade.Helpers.Interfaces;
 	using JustTrade.Tools.Security;
 	using Moq;
 
