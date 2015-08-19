@@ -1,0 +1,159 @@
+﻿@using JustTrade.Database
+@using JustTrade.Helpers
+@model Settings
+@{
+	List<SettingsSection> sectionList = ViewBag.SectionList;
+	Guid sectionId = (Model == null ? Guid.Empty : Model.Section.Id);
+}
+
+<div id="add_update_settings_dialog" style="display: none" title="@(Model == null?Lang.Get("Add settings"):Lang.Get("Edit settings"))">
+
+	<div id="add_section_combobox" class="input-group input-group-sm">
+		<span class="input-group-addon">@Lang.Get("Section")</span>
+		<select id="sections" class="form-control">
+			@foreach (var item in sectionList)
+			{
+				<option @(item.Id == sectionId ? "selected='selected'" : "") value="@item.Id">@item.Name</option>
+			}
+		</select>
+	</div>
+
+	<div id="add_section_input" class="input-group input-group-sm">
+		<span class="input-group-addon">@Lang.Get("New section")</span>
+		<input id="section_name" val-type="key" type="text" class="form-control" value="" aria-describedby="basic-addon1">
+		<input id="section_id" type="hidden" />
+	</div>
+
+	<a id="add_section_href" onclick="AddSectionTrigger()"> @Lang.Get("Add section") </a>
+
+	<div class="input-group input-group-sm">
+		<span class="input-group-addon">@Lang.Get("Name")</span>
+		<input id="settings_name" val-type="key" type="text" class="form-control" value="@(Model != null ? Model.Name : "")" aria-describedby="basic-addon1">
+	</div>
+
+	<div class="input-group input-group-sm">
+		<span class="input-group-addon">@Lang.Get("Value")</span>
+		<input id="settings_value" type="text" class="form-control" value="@(Model != null ? Model.Value : "")" aria-describedby="basic-addon1">
+	</div>
+
+</div>
+
+<script language="javascript">
+	var addSectionMarker = false;
+
+    $(document).ready(function () {
+
+    	$("#add_update_settings_dialog").dialog({
+			resizable: true,
+			width: "400",
+			height: "300",
+			modal: true,
+			close: function () { },
+			buttons: [
+				{
+					text: '@(Model != null?@Lang.Get("Change"):@Lang.Get("Add"))',
+					icons: {
+						primary: "ui-icon-check"
+					},
+					click: function () {
+						AddSection(function() {
+							AddUpdateSettings(function () {
+								$("#add_update_settings_dialog").dialog("close");
+								$("#add_update_settings_dialog").dialog("destroy");
+								SettingsForm("Refresh");
+							});
+						});
+					}
+				},
+				{
+					text: '@Lang.Get("Cancel")',
+					icons: {
+						primary: "ui-icon-close"
+					},
+					click: function() {
+						$("#add_update_settings_dialog").dialog("close");
+						$("#add_update_settings_dialog").dialog("destroy");
+					}
+				}
+			]
+		});
+
+	});
+
+	function AddSectionTrigger() {
+		if (!addSectionMarker) {
+			$("#add_section_combobox").fadeOut(500, function() {
+				$("#add_section_input").css({
+					opacity: 0,
+					display: 'table'
+				}).animate({ opacity: 1 }, 500);
+			});
+		} else {
+			$("#add_section_input").fadeOut(500, function() {
+				$("#add_section_combobox").fadeIn(500);
+			});
+		}
+		addSectionMarker = !addSectionMarker;
+	}
+
+	function AddSection(callback) {
+		if (!addSectionMarker) {
+			callback();
+			return;
+		}
+		ShowBlockUI.Show();
+		$("#AddUpdateSettingsSection").remove();
+		var sectionName = $("#section_name").val();
+		$.ajax({
+				type: "POST",
+				url: "Settings/AddSection",
+				data: { name: sectionName },
+			success: function(response) {
+				if (response.length !== 36) {
+					$("#json_data").append("<div id='AddUpdateSettingsSection'>" + response + "</div>");
+				} else {
+					$("#section_id").val(response);
+					callback();
+				}
+			},
+			complete: function() {
+				$.unblockUI();
+			},
+			error: function(xhr, status, error) {
+				var message = '@Lang.Get("Error connect to server. Message:")';
+				alert(message + error);
+				callback();
+			}
+		});
+	}
+
+	function AddUpdateSettings(callback) {
+		ShowBlockUI.Show();
+		$("#AddUpdateSettings").remove();
+		var sectionId = (addSectionMarker ? $("#section_id").val() : $("#sections").val());
+		var name = $("#settings_name").val();
+		var value = $("#settings_value").val();
+		$.ajax({
+			type: "POST",
+			url: "Settings/@(Model == null ? "Add" : "Update")",
+			data: { id: "@(Model==null?Guid.Empty.ToString():Model.Id.ToString())", name: name, value: value, sectionId: sectionId },
+			success: function(response) {
+				if (response.length > 0) {
+					$("#json_data").append("<div id='AddUpdateSettings'>" + response + "</div>");
+				} else {
+					callback();
+				}
+			},
+			complete: function() {
+				$.unblockUI();
+			},
+			error: function(xhr, status, error) {
+				var message = '@Lang.Get("Error connect to server. Message:")';
+			    alert(message + error);
+			    callback();
+			}
+		});
+	}
+
+
+</script>

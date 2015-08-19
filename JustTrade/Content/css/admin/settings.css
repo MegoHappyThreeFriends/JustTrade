@@ -1,0 +1,76 @@
+﻿
+#contextMenu li a
+{
+	font-size: 13px;
+}
+
+#contextMenu li
+{
+	cursor: pointer;
+}
+
+#contextMenu .divider
+{
+	margin: 3px 0px;
+}
+
+#settings_list tr{
+	cursor: pointer;
+}
+
+#add_update_settings_dialog .input-group {
+	margin-bottom: 5px;
+}
+
+#add_update_settings_dialog input {
+	width: 210px;
+}
+
+#add_update_settings_dialog select {
+	width: 210px;
+}
+
+
+#add_update_settings_dialog div span.input-group-addon
+{
+	width: 150px;
+	margin-left: 10px;
+}
+
+#add_section_input {
+	display: none;
+}
+
+#add_section_href {
+	font-size: 13px;
+	font-style: inherit;
+	cursor: pointer;
+	color: #2A5DB0
+}
+
+.ui-dialog {
+	font-size: 12px;
+}
+
+#settings_list tr.section {
+	background-color: #D9D9D9;
+	font-weight: bold;
+}
+
+#settings_list tr td:first-child{
+	width: 400px;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-right-color: #B8B8B8;
+}
+
+.selected {
+	background-color: #EBEBEB;
+}
+
+#settings_container {
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 90%;
+}

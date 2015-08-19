@@ -1,3 +1,113 @@
-﻿
+﻿@using JustTrade.Helpers
 
-<h4> SETTINGS !</h4>
+<script src="Scripts/context.menu.js"></script>
+<link rel="stylesheet" href="../Content/css/admin/settings.css">
+
+<ol class="breadcrumb admin-page-header">
+	<li> - @Lang.Get("Settings")</li>
+</ol>
+
+<div id="settings_container"> </div>
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display: none">
+	<li><a target="add"><i target="add" class="glyphicon glyphicon-plus"></i> @Lang.Get("Add")</a></li>
+	<li><a target="edit"><i target="edit" class="glyphicon glyphicon-pencil"></i> @Lang.Get("Edit")</a></li>
+	<li><a target="remove"><i target="remove" class="glyphicon glyphicon-trash"></i> @Lang.Get("Remove")</a></li>
+	<li class="divider"></li>
+	<li><a target="refresh"><i target="refresh" class="glyphicon glyphicon-refresh"></i> @Lang.Get("Refresh")</a></li>
+</ul>
+
+
+<div id="json_data" style="display: none"></div>
+
+<script type="text/javascript">
+
+	$(document).ready(function () {
+		RefreshSettings();
+	});
+
+	function AddSettings() {
+		Tools.AjaxGetToBlock("#json_data", "AddUpdateSettings", "/Settings/ShowAddUpdateSettings");
+	}
+
+	function RemoveSettings() {
+
+		var selectedName = $(".selected").find("td:eq(0)").text();
+		var message =
+            Tools.StrFormat(Language.Data["Are you sure you want to remove settings ({0}) ?"], selectedName);
+		var msg = new MessageBox(message, Language.Data["Warning"]);
+		msg.Confirm(function (isAccepted) {
+			if (isAccepted) {
+				var ids = new Array();
+				$(".selected").each(function (i, v) {
+					ids.push("id=" + $(v).attr("id"));
+				});
+				var idsString = ids.join("&");
+				Tools.AjaxGetToBlock("#json_data", "AddUpdateSettings", "/Settings/Remove?" + idsString, function () {
+					RefreshSettings();
+				});
+			}
+		});
+	}
+
+	function EditSettings() {
+		var ids = new Array();
+		$(".selected").each(function (i, v) {
+			ids.push("id=" + $(v).attr("id"));
+		});
+		var idsString = ids.join("&");
+		Tools.AjaxGetToBlock("#json_data", "AddUpdateTemplate", "/Settings/ShowAddUpdateSettings?" + idsString);
+	}
+
+	function DrawContextMenu() {
+		$("#settings_list tr").contextMenu({
+			menuSelector: "#contextMenu",
+			menuSelected: function (id, selectedMenu) {
+				var action = selectedMenu[0].target;
+				if (typeof action == "undefined") {
+					action = $(selectedMenu).attr("target");
+				}
+
+				switch (action) {
+					case "add":
+						AddSettings();
+						break;
+
+					case "edit":
+						EditSettings();
+						break;
+
+					case "remove":
+						RemoveSettings();
+						break;
+
+					case "refresh":
+						RefreshSettings();
+						break;
+
+					default:
+						alert("Action: " + action + " in menu not found");
+				}
+
+			}
+		});
+	}
+
+	function RefreshSettings() {
+		$.get("Settings/GetSettingsList", function (data) {
+			$("#settings_container").html(data);
+			DrawContextMenu();
+		});
+	}
+
+	function SettingsForm(action) {
+		switch (action) {
+			case "Refresh":
+				RefreshSettings();
+				break;
+			default:
+				throw new Error("Can't find action '" + action + "' for UserForm");
+		}
+	}
+
+</script>

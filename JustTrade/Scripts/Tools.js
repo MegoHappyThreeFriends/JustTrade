@@ -47,6 +47,31 @@ Tools.AjaxGetToBlock= function (rootBlockId, blockId, url, callback)
 		 });
 }
 
+Tools.AjaxPostToBlock = function (rootBlockId, blockId, url, data, callback) {
+	$("#" + blockId).remove();
+	$.ajax({
+			type: "POST",
+			url: url,
+			data: data,
+		success: function(response) {
+			if (response.length > 0) {
+				$(rootBlockId).append("<div id='" + blockId + "'>" + response + "</div>");
+			} else {
+				callback();
+			}
+		},
+		complete: function() {
+			$.unblockUI();
+		},
+		error: function(xhr, status, error) {
+			var message = Language.Data["Error connect to server. Message:"];
+			alert(message + error);
+			callback();
+		}
+	});
+
+}
+
 $.fn.serializeObject = function () {
 	var o = {};
 	var a = this.serializeArray();

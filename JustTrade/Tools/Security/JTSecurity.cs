@@ -1,4 +1,6 @@
-﻿namespace JustTrade.Tools.Security
+﻿using System;
+
+namespace JustTrade.Tools.Security
 {
 	using System.Collections.Generic;
 	using System.Linq;
@@ -42,6 +44,36 @@
 				_repository = value;
 			}
 		}
+
+		private Dictionary<string, Dictionary<string, string>> sysSettingsMock = null;
+		internal void MockSysSettings(Dictionary<string,Dictionary<string, string>> dictionary)
+		{
+			sysSettingsMock = dictionary;
+		}
+
+		public T GetSysSettings<T>(string section, string name)
+		{
+			string value;
+			if (sysSettingsMock != null)
+			{
+				value = sysSettingsMock[section][name];
+			}
+			else
+			{
+				using (var settingsList = _repository.Find<Settings>(new RepoFiler("Name", name)))
+				{
+					var settings = settingsList.FirstOrDefault(x => x.Section.Name == section);
+					if (settings == null)
+					{
+						throw new Exception(Lang.Get("Settings not found"));
+					}
+					value = settings.Value;
+				}
+			}
+			
+			return (T)Convert.ChangeType(value, typeof(T));
+		}
+
 	}
 
 	public static class JTSecurity

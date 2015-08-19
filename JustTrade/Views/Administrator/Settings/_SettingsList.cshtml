@@ -1,0 +1,36 @@
+﻿@using JustTrade.Helpers
+@model List<JustTrade.Database.SettingsSection>
+
+
+<table id="settings_list" class="table">
+	@foreach (var item in Model)
+	{
+		<tr class="section" id="@item.Id"><td colspan="2"> @item.Name </td> </tr>
+		if (item.Settings != null)
+		{
+			foreach (var setting in item.Settings)
+			{
+				<tr id="@setting.Id" class="settings"> <td> @setting.Name </td><td> @setting.Value </td> </tr>
+			}
+		}
+	}
+</table>
+
+
+<script language="javascript">
+
+	$(document).ready(function() {
+		$('#settings_list tbody').on('click', 'tr', function () {
+			UnselectAll();
+			$(this).toggleClass('selected');
+		});
+
+	});
+
+	function UnselectAll() {
+		$('#settings_list tbody tr').each(function(i, v) {
+			$(v).removeClass("selected");
+		});
+	}
+
+</script>

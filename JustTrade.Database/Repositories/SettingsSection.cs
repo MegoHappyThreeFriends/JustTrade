@@ -1,4 +1,6 @@
-﻿namespace JustTrade.Database
+﻿using System.Linq;
+
+namespace JustTrade.Database
 {
 	using System;
 	using System.Collections.Generic;
@@ -15,6 +17,6 @@
 
 			set { _settings = value; }
 		}
-
+		
 	}
 }
