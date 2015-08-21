@@ -239,11 +239,6 @@
 
 	function UpdateSaveButton() {
 		var selectedParameters = GetSelectionItemInTree();
-		console.log("Update save button");
-		console.log(selectedParameters);
-		console.log("VS");
-		console.log(window.initialSelectedParameter);
-
 		if (IsMatchArray(window.initialSelectedParameter, selectedParameters)) {
 			$("div.square-button").addClass("square-button-disabled");
 		} else {

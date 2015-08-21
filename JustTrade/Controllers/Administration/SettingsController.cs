@@ -124,6 +124,7 @@ namespace JustTrade.Controllers.Administration
 				}
 				newSettings = settingslist.First();
 				newSettings.Name = name;
+				newSettings.Value = value;
 				if (newSettings.Section.Id != sectionId)
 				{
 					newSettings.Section = null;

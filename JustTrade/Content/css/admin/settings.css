@@ -74,3 +74,10 @@
     margin: auto;
     width: 90%;
 }
+
+.section td {
+	-ms-border-radius: 10px 10px 0 0;
+	border-radius: 10px 10px 0 0;
+	-moz-border-radius: 5px;
+	border: 0px !important;
+}

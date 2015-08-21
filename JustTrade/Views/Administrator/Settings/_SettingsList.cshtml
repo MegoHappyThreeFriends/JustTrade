@@ -22,9 +22,10 @@
 	$(document).ready(function() {
 		$('#settings_list tbody').on('click', 'tr', function () {
 			UnselectAll();
-			$(this).toggleClass('selected');
+			if (!$(this).hasClass("section")) {
+				$(this).toggleClass('selected');
+			}
 		});
-
 	});
 
 	function UnselectAll() {
