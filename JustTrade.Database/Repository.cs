@@ -1,6 +1,7 @@
 ﻿namespace JustTrade.Database
 {
 	using System;
+	using JustTrade.Database.Interfaces;
 	using NHibernate;
 	using System.Collections.Generic;
 	using NHibernate.Criterion;
@@ -132,6 +133,12 @@
 		}
 
 		public ResultCollection<T> Find<T>(params RepoFiler[] filter) {
+			if (typeof(T).GetProperties().Any(x => x.Name == "Deleted")) {
+				if (filter.All(x => x.Name != "Deleted")) {
+					Array.Resize(ref filter, filter.Length + 1);
+					filter[filter.Length - 1] = new RepoFiler("Deleted", false);
+				}
+			}
 			ISession session = NHibernateHelper.OpenSession();
 			using (ITransaction transaction = session.BeginTransaction()) {
 				ICriteria criteria = session.CreateCriteria(typeof(T));
@@ -142,8 +149,13 @@
 			}
 		}
 
-		public ResultCollection<T> FindById<T>(Guid id) {
-			return Find<T>(new RepoFiler("id", id));
+		public ResultCollection<T> FindById<T>(Guid id, bool selectAll = false) {
+			var repoFilterList = new List<RepoFiler>();
+			if (selectAll) {
+				repoFilterList.Add(new RepoFiler("Deleted", new[] { true, false }, RepoFilerExpr.In));
+			}
+			repoFilterList.Add(new RepoFiler("id", id));
+			return Find<T>(repoFilterList.ToArray());
 		}
 
 		public void AddList<T>(IEnumerable<T> items) {
@@ -182,20 +194,33 @@
 			}
 		}
 
-		public void RemoveList<T>(IEnumerable<T> items) {
+		public void RemoveList<T>(IEnumerable<T> items, bool finaly = false) {
+			var itemsArray = items as T[] ?? items.ToArray();
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
-				foreach (var item in items) {
-					session.Delete(item);
+				if (itemsArray.First() is IEntityWithDeleted) {
+					foreach (var item in itemsArray) {
+						((IEntityWithDeleted)item).Deleted = true;
+						session.Update(item);
+					}
+				} else {
+					foreach (var item in itemsArray) {
+						session.Delete(item);
+					}
 				}
 				transaction.Commit();
 			}
 		}
 
-		public void Remove<T>(T item) {
+		public void Remove<T>(T item, bool finaly = false) {
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
-				session.Delete(item);
+				if (item is IEntityWithDeleted) {
+					((IEntityWithDeleted)item).Deleted = true;
+					session.Update(item);
+				} else {
+					session.Delete(item);
+				}
 				transaction.Commit();
 			}
 		}

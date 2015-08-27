@@ -48,7 +48,10 @@
 			width: "400",
 			height: "300",
 			modal: true,
-			close: function () { },
+			close: function() {
+				$("#add_update_settings_dialog").dialog("close");
+				$("#add_update_settings_dialog").dialog("destroy");
+			},
 			buttons: [
 				{
 					text: '@(Model != null?@Lang.Get("Change"):@Lang.Get("Add"))',
@@ -135,7 +138,7 @@
 		var value = $("#settings_value").val();
 		$.ajax({
 			type: "POST",
-			url: "Settings/@(Model == null ? "Add" : "Update")",
+			url: 'Settings/@(Model == null ? "Add" : "Update")',
 			data: { id: "@(Model==null?Guid.Empty.ToString():Model.Id.ToString())", name: name, value: value, sectionId: sectionId },
 			success: function(response) {
 				if (response.length > 0) {

@@ -1,0 +1,54 @@
+﻿@using JustTrade.Helpers
+
+<link rel="stylesheet" href="../Content/css/admin/database.css">
+
+<ol class="breadcrumb admin-page-header">
+	<li> - @Lang.Get("Database management")</li>
+</ol>
+
+
+<button id="generate_button" type="button" class="btn btn-default" onclick="GenerateDatabase()">
+	<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> @Lang.Get("Generate database")
+</button>
+<div id="generate_result" > </div>
+
+<hr />
+
+
+<ol class="breadcrumb admin-page-header">
+	<li> - @Lang.Get("Clean database")</li>
+</ol>
+
+<button id="generate_button" type="button" class="btn btn-default" onclick="DeleteUnusedObject()">
+	<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> @Lang.Get("Delete unused objects")
+</button>
+
+<div id="progressBar"></div>
+
+<div id="delete_result" ></div>
+
+<hr />
+
+
+<script lang="java script">
+
+ function GenerateDatabase(){
+    $("#generate_result").load("Database/GenerateDatabase");
+ }
+
+ function DeleteUnusedObject() {
+ 	$("#delete_result").load("Database/DeleteUnusedObject");
+
+	 $("#progressBar").proggressBar({
+	 	Url: "Database/DeletingProgress",
+	 	Complete: function () {
+
+	 		$.getJSON("Database/DeletingProgress", function (data) {
+	 			$("#delete_result").insertInformBlock('info', '@Lang.Get("Operation has completed")', data.Information);
+	 		});
+
+		 }
+	 });
+ }
+
+</script>

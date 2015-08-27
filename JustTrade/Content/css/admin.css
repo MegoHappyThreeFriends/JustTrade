@@ -1,7 +1,17 @@
-﻿#header_body {
+﻿#header_body
+{
 	margin-top: 60px;
 }
 
-.admin-page-header {
+.admin-page-header
+{
 	font-weight: bold;
+}
+
+.progress #info
+{
+	position: absolute;
+	margin-left: 5px;
+	color: darkblue;
+	font-family: monospace;
 }

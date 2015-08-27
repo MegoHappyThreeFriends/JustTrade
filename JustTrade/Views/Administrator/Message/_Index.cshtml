@@ -4,7 +4,6 @@
 @{
 	var dialogId = Guid.NewGuid();
 	var urlOnYes = TempData["RequestUrlOnYes"];
-	var urlOnYesData = TempData["RequestUrlOnYesData"];
 }
 <link rel="stylesheet" href="../Content/css/message.css">
 
@@ -122,7 +121,7 @@
 						$.ajax(
 							 {
 							 	type: "POST",
-							 	data: jQuery.parseJSON('@Html.Raw(urlOnYesData)'),
+							 	data: jQuery.parseJSON(''),
 							 	url: "@Html.Raw(urlOnYes)",
 							 	success: function (data) {
 							 		if (data.length > 0) {

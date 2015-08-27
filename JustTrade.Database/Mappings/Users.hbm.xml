@@ -10,6 +10,7 @@
  	<property name="Login" column="login"  type="String" index="idx_login" />
   	<property name="Password" column="password" type="String" />
   	<property name="IsSuperuser" column="is_superuser" type="Boolean" />
+	<property name="Deleted" column="deleted" type="Boolean" />
 
     <bag name="Sessions" cascade="all-delete-orphan" lazy="true">
       <key column="user_id" />

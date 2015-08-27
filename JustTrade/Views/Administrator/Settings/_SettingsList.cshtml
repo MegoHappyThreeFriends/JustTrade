@@ -3,6 +3,9 @@
 
 
 <table id="settings_list" class="table">
+	@if (Model.Count == 0) {
+		<tr class="section" ><td colspan="2"> - </td> </tr>
+	}
 	@foreach (var item in Model)
 	{
 		<tr class="section" id="@item.Id"><td colspan="2"> @item.Name </td> </tr>

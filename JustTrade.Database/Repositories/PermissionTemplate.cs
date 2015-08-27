@@ -3,8 +3,9 @@
 namespace JustTrade.Database
 {
 	using System.Collections.Generic;
+	using JustTrade.Database.Interfaces;
 
-	public class PermissionTemplate
+	public class PermissionTemplate : IEntityWithDeleted
 	{
 		IList<UserPermissionBinding> _userPermissionBindings = new List<UserPermissionBinding>();
 
@@ -20,6 +21,11 @@ namespace JustTrade.Database
 			set;
 		}
 		public virtual string PermissionRules {
+			get;
+			set;
+		}
+
+		public virtual bool Deleted {
 			get;
 			set;
 		}

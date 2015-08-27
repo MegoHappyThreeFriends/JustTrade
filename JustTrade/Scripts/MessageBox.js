@@ -14,7 +14,9 @@
 			modal: true,
 			close: function () {
 				clear(sourceDialogId);
-				callback();
+				if (callback != undefined) {
+					callback();
+				}
 			},
 			buttons: [
 				{

@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="Controllers\Administration\DatabaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\Administration\SettingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -252,17 +253,20 @@
     <Content Include="Scripts\i18n\vi.js" />
     <Content Include="Scripts\i18n\zh-CN.js" />
     <Content Include="Scripts\i18n\zh-TW.js" />
+    <Content Include="Scripts\InformBlock.js" />
     <Content Include="Scripts\inputValidator.js" />
     <Content Include="Scripts\jsTree3\jstree.js" />
     <Content Include="Scripts\jsTree3\jstree.min.js" />
     <Content Include="Scripts\language.js" />
     <Content Include="Scripts\MessageBox.js" />
+    <Content Include="Scripts\ProgressBar.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\ShowBlockUI.js" />
     <Content Include="Scripts\jquery.blockUI.js" />
     <Content Include="Scripts\Tools.js" />
     <Content Include="Views\Administrator\Settings\_AddUpdateSettings.cshtml" />
+    <Content Include="Views\Administrator\Database\_Index.cshtml" />
     <None Include="Views\Administrator\Settings\_Index.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -291,7 +295,6 @@
     <Content Include="Scripts\npm.js" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Shared\_AdminHeader.cshtml" />
-    <Content Include="Views\Admin\Database.cshtml" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -405,8 +408,8 @@
     <Content Include="Views\Administrator\Permission\_TemplateList.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Error\Permission.cshtml" />
-    <Content Include="Views\Admin\_ErrorGenerateDatabase.cshtml" />
-    <Content Include="Views\Admin\_SuccessGeneratedDatabase.cshtml" />
+    <Content Include="Views\Administrator\Database\_ErrorGenerateDatabase.cshtml" />
+    <Content Include="Views\Administrator\Database\_SuccessGeneratedDatabase.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JustTrade.Database\JustTrade.Database.csproj">

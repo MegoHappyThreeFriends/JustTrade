@@ -2,3 +2,9 @@
 #generate_button {
 	margin-left: 5px;
 }
+
+#progressBar {
+	margin-top: 10px;
+    margin-left: 5px;
+    width: 800px;
+}
