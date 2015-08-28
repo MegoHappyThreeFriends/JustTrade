@@ -3,7 +3,7 @@
 	using System;
 	using JustTrade.Database.Interfaces;
 
-	public class AccessLog : IEntityDefault
+	public class AccessLog : IBaseEntity
 	{
 		private User _user;
 

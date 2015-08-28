@@ -2,7 +2,7 @@
 {
 	using System;
 
-	interface IEntityDefault
+	public interface IBaseEntity
 	{
 		Guid Id {
 			get;

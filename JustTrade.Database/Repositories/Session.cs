@@ -7,7 +7,7 @@ namespace JustTrade.Database
 {
 	using JustTrade.Database.Interfaces;
 
-	public class Session : IEntityDefault
+	public class Session : IBaseEntity
 	{
 		private User _user;
 

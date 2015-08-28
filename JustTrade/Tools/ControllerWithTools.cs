@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.Routing;
 
 namespace JustTrade.Tools
 {
@@ -12,23 +13,27 @@ namespace JustTrade.Tools
 		#region Message
 
 		protected ActionResult GenerateErrorMessage(Exception ex) {
-			var message = new Message(Lang.Get("Error"), ex.Message, ex.StackTrace, true);
-			return RedirectToAction("Index", "Message", new { message });
-		}
-
-		protected ActionResult GenerateErrorMessage(string message, Exception ex) {
 			var messageObj = new Message(Lang.Get("Error"), ex.Message, ex.StackTrace, true);
-			return RedirectToAction("Index", "Message", new { @message = messageObj });
+			TempData["message"] = messageObj;
+			return RedirectToAction("Index", "Message");
 		}
 
-		protected ActionResult GenerateErrorMessage(string message, string description) {
-			var messageObj = new Message(Lang.Get("Error"), message, description, true);
-			return RedirectToAction("Index", "Message", new { @message = messageObj });
+		protected ActionResult GenerateErrorMessage(string msg, Exception ex) {
+			var messageObj = new Message(Lang.Get("Error"), msg, ex.Message + "\n" + ex.StackTrace, true);
+			TempData["message"] = messageObj;
+			return RedirectToAction("Index", "Message");
 		}
 
-		protected ActionResult GenerateInformMessage(string message, string description) {
-			var messageObj = new Message(Lang.Get("Information"), message, description);
-			return RedirectToAction("Index", "Message", new { @message = messageObj });
+		protected ActionResult GenerateErrorMessage(string msg, string description) {
+			var messageObj = new Message(Lang.Get("Error"), msg, description, true);
+			TempData["message"] = messageObj;
+			return RedirectToAction("Index", "Message");
+		}
+
+		protected ActionResult GenerateInformMessage(string msg, string description) {
+			var messageObj = new Message(Lang.Get("Information"), msg, description);
+			TempData["message"] = messageObj;
+			return RedirectToAction("Index", "Message");
 		}
 
 		#endregion

@@ -6,7 +6,7 @@
 			<generator class="guid" />
 		</id>
 		<property name="Name" column="name"  type="String" />
-		<property name="PermissionRules" column="permission_rules" type="String" />
+		<property name="PermissionRules" column="permission_rules" type="String" length="10000" />
 		<property name="Deleted" column="deleted" type="Boolean" />
 
 		<bag name="UserPermissionBindings" cascade="all-delete-orphan" lazy="true">

@@ -3,7 +3,6 @@
 @model Message
 @{
 	var dialogId = Guid.NewGuid();
-	var urlOnYes = TempData["RequestUrlOnYes"];
 }
 <link rel="stylesheet" href="../Content/css/message.css">
 
@@ -122,7 +121,7 @@
 							 {
 							 	type: "POST",
 							 	data: jQuery.parseJSON(''),
-							 	url: "@Html.Raw(urlOnYes)",
+							 	url: "",
 							 	success: function (data) {
 							 		if (data.length > 0) {
 							 			$("#message_data_@dialogId").append(data);

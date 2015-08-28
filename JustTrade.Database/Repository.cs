@@ -1,4 +1,8 @@
-﻿namespace JustTrade.Database
+﻿using System.Collections;
+using NHibernate.Collection.Generic;
+using NHibernate.Util;
+
+namespace JustTrade.Database
 {
 	using System;
 	using System.ComponentModel.Design;
@@ -263,81 +267,102 @@
 			}
 		}
 
-		private void AddToAccessLog<T>(T item, AccessType accessType) {
-			var filter = new List<RepoFiler>();
-			filter.Add(new RepoFiler("id", ((IEntityDefault)item).Id));
-			IEntityDefault selectedItem = null;
-			using (ISession session = NHibernateHelper.OpenSession())
-			using (ITransaction transaction = session.BeginTransaction()) {
-				ICriteria criteria = session.CreateCriteria(typeof(T));
-				GenerateExpression(filter, ref criteria);
-				IList<T> matchingObjects = criteria.List<T>();
-				if (matchingObjects.Any()) {
-					selectedItem = (IEntityDefault)matchingObjects.First();
-				}
-				transaction.Commit();
-			}
-
-			if (accessType == AccessType.Add) {
-				var accessLog = new AccessLog() {
-					Reference = ((IEntityDefault)item).Id,
-					Time = DateTime.Now,
-					Type = typeof(T).Name,
-					User = _currentUser,
-					Data = Newtonsoft.Json.JsonConvert.SerializeObject(item),
-					Action = "Add"
-				};
-				using (ISession session = NHibernateHelper.OpenSession())
-				using (ITransaction transaction = session.BeginTransaction()) {
-					session.Save(accessLog);
-					transaction.Commit();
-				}
-			} else {
-				if (selectedItem == null) {
-					throw new Exception("Error insert to AccessLog data. Can't extract entity data.");
-				}
-				var accessLog = new AccessLog() {
-					Reference = selectedItem.Id,
-					Time = DateTime.Now,
-					Type = typeof(T).Name,
-					User = _currentUser,
-					Data = (
-						accessType == AccessType.Remove ?
-						Newtonsoft.Json.JsonConvert.SerializeObject(item) :
-						GetDiff(selectedItem, item)
-						),
-					Action = accessType.ToString()
-				};
-				using (ISession session = NHibernateHelper.OpenSession())
-				using (ITransaction transaction = session.BeginTransaction()) {
-					session.Save(accessLog);
-					transaction.Commit();
+		private void AddToAccessLog<T>(T obj, AccessType accessType)
+		{
+			IBaseEntity objEntity = (IBaseEntity) obj;
+            IBaseEntity selectedItem = null;
+			if (accessType == AccessType.Update)
+			{
+				using (var items = FindById<T>(objEntity.Id))
+				{
+					if (items.Any())
+					{
+						selectedItem = (IBaseEntity)items.First();
+					}
+					else
+					{
+						throw new Exception("Error insert to AccessLog data. Can't extract entity data.");
+					}
 				}
 			}
-		}
 
-		public string GetDiff(object old, object newo) {
 			var builder = new StringBuilder();
 			builder.Append("{");
-			foreach (var propertyInfoFirst in old.GetType().GetProperties()) {
-				var firstValue = propertyInfoFirst.GetValue(old);
-				if (!(firstValue is ValueType || firstValue is string || firstValue is Guid)) {
+			foreach (var propertyInfo in obj.GetType().GetProperties())
+			{
+				object secondValue = null;
+				if (accessType == AccessType.Update)
+				{
+					var secondProperty =
+					selectedItem.GetType().GetProperties().FirstOrDefault(x => x.Name == propertyInfo.Name);
+					if (secondProperty == null)
+					{
+						continue;
+					}
+					secondValue = secondProperty.GetValue(selectedItem);
+				}
+
+				var value = propertyInfo.GetValue(obj);
+				if (!(value == null || value is ValueType || value is string || value is Guid))
+				{
+					if (value.GetType().IsClass && value is IBaseEntity)
+					{
+						if (accessType == AccessType.Update)
+						{
+							if (!((IBaseEntity) value).Id.Equals(((IBaseEntity) secondValue).Id))
+							{
+								builder.Append(string.Format("{2}\"{0}\":\"{1}\"", propertyInfo.Name, ((IBaseEntity) value).Id,
+									(builder.Length > 3 ? "," : string.Empty)));
+							}
+						}
+						else
+						{
+							builder.Append(String.Format("{2}\"{0}\":\"{1}\"", propertyInfo.Name, ((IBaseEntity)value).Id,
+							(builder.Length > 3 ? "," : string.Empty)));
+						}
+
+						//Analize((IBaseEntity)value);
+					}
 					continue;
 				}
-				var secondProperty = newo.GetType().GetProperties().FirstOrDefault(x => x.Name == propertyInfoFirst.Name);
-				if (secondProperty == null) {
-					continue;
+
+				if (accessType == AccessType.Update)
+				{
+					if (!value.Equals(secondValue))
+					{
+						builder.Append(String.Format("{2}\"{0}\":\"{1}\"", propertyInfo.Name, value,
+							(builder.Length > 3 ? "," : string.Empty)));
+					}
 				}
-				var secondValue = secondProperty.GetValue(newo);
-				if (!secondValue.Equals(firstValue)) {
-					builder.Append(string.Format("{2}\"{0}\":\"{1}\"", propertyInfoFirst.Name, secondValue,
+				else
+				{
+					builder.Append(String.Format("{2}\"{0}\":\"{1}\"", propertyInfo.Name, value,
 						(builder.Length > 3 ? "," : string.Empty)));
 				}
 			}
 			builder.Append("}");
-			return builder.ToString();
-		}
+			if (builder.Length <= 3)
+			{
+				// No changes found
+				return;
+			}
+			var accessLog = new AccessLog()
+			{
+				Reference = objEntity.Id,
+				Time = DateTime.Now,
+				Type = obj.GetType().Name,
+				User = _currentUser,
+				Data = builder.ToString(),
+				Action = accessType.ToString()
+			};
+			using (ISession session = NHibernateHelper.OpenSession())
+			using (ITransaction transaction = session.BeginTransaction())
+			{
+				session.Save(accessLog);
+				transaction.Commit();
+			}
 
+		}
 	}
 }
 

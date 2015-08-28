@@ -8,9 +8,9 @@
 
 		<many-to-one name="User" class="User" column="user_id" cascade="all" />
 		<property name="Time" column="datetime"  type="DateTime" index="idx_time" />
-		<property name="Action" column="action"  type="String" index="idx_action" />
-		<property name="Type" column="type"  type="String" index="idx_type" />
-		<property name="Data" column="data"  type="String" />
+		<property name="Action" column="action"  type="String" length="50" index="idx_action" />
+		<property name="Type" column="type"  type="String" length="50" index="idx_type" />
+		<property name="Data" column="data"  type="String" length="10000"/>
 		<property name="Reference" column="ref"  type="Guid" index="idx_reference" />
 
 	</class>

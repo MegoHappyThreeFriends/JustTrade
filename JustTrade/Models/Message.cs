@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace JustTrade.Models
+﻿namespace JustTrade.Models
 {
-	using NUnit.Framework;
-
 	public class Message
 	{
 		public enum Button

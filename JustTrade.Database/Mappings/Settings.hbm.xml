@@ -7,8 +7,7 @@
     </id>
 
     <many-to-one name="Section" class="SettingsSection" column="section_id" cascade="all" index="idx_section_id"/>
-    <property name="Name" column="name"  type="String" />
-    <property name="Type" column="Type"  type="String" />
+    <property name="Name" column="name"  type="String" index="idx_name" />
     <property name="Value" column="value"  type="String" />
     
   </class>
