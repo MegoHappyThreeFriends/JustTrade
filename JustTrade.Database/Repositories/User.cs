@@ -5,15 +5,7 @@ namespace JustTrade.Database
 {
 	using JustTrade.Database.Interfaces;
 
-	public interface iUser
-	{
-		void Add(User user);
-		void Update(User user);
-		void Remove(User user);
-		ICollection<User> GetAll();
-	}
-
-	public class User : IEntityWithDeleted
+	public class User : IEntityWithDeleted, IEntityDefault
 	{
 		IList<Session> _sessions = new List<Session>();
 		IList<UserPermissionBinding> _userPermissionBindings = new List<UserPermissionBinding>();

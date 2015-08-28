@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="JustTrade.Database" namespace="JustTrade.Database">
+
+	<class name="AccessLog" table="access_log" lazy="true">
+		<id name="Id" column="id">
+			<generator class="guid" />
+		</id>
+
+		<many-to-one name="User" class="User" column="user_id" cascade="all" />
+		<property name="Time" column="datetime"  type="DateTime" index="idx_time" />
+		<property name="Action" column="action"  type="String" index="idx_action" />
+		<property name="Type" column="type"  type="String" index="idx_type" />
+		<property name="Data" column="data"  type="String" />
+		<property name="Reference" column="ref"  type="Guid" index="idx_reference" />
+
+	</class>
+
+</hibernate-mapping>

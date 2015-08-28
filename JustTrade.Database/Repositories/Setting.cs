@@ -1,8 +1,9 @@
 ﻿namespace JustTrade.Database
 {
 	using System;
+	using JustTrade.Database.Interfaces;
 
-	public class Settings
+	public class Settings : IEntityDefault
 	{
 		private SettingsSection _settingsSection;
 

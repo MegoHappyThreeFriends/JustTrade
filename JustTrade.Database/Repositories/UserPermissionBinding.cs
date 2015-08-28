@@ -2,7 +2,9 @@
 
 namespace JustTrade.Database
 {
-	public class UserPermissionBinding
+	using JustTrade.Database.Interfaces;
+
+	public class UserPermissionBinding : IEntityDefault
 	{
 		private User _user;
 		private PermissionTemplate _permissionTemplate;

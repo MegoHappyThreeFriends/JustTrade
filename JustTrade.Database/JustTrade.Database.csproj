@@ -28,6 +28,10 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
@@ -37,9 +41,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\iEntityWithDeleted.cs" />
+    <Compile Include="Interfaces\IEntityDefault.cs" />
+    <Compile Include="Interfaces\IEntityWithDeleted.cs" />
+    <Compile Include="Interfaces\IUser.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AccessLog.cs" />
     <Compile Include="Repositories\PermissionTemplate.cs" />
     <Compile Include="Repositories\Setting.cs" />
     <Compile Include="Repositories\SettingsSection.cs" />
@@ -90,5 +97,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Mappings\Settings.hbm.xml" />
     <EmbeddedResource Include="Mappings\SettingsSection.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mappings\AccessLog.hbm.xml" />
   </ItemGroup>
 </Project>

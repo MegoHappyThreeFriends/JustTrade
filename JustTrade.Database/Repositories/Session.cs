@@ -5,7 +5,9 @@ using NHibernate.Mapping.ByCode;
 
 namespace JustTrade.Database
 {
-	public class Session
+	using JustTrade.Database.Interfaces;
+
+	public class Session : IEntityDefault
 	{
 		private User _user;
 

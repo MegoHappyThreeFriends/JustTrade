@@ -44,6 +44,7 @@
     <Compile Include="AppSettings.cs" />
     <Compile Include="FileUtils.cs" />
     <Compile Include="Lang.cs" />
+    <Compile Include="UserSession.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />

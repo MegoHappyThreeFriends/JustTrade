@@ -4,8 +4,9 @@ namespace JustTrade.Database
 {
 	using System;
 	using System.Collections.Generic;
+	using JustTrade.Database.Interfaces;
 
-	public class SettingsSection
+	public class SettingsSection : IEntityDefault
 	{
 		IList<Settings> _settings = new List<Settings>();
 

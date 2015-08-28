@@ -82,6 +82,11 @@
 
 	public class Repository : IRepository
 	{
+		private User currentUser;
+
+		public Repository (User user) {
+			currentUser = user;
+		}
 
 		private void GenerateExpression(IEnumerable<RepoFiler> filters, ref ICriteria criteria) {
 			foreach (var repoFiler in filters) {
@@ -159,24 +164,37 @@
 		}
 
 		public void AddList<T>(IEnumerable<T> items) {
+			foreach (var item in items) {
+				if (((IEntityDefault)item).Id == Guid.Empty) {
+					((IEntityDefault)item).Id = Guid.NewGuid();
+				}
+				AddToAccessLog(item);
+			}
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
 				foreach (var item in items) {
-					session.SaveOrUpdate(item);
+					session.Save(item);
 				}
 				transaction.Commit();
 			}
 		}
 
 		public void Add<T>(T item) {
+			if (((IEntityDefault)item).Id == Guid.Empty) {
+				((IEntityDefault)item).Id = Guid.NewGuid();
+			}
+			AddToAccessLog(item);
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
-				session.SaveOrUpdate(item);
+				session.Save(item);
 				transaction.Commit();
 			}
 		}
 
 		public void UpdateList<T>(IEnumerable<T> items) {
+			foreach (var item in items) {
+				AddToAccessLog(item);
+			}
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
 				foreach (var item in items) {
@@ -187,6 +205,7 @@
 		}
 
 		public void Update<T>(T item) {
+			AddToAccessLog(item);
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
 				session.Update(item);
@@ -224,6 +243,57 @@
 				transaction.Commit();
 			}
 		}
+
+		private void AddToAccessLog<T>(T item) {
+			var filter = new List<RepoFiler>();
+			filter.Add(new RepoFiler("id", ((IEntityDefault)item).Id));
+			IList<T> matchingObjects;
+			using (ISession session = NHibernateHelper.OpenSession())
+			using (ITransaction transaction = session.BeginTransaction()) {
+				ICriteria criteria = session.CreateCriteria(typeof(T));
+				GenerateExpression(filter, ref criteria);
+				matchingObjects = criteria.List<T>();
+				transaction.Commit();
+			}
+
+			if (!matchingObjects.Any()) {
+				// Adding item
+
+				var accessLog = new AccessLog() {
+					Reference = ((IEntityDefault)item).Id,
+					Time = DateTime.Now,
+					Type = typeof(T).Name,
+					User = currentUser,
+					Data = Newtonsoft.Json.JsonConvert.SerializeObject(item),
+				};
+
+				using (ISession session = NHibernateHelper.OpenSession())
+				using (ITransaction transaction = session.BeginTransaction()) {
+					session.Save(accessLog);
+					transaction.Commit();
+				}
+
+			} else {
+				// Update item
+				//TODO: Implement detect difference between entity and write only difference.
+
+				var accessLog = new AccessLog() {
+					Reference = ((IEntityDefault)item).Id,
+					Time = DateTime.Now,
+					Type = typeof(T).Name,
+					User = currentUser,
+					Data = Newtonsoft.Json.JsonConvert.SerializeObject(item),
+				};
+
+				using (ISession session = NHibernateHelper.OpenSession())
+				using (ITransaction transaction = session.BeginTransaction()) {
+					session.Save(accessLog);
+					transaction.Commit();
+				}
+			}
+
+		}
+
 
 	}
 }
