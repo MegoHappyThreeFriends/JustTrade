@@ -89,7 +89,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mappings\Sessions.hbm.xml" />
-    <EmbeddedResource Include="Mappings\Users.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Users.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mappings\UserPermissionBinding.hbm.xml" />
@@ -99,6 +101,8 @@
     <EmbeddedResource Include="Mappings\SettingsSection.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mappings\AccessLog.hbm.xml" />
+    <EmbeddedResource Include="Mappings\AccessLog.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

@@ -1,6 +1,8 @@
 ﻿namespace JustTrade.Database
 {
 	using System;
+	using System.ComponentModel.Design;
+	using System.Text;
 	using JustTrade.Database.Interfaces;
 	using NHibernate;
 	using System.Collections.Generic;
@@ -82,10 +84,17 @@
 
 	public class Repository : IRepository
 	{
-		private User currentUser;
+		private enum AccessType
+		{
+			Add,
+			Update,
+			Remove
+		}
 
-		public Repository (User user) {
-			currentUser = user;
+		private readonly User _currentUser;
+
+		public Repository(User user) {
+			_currentUser = user;
 		}
 
 		private void GenerateExpression(IEnumerable<RepoFiler> filters, ref ICriteria criteria) {
@@ -164,12 +173,6 @@
 		}
 
 		public void AddList<T>(IEnumerable<T> items) {
-			foreach (var item in items) {
-				if (((IEntityDefault)item).Id == Guid.Empty) {
-					((IEntityDefault)item).Id = Guid.NewGuid();
-				}
-				AddToAccessLog(item);
-			}
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
 				foreach (var item in items) {
@@ -177,23 +180,23 @@
 				}
 				transaction.Commit();
 			}
+			foreach (var item in items) {
+				AddToAccessLog(item, AccessType.Add);
+			}
 		}
 
 		public void Add<T>(T item) {
-			if (((IEntityDefault)item).Id == Guid.Empty) {
-				((IEntityDefault)item).Id = Guid.NewGuid();
-			}
-			AddToAccessLog(item);
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
 				session.Save(item);
 				transaction.Commit();
 			}
+			AddToAccessLog(item, AccessType.Add);
 		}
 
 		public void UpdateList<T>(IEnumerable<T> items) {
 			foreach (var item in items) {
-				AddToAccessLog(item);
+				AddToAccessLog(item, AccessType.Update);
 			}
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
@@ -205,7 +208,7 @@
 		}
 
 		public void Update<T>(T item) {
-			AddToAccessLog(item);
+			AddToAccessLog(item, AccessType.Update);
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
 				session.Update(item);
@@ -215,6 +218,16 @@
 
 		public void RemoveList<T>(IEnumerable<T> items, bool finaly = false) {
 			var itemsArray = items as T[] ?? items.ToArray();
+			if (itemsArray.First() is IEntityWithDeleted) {
+				foreach (var item in itemsArray) {
+					((IEntityWithDeleted)item).Deleted = true;
+					AddToAccessLog(item, AccessType.Update);
+				}
+			} else {
+				foreach (var item in itemsArray) {
+					AddToAccessLog(item, AccessType.Remove);
+				}
+			}
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
 				if (itemsArray.First() is IEntityWithDeleted) {
@@ -232,6 +245,12 @@
 		}
 
 		public void Remove<T>(T item, bool finaly = false) {
+			if (item is IEntityWithDeleted) {
+				((IEntityWithDeleted)item).Deleted = true;
+				AddToAccessLog(item, AccessType.Update);
+			} else {
+				AddToAccessLog(item, AccessType.Remove);
+			}
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
 				if (item is IEntityWithDeleted) {
@@ -244,56 +263,80 @@
 			}
 		}
 
-		private void AddToAccessLog<T>(T item) {
+		private void AddToAccessLog<T>(T item, AccessType accessType) {
 			var filter = new List<RepoFiler>();
 			filter.Add(new RepoFiler("id", ((IEntityDefault)item).Id));
-			IList<T> matchingObjects;
+			IEntityDefault selectedItem = null;
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
 				ICriteria criteria = session.CreateCriteria(typeof(T));
 				GenerateExpression(filter, ref criteria);
-				matchingObjects = criteria.List<T>();
+				IList<T> matchingObjects = criteria.List<T>();
+				if (matchingObjects.Any()) {
+					selectedItem = (IEntityDefault)matchingObjects.First();
+				}
 				transaction.Commit();
 			}
 
-			if (!matchingObjects.Any()) {
-				// Adding item
-
+			if (accessType == AccessType.Add) {
 				var accessLog = new AccessLog() {
 					Reference = ((IEntityDefault)item).Id,
 					Time = DateTime.Now,
 					Type = typeof(T).Name,
-					User = currentUser,
+					User = _currentUser,
 					Data = Newtonsoft.Json.JsonConvert.SerializeObject(item),
+					Action = "Add"
 				};
-
 				using (ISession session = NHibernateHelper.OpenSession())
 				using (ITransaction transaction = session.BeginTransaction()) {
 					session.Save(accessLog);
 					transaction.Commit();
 				}
-
 			} else {
-				// Update item
-				//TODO: Implement detect difference between entity and write only difference.
-
+				if (selectedItem == null) {
+					throw new Exception("Error insert to AccessLog data. Can't extract entity data.");
+				}
 				var accessLog = new AccessLog() {
-					Reference = ((IEntityDefault)item).Id,
+					Reference = selectedItem.Id,
 					Time = DateTime.Now,
 					Type = typeof(T).Name,
-					User = currentUser,
-					Data = Newtonsoft.Json.JsonConvert.SerializeObject(item),
+					User = _currentUser,
+					Data = (
+						accessType == AccessType.Remove ?
+						Newtonsoft.Json.JsonConvert.SerializeObject(item) :
+						GetDiff(selectedItem, item)
+						),
+					Action = accessType.ToString()
 				};
-
 				using (ISession session = NHibernateHelper.OpenSession())
 				using (ITransaction transaction = session.BeginTransaction()) {
 					session.Save(accessLog);
 					transaction.Commit();
 				}
 			}
-
 		}
 
+		public string GetDiff(object old, object newo) {
+			var builder = new StringBuilder();
+			builder.Append("{");
+			foreach (var propertyInfoFirst in old.GetType().GetProperties()) {
+				var firstValue = propertyInfoFirst.GetValue(old);
+				if (!(firstValue is ValueType || firstValue is string || firstValue is Guid)) {
+					continue;
+				}
+				var secondProperty = newo.GetType().GetProperties().FirstOrDefault(x => x.Name == propertyInfoFirst.Name);
+				if (secondProperty == null) {
+					continue;
+				}
+				var secondValue = secondProperty.GetValue(newo);
+				if (!secondValue.Equals(firstValue)) {
+					builder.Append(string.Format("{2}\"{0}\":\"{1}\"", propertyInfoFirst.Name, secondValue,
+						(builder.Length > 3 ? "," : string.Empty)));
+				}
+			}
+			builder.Append("}");
+			return builder.ToString();
+		}
 
 	}
 }
