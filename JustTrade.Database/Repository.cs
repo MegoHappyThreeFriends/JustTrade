@@ -1,11 +1,6 @@
-﻿using System.Collections;
-using NHibernate.Collection.Generic;
-using NHibernate.Util;
-
-namespace JustTrade.Database
+﻿namespace JustTrade.Database
 {
 	using System;
-	using System.ComponentModel.Design;
 	using System.Text;
 	using JustTrade.Database.Interfaces;
 	using NHibernate;
