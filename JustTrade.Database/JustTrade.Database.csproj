@@ -41,6 +41,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseEntity.cs" />
     <Compile Include="Interfaces\IBaseEntity.cs" />
     <Compile Include="Interfaces\IEntityWithDeleted.cs" />
     <Compile Include="Interfaces\IUser.cs" />
@@ -55,7 +56,6 @@
     <Compile Include="Repositories\User.cs" />
     <Compile Include="NHibernateHelper.cs" />
     <Compile Include="Repositories\UserPermissionBinding.cs" />
-    <Compile Include="Tools\DynamicContractResolver .cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

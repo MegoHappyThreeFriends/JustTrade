@@ -159,7 +159,9 @@ namespace JustTrade.Controllers.Administration
 				{
 					sectionRemoveList.AddRange(sections.Where(section => section.Settings.Count == 0));
 				}
-				JTSecurity.Session.Db.RemoveList(sectionRemoveList);
+				if (sectionRemoveList.Any()) {
+					JTSecurity.Session.Db.RemoveList(sectionRemoveList);
+				}
 			}
 			catch (Exception ex)
 			{
@@ -187,12 +189,14 @@ namespace JustTrade.Controllers.Administration
 			}
 			try
 			{
-				List<SettingsSection> sectionRemoveList = new List<SettingsSection>();
+				var sectionRemoveList = new List<SettingsSection>();
 				using (var sections = JTSecurity.Session.Db.Find<SettingsSection>())
 				{
 					sectionRemoveList.AddRange(sections.Where(section => section.Settings.Count == 0));
 				}
-				JTSecurity.Session.Db.RemoveList(sectionRemoveList);
+				if (sectionRemoveList.Any()) {
+					JTSecurity.Session.Db.RemoveList(sectionRemoveList);
+				}
 			}
 			catch (Exception ex)
 			{

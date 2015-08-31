@@ -147,6 +147,8 @@
 			var key = $(data).find(".lang-key").val();
 			var value = $(data).find(".lang-value").val();
 			if (key !== undefined && value !== undefined) {
+				key = key.trim();
+				value = value.trim();
 				if (key.length > 0 && value.length > 0) {
 
 					if (result[key]) {

@@ -3,7 +3,7 @@
 	using System;
 	using JustTrade.Database.Interfaces;
 
-	public class Settings : IBaseEntity
+	public class Settings : BaseEntity, IBaseEntity
 	{
 		private SettingsSection _settingsSection;
 

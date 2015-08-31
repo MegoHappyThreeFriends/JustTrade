@@ -85,9 +85,9 @@
 	{
 		private enum AccessType
 		{
-			Add,
-			Update,
-			Remove
+			Added,
+			Updated,
+			Removed
 		}
 
 		private readonly User _currentUser;
@@ -180,7 +180,7 @@
 				transaction.Commit();
 			}
 			foreach (var item in items) {
-				AddToAccessLog(item, AccessType.Add);
+				AddToAccessLog(item, AccessType.Added);
 			}
 		}
 
@@ -190,12 +190,12 @@
 				session.Save(item);
 				transaction.Commit();
 			}
-			AddToAccessLog(item, AccessType.Add);
+			AddToAccessLog(item, AccessType.Added);
 		}
 
 		public void UpdateList<T>(IEnumerable<T> items) {
 			foreach (var item in items) {
-				AddToAccessLog(item, AccessType.Update);
+				AddToAccessLog(item, AccessType.Updated);
 			}
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
@@ -207,7 +207,7 @@
 		}
 
 		public void Update<T>(T item) {
-			AddToAccessLog(item, AccessType.Update);
+			AddToAccessLog(item, AccessType.Updated);
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
 				session.Update(item);
@@ -220,11 +220,11 @@
 			if (itemsArray.First() is IEntityWithDeleted) {
 				foreach (var item in itemsArray) {
 					((IEntityWithDeleted)item).Deleted = true;
-					AddToAccessLog(item, AccessType.Update);
+					AddToAccessLog(item, AccessType.Updated);
 				}
 			} else {
 				foreach (var item in itemsArray) {
-					AddToAccessLog(item, AccessType.Remove);
+					AddToAccessLog(item, AccessType.Removed);
 				}
 			}
 			using (ISession session = NHibernateHelper.OpenSession())
@@ -246,9 +246,9 @@
 		public void Remove<T>(T item, bool finaly = false) {
 			if (item is IEntityWithDeleted) {
 				((IEntityWithDeleted)item).Deleted = true;
-				AddToAccessLog(item, AccessType.Update);
+				AddToAccessLog(item, AccessType.Updated);
 			} else {
-				AddToAccessLog(item, AccessType.Remove);
+				AddToAccessLog(item, AccessType.Removed);
 			}
 			using (ISession session = NHibernateHelper.OpenSession())
 			using (ITransaction transaction = session.BeginTransaction()) {
@@ -264,9 +264,12 @@
 
 		private void AddToAccessLog<T>(T obj, AccessType accessType)
 		{
-			IBaseEntity objEntity = (IBaseEntity) obj;
+			if (obj is AccessLog) {
+				return;
+			}
+			var objEntity = (IBaseEntity) obj;
             IBaseEntity selectedItem = null;
-			if (accessType == AccessType.Update)
+			if (accessType == AccessType.Updated)
 			{
 				using (var items = FindById<T>(objEntity.Id))
 				{
@@ -286,7 +289,7 @@
 			foreach (var propertyInfo in obj.GetType().GetProperties())
 			{
 				object secondValue = null;
-				if (accessType == AccessType.Update)
+				if (accessType == AccessType.Updated)
 				{
 					var secondProperty =
 					selectedItem.GetType().GetProperties().FirstOrDefault(x => x.Name == propertyInfo.Name);
@@ -302,7 +305,7 @@
 				{
 					if (value.GetType().IsClass && value is IBaseEntity)
 					{
-						if (accessType == AccessType.Update)
+						if (accessType == AccessType.Updated)
 						{
 							if (!((IBaseEntity) value).Id.Equals(((IBaseEntity) secondValue).Id))
 							{
@@ -321,17 +324,17 @@
 					continue;
 				}
 
-				if (accessType == AccessType.Update)
+				if (accessType == AccessType.Updated)
 				{
 					if (!value.Equals(secondValue))
 					{
-						builder.Append(String.Format("{2}\"{0}\":\"{1}\"", propertyInfo.Name, value,
+						builder.Append(String.Format("{2}\"{0}\":\"{1}\"", propertyInfo.Name, value.ToString().Replace("\"", "\\\""),
 							(builder.Length > 3 ? "," : string.Empty)));
 					}
 				}
 				else
 				{
-					builder.Append(String.Format("{2}\"{0}\":\"{1}\"", propertyInfo.Name, value,
+					builder.Append(String.Format("{2}\"{0}\":\"{1}\"", propertyInfo.Name, value.ToString().Replace("\"", "\\\""),
 						(builder.Length > 3 ? "," : string.Empty)));
 				}
 			}
@@ -345,7 +348,7 @@
 			{
 				Reference = objEntity.Id,
 				Time = DateTime.Now,
-				Type = obj.GetType().Name,
+				Type = obj.GetType().FullName,
 				User = _currentUser,
 				Data = builder.ToString(),
 				Action = accessType.ToString()

@@ -86,6 +86,9 @@ namespace JustTrade.Helpers
 		}
 
 		public static string Get(string name) {
+			if (string.IsNullOrEmpty(name)) {
+				return string.Empty;
+			}
 			if (!_loaded) {
 				Load();
 			}

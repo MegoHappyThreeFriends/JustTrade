@@ -31,6 +31,8 @@
 	<li><a target="edit"><i target="edit" class="glyphicon glyphicon-pencil"></i> @Lang.Get("Edit")</a></li>
 	<li><a target="remove"><i target="remove" class="glyphicon glyphicon-trash"></i> @Lang.Get("Remove")</a></li>
 	<li class="divider"></li>
+	<li><a target="changelog"><i target="changelog" class="glyphicon glyphicon-eye-open"></i> @Lang.Get("Change log")</a></li>
+	<li class="divider"></li>
 	<li><a target="select"><i target="select" class="glyphicon glyphicon-ok"></i> @Lang.Get("Select all")</a></li>
 	<li><a target="unselect"><i target="unselect" class="glyphicon glyphicon-remove"></i> @Lang.Get("Unselect all")</a></li>
 	<li class="divider"></li>
@@ -77,6 +79,10 @@
 							RemoveUser();
 							break;
 
+						case "changelog":
+							ShowChangeLog();
+							break;
+
 						case "refresh":
 							table.ajax.reload();
 							break;
@@ -103,6 +109,13 @@
 		});
 
 	});
+
+	function ShowChangeLog() {
+		var ids = GetSelectedIDs();
+		if(ids.length > 0){
+			Tools.AjaxGetToBlock("#json_data", "ShowChangeLog", "AccessLog?referenceId=" + ids[0]);
+		}
+	}
 
 	function ToggleCheckbox(id) {
 		$('#' + id).prop('checked', true);

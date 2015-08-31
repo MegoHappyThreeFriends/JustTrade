@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="Controllers\AccessLogController.cs" />
     <Compile Include="Controllers\Administration\DatabaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\Administration\SettingsController.cs" />
@@ -267,6 +268,7 @@
     <Content Include="Scripts\Tools.js" />
     <Content Include="Views\Administrator\Settings\_AddUpdateSettings.cshtml" />
     <Content Include="Views\Administrator\Database\_Index.cshtml" />
+    <Content Include="Content\css\access-log.css" />
     <None Include="Views\Administrator\Settings\_Index.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -293,6 +295,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\npm.js" />
+    <Content Include="Views\AccessLog\_Index.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Shared\_AdminHeader.cshtml" />
     <Content Include="Content\themes\base\accordion.css" />

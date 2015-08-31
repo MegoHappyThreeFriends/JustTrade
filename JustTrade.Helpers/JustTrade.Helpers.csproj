@@ -39,6 +39,7 @@
     <Compile Include="ExtensionMethods\StringExtension.cs" />
     <Compile Include="Interfaces\IMail.cs" />
     <Compile Include="Mail.cs" />
+    <Compile Include="EntityCopier.cs" />
     <Compile Include="ProgressInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppSettings.cs" />

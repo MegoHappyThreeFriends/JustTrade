@@ -5,7 +5,7 @@ namespace JustTrade.Database
 	using System.Collections.Generic;
 	using JustTrade.Database.Interfaces;
 
-	public class PermissionTemplate : IEntityWithDeleted, IBaseEntity
+	public class PermissionTemplate : BaseEntity, IEntityWithDeleted, IBaseEntity
 	{
 		IList<UserPermissionBinding> _userPermissionBindings = new List<UserPermissionBinding>();
 

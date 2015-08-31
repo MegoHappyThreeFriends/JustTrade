@@ -6,7 +6,7 @@ namespace JustTrade.Database
 	using System.Collections.Generic;
 	using JustTrade.Database.Interfaces;
 
-	public class SettingsSection : IBaseEntity
+	public class SettingsSection : BaseEntity, IBaseEntity
 	{
 		IList<Settings> _settings = new List<Settings>();
 

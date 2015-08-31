@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using JustTrade.Database.Tools;
 using Newtonsoft.Json;
 
 namespace JustTrade.Database
 {
 	using JustTrade.Database.Interfaces;
 
-	public class User : IEntityWithDeleted, IBaseEntity
+	public class User : BaseEntity, IEntityWithDeleted, IBaseEntity
 	{
 		IList<Session> _sessions = new List<Session>();
 		IList<UserPermissionBinding> _userPermissionBindings = new List<UserPermissionBinding>();
@@ -72,6 +71,7 @@ namespace JustTrade.Database
 			}
 			return false;
 		}
+
 	}
 
 }
