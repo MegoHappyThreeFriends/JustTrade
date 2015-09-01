@@ -20,6 +20,7 @@
 			var session = MockTools.SetupSession();
 			var db = session.SetupDb();
 			var controller = new LoginController();
+			controller.TempData = new TempDataDictionary();
 			var user = new User {
 				Login = "login",
 				Password = "password"
@@ -28,7 +29,7 @@
 			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).
 				Returns(new ResultCollection<User>(new List<User>(), null));
 			var result = controller.Login(user.Login, user.Password);
-			CheckRedirectToMessageWithError(result);
+			CheckRedirectToMessageWithError(result, controller.TempData);
 		}
 
 		[Test]
@@ -44,10 +45,11 @@
 			};
 			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).
 				Returns(new ResultCollection<User>(new List<User> { user }, null));
+			controller.TempData = new TempDataDictionary();
 			var result = controller.Login(string.Empty, user.Password);
-			CheckRedirectToMessageWithError(result);
+			CheckRedirectToMessageWithError(result, controller.TempData);
 			result = controller.Login(user.Login, string.Empty);
-			CheckRedirectToMessageWithError(result);
+			CheckRedirectToMessageWithError(result, controller.TempData);
 		}
 
 		[Test]
@@ -57,6 +59,7 @@
 			var session = MockTools.SetupSession();
 			var db = session.SetupDb();
 			var controller = new LoginController();
+			controller.TempData = new TempDataDictionary();
 			var user = new User {
 				Login = "login",
 				Password = "password"
@@ -64,7 +67,7 @@
 			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).
 				Returns(new ResultCollection<User>(new List<User> { user }, null));
 			var result = controller.Login(user.Login, user.Password);
-			CheckRedirectToMessageWithError(result);
+			CheckRedirectToMessageWithError(result, controller.TempData);
 		}
 
 		[Test]
@@ -89,7 +92,7 @@
 				}
 			};
 
-			db.Setup(x => x.FindById<User>(It.IsAny<Guid>())).
+			db.Setup(x => x.FindById<User>(It.IsAny<Guid>(), false)).
 				Returns(new ResultCollection<User>(new List<User> { user2 }, null));
 
 			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).

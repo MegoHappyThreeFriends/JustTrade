@@ -75,13 +75,14 @@
 			var db = session.SetupDb();
 			const string templateName = "New template";
 			var controller = new PermissionController();
+			controller.TempData = new TempDataDictionary();
 			var permissionTemplate = new PermissionTemplate {
 				Id = Guid.NewGuid()
 			};
 			db.Setup(x => x.Find<PermissionTemplate>(It.IsAny<RepoFiler>())).
 				Returns(new ResultCollection<PermissionTemplate>(new List<PermissionTemplate> { permissionTemplate }, null));
 			ActionResult result = controller.AddTemplate(templateName);
-			CheckRedirectToMessageWithError(result);
+			CheckRedirectToMessageWithError(result, controller.TempData);
 		}
 
 		[Test]
@@ -96,7 +97,7 @@
 				Id = Guid.NewGuid(),
 				Name = "Old template name"
 			};
-			db.Setup(x => x.FindById<PermissionTemplate>(It.IsAny<Guid>())).
+			db.Setup(x => x.FindById<PermissionTemplate>(It.IsAny<Guid>(),false)).
 				Returns(new ResultCollection<PermissionTemplate>(new List<PermissionTemplate> { permissionTemplate }, null));
 			ActionResult result = controller.UpdateTemplate(permissionTemplate.Id, templateName);
 			Assert.IsTrue(result is EmptyResult);
@@ -111,14 +112,15 @@
 			var db = session.SetupDb();
 			const string templateName = "New template";
 			var controller = new PermissionController();
+			controller.TempData = new TempDataDictionary();
 			var permissionTemplate = new PermissionTemplate {
 				Id = Guid.NewGuid(),
 				Name = "Old template name"
 			};
-			db.Setup(x => x.FindById<PermissionTemplate>(It.IsAny<Guid>())).
+			db.Setup(x => x.FindById<PermissionTemplate>(It.IsAny<Guid>(), false)).
 				Returns(new ResultCollection<PermissionTemplate>(new List<PermissionTemplate>(), null));
 			ActionResult result = controller.UpdateTemplate(permissionTemplate.Id, templateName);
-			CheckRedirectToMessageWithError(result);
+			CheckRedirectToMessageWithError(result, controller.TempData);
 		}
 
 		[Test]
@@ -136,7 +138,7 @@
 				Returns(new ResultCollection<PermissionTemplate>(new List<PermissionTemplate> { permissionTemplate }, null));
 			ActionResult result = controller.RemoveTemplates(new[] { permissionTemplate.Id });
 			Assert.IsTrue(result is EmptyResult);
-			db.Verify(x => x.RemoveList(It.Is<PermissionTemplate[]>(y => y.First().Id == permissionTemplate.Id)), Times.Once);
+			db.Verify(x => x.RemoveList(It.Is<PermissionTemplate[]>(y => y.First().Id == permissionTemplate.Id),false), Times.Once);
 		}
 
 		[Test]
@@ -152,7 +154,7 @@
 				Id = Guid.NewGuid(),
 				Name = "Old template name"
 			};
-			db.Setup(x => x.FindById<PermissionTemplate>(It.IsAny<Guid>())).
+			db.Setup(x => x.FindById<PermissionTemplate>(It.IsAny<Guid>(), false)).
 				Returns(new ResultCollection<PermissionTemplate>(new List<PermissionTemplate> { permissionTemplate }, null));
 			ActionResult result = controller.UpdateTemplateParameter(new[] { parameter }, permissionTemplate.Id);
 			Assert.IsTrue(result is EmptyResult);
@@ -166,15 +168,16 @@
 			var session = MockTools.SetupSession();
 			var db = session.SetupDb();
 			var controller = new PermissionController();
+			controller.TempData = new TempDataDictionary();
 			const string parameter = "Template.Parameter";
 			var permissionTemplate = new PermissionTemplate {
 				Id = Guid.NewGuid(),
 				Name = "Old template name"
 			};
-			db.Setup(x => x.FindById<PermissionTemplate>(It.IsAny<Guid>())).
+			db.Setup(x => x.FindById<PermissionTemplate>(It.IsAny<Guid>(), false)).
 				Returns(new ResultCollection<PermissionTemplate>(new List<PermissionTemplate>(), null));
 			ActionResult result = controller.UpdateTemplateParameter(new[] { parameter }, permissionTemplate.Id);
-			CheckRedirectToMessageWithError(result);
+			CheckRedirectToMessageWithError(result, controller.TempData);
 		}
 
 		[Test]
@@ -189,7 +192,7 @@
 				Name = "Old template name",
 				PermissionRules = "[\"Login.Index\"]"
 			};
-			db.Setup(x => x.FindById<PermissionTemplate>(It.IsAny<Guid>())).
+			db.Setup(x => x.FindById<PermissionTemplate>(It.IsAny<Guid>(), false)).
 				Returns(new ResultCollection<PermissionTemplate>(new List<PermissionTemplate> { permissionTemplate }, null));
 			ActionResult result = controller.GetParameterTree(Guid.NewGuid());
 			var data = (JsTree3Node)((JsonResult)(result)).Data;

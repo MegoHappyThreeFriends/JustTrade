@@ -29,6 +29,7 @@
 			return PartialView("../Administrator/Database/_SuccessGeneratedDatabase");
 		}
 
+		[HttpGet]
 		public ActionResult DeleteUnusedObject() {
 			if (_deleteUnusesObjectProgress.IsRunning) {
 				return GenerateErrorMessage(Lang.Get("Removal process has already begun"), "");
@@ -41,6 +42,7 @@
 			return new EmptyResult();
 		}
 
+		[HttpGet]
 		public ActionResult DeletingProgress() {
 			return Json(_deleteUnusesObjectProgress, JsonRequestBehavior.AllowGet);
 		}

@@ -10,8 +10,8 @@
 	static class MockTools
 	{
 
-		public static UserSession SetupSession() {
-			var userSession = new UserSession();
+		public static UserSession SetupSession(User user = null, HashSet<string> permissionList = null ) {
+			var userSession = new UserSession(user, permissionList);
 			JTSecurity.Session = userSession;
 			return userSession;
 		}

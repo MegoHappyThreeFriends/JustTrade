@@ -93,6 +93,7 @@
     <Compile Include="CheckControllersAndMethods.cs" />
     <Compile Include="Controllers\Administration\MessageController.Tests.cs" />
     <Compile Include="Controllers\Administration\PermissionController.Tests.cs" />
+    <Compile Include="Controllers\Administration\SettingsController.Tests.cs" />
     <Compile Include="Controllers\Base.Tests.cs" />
     <Compile Include="Controllers\LoginController.Tests.cs" />
     <Compile Include="Tools\MockTools.cs" />

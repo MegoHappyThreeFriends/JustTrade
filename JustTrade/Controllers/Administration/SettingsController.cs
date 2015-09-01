@@ -21,7 +21,7 @@ namespace JustTrade.Controllers.Administration
 		[HttpGet]
 		public ActionResult GetSettingsList()
 		{
-			List<SettingsSection> list = new List<SettingsSection>();
+			var list = new List<SettingsSection>();
 			using (var sections = JTSecurity.Session.Db.Find<SettingsSection>())
 			{
 				foreach (var section in sections)
@@ -36,8 +36,8 @@ namespace JustTrade.Controllers.Administration
 		}
 
 		[HttpGet]
-		public ActionResult ShowAddUpdateSettings(Guid? id)
-		{
+		public ActionResult ShowAddUpdateSettings(Guid? id) {
+			ViewBag.SectionList = null;
 			Settings settings = null;
 			if (id != null)
 			{
@@ -48,7 +48,7 @@ namespace JustTrade.Controllers.Administration
 			}
 			using (var sections = JTSecurity.Session.Db.Find<SettingsSection>())
 			{
-				ViewBag.SectionList = sections.ToList();
+				ViewBag.SectionList = (List<SettingsSection>)sections.ToList();
 			}
             return PartialView("../Administrator/Settings/_AddUpdateSettings", settings);
 		}
@@ -154,7 +154,7 @@ namespace JustTrade.Controllers.Administration
 
 			try
 			{
-				List<SettingsSection> sectionRemoveList = new List<SettingsSection>();
+				var sectionRemoveList = new List<SettingsSection>();
 				using (var sections = JTSecurity.Session.Db.Find<SettingsSection>())
 				{
 					sectionRemoveList.AddRange(sections.Where(section => section.Settings.Count == 0));
