@@ -1,5 +1,7 @@
 ﻿namespace JustTrade.Models
 {
+	using System.ComponentModel.Design.Serialization;
+
 	public class Message
 	{
 		public enum Button
@@ -40,5 +42,12 @@
 			set;
 		}
 
+		public string Serialize() {
+			return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+		}
+
+		public static Message Deserialize(string data) {
+			return Newtonsoft.Json.JsonConvert.DeserializeObject<Message>(data);
+		}
 	}
 }

@@ -75,14 +75,13 @@
 			var db = session.SetupDb();
 			const string templateName = "New template";
 			var controller = new PermissionController();
-			controller.TempData = new TempDataDictionary();
 			var permissionTemplate = new PermissionTemplate {
 				Id = Guid.NewGuid()
 			};
 			db.Setup(x => x.Find<PermissionTemplate>(It.IsAny<RepoFiler>())).
 				Returns(new ResultCollection<PermissionTemplate>(new List<PermissionTemplate> { permissionTemplate }, null));
 			ActionResult result = controller.AddTemplate(templateName);
-			CheckRedirectToMessageWithError(result, controller.TempData);
+			CheckRedirectToMessageWithError(result);
 		}
 
 		[Test]
@@ -112,7 +111,6 @@
 			var db = session.SetupDb();
 			const string templateName = "New template";
 			var controller = new PermissionController();
-			controller.TempData = new TempDataDictionary();
 			var permissionTemplate = new PermissionTemplate {
 				Id = Guid.NewGuid(),
 				Name = "Old template name"
@@ -120,7 +118,7 @@
 			db.Setup(x => x.FindById<PermissionTemplate>(It.IsAny<Guid>(), false)).
 				Returns(new ResultCollection<PermissionTemplate>(new List<PermissionTemplate>(), null));
 			ActionResult result = controller.UpdateTemplate(permissionTemplate.Id, templateName);
-			CheckRedirectToMessageWithError(result, controller.TempData);
+			CheckRedirectToMessageWithError(result);
 		}
 
 		[Test]
@@ -168,7 +166,6 @@
 			var session = MockTools.SetupSession();
 			var db = session.SetupDb();
 			var controller = new PermissionController();
-			controller.TempData = new TempDataDictionary();
 			const string parameter = "Template.Parameter";
 			var permissionTemplate = new PermissionTemplate {
 				Id = Guid.NewGuid(),
@@ -177,7 +174,7 @@
 			db.Setup(x => x.FindById<PermissionTemplate>(It.IsAny<Guid>(), false)).
 				Returns(new ResultCollection<PermissionTemplate>(new List<PermissionTemplate>(), null));
 			ActionResult result = controller.UpdateTemplateParameter(new[] { parameter }, permissionTemplate.Id);
-			CheckRedirectToMessageWithError(result, controller.TempData);
+			CheckRedirectToMessageWithError(result);
 		}
 
 		[Test]

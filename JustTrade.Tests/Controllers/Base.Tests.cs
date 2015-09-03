@@ -7,9 +7,16 @@ namespace JustTrade.Tests.Controllers
 
 	public class BaseTests
 	{
-		protected void CheckRedirectToMessageWithError(ActionResult result, TempDataDictionary tempData) {
+		protected void CheckRedirectToMessageWithError(ActionResult result, string messageText = null, string description = null) {
 			if (result is RedirectToRouteResult) {
-				var message = tempData["message"] as Message;
+				var messageData = (string)((RedirectToRouteResult)(result)).RouteValues["message"];
+				var message = Message.Deserialize(messageData);
+				if (messageText != null) {
+					Assert.AreEqual(message.MessageText, messageText);
+					if (description != null) {
+						Assert.AreEqual(message.Description, description);
+					}
+				}
 				if (message == null) {
 					Assert.Fail("TempData not contained message model");
 				}

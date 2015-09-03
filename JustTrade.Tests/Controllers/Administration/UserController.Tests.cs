@@ -39,11 +39,10 @@
 			var session = MockTools.SetupSession();
 			var db = session.SetupDb();
 			var controller = new UserController();
-			controller.TempData = new TempDataDictionary();
 			var user = new User();
 			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).Returns(new ResultCollection<User>(new List<User>(), null));
 			ActionResult result = controller.Add(user, null);
-			CheckRedirectToMessageWithError(result, controller.TempData);
+			CheckRedirectToMessageWithError(result);
 		}
 
 		[Test]
@@ -54,7 +53,6 @@
 			var session = MockTools.SetupSession();
 			var db = session.SetupDb();
 			var controller = new UserController();
-			controller.TempData = new TempDataDictionary();
 			var user = new User {
 				Login = "login",
 				Name = "name",
@@ -62,7 +60,7 @@
 			};
 			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).Returns(new ResultCollection<User>(new List<User> { user }, null));
 			ActionResult result = controller.Add(user, null);
-			CheckRedirectToMessageWithError(result, controller.TempData);
+			CheckRedirectToMessageWithError(result);
 		}
 
 		[Test]
@@ -95,7 +93,6 @@
 			var session = MockTools.SetupSession();
 			var db = session.SetupDb();
 			var controller = new UserController();
-			controller.TempData = new TempDataDictionary();
 			var user = new User();
 			var oldUser = new User {
 				Login = "login1",
@@ -104,7 +101,7 @@
 			};
 			db.Setup(x => x.FindById<User>(It.IsAny<Guid>(), false)).Returns(new ResultCollection<User>(new List<User> { oldUser }, null));
 			ActionResult result = controller.Update(user, null);
-			CheckRedirectToMessageWithError(result, controller.TempData);
+			CheckRedirectToMessageWithError(result);
 		}
 
 		[Test]
@@ -114,7 +111,6 @@
 			var session = MockTools.SetupSession();
 			var db = session.SetupDb();
 			var controller = new UserController();
-			controller.TempData = new TempDataDictionary();
 			var user = new User {
 				Login = "new_login",
 				Name = "name",
@@ -122,7 +118,7 @@
 			};
 			db.Setup(x => x.FindById<User>(It.IsAny<Guid>(), false)).Returns(new ResultCollection<User>(new List<User>(), null));
 			ActionResult result = controller.Update(user, null);
-			CheckRedirectToMessageWithError(result, controller.TempData);
+			CheckRedirectToMessageWithError(result);
 		}
 
 		[Test]
@@ -150,7 +146,6 @@
 			var session = MockTools.SetupSession();
 			var db = session.SetupDb();
 			var controller = new UserController();
-			controller.TempData = new TempDataDictionary();
 			var user = new User {
 				Login = "new_login",
 				Name = "name",
@@ -158,7 +153,7 @@
 			};
 			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).Returns(new ResultCollection<User>(new List<User> { user }, null));
 			ActionResult result = controller.Remove(null);
-			CheckRedirectToMessageWithError(result, controller.TempData);
+			CheckRedirectToMessageWithError(result);
 		}
 
 		[Test]
@@ -168,10 +163,9 @@
 			var session = MockTools.SetupSession();
 			var db = session.SetupDb();
 			var controller = new UserController();
-			controller.TempData = new TempDataDictionary();
 			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).Returns(new ResultCollection<User>(new List<User>(), null));
 			ActionResult result = controller.Remove(new[] { Guid.Empty });
-			CheckRedirectToMessageWithError(result, controller.TempData);
+			CheckRedirectToMessageWithError(result);
 		}
 
 		[Test]

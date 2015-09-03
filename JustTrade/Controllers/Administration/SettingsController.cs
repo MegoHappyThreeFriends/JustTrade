@@ -48,7 +48,7 @@ namespace JustTrade.Controllers.Administration
 			}
 			using (var sections = JTSecurity.Session.Db.Find<SettingsSection>())
 			{
-				ViewBag.SectionList = (List<SettingsSection>)sections.ToList();
+				ViewBag.SectionList = sections.ToList();
 			}
             return PartialView("../Administrator/Settings/_AddUpdateSettings", settings);
 		}
@@ -56,6 +56,9 @@ namespace JustTrade.Controllers.Administration
 		[HttpPost]
 		public ActionResult AddSection(string name)
 		{
+			if (string.IsNullOrEmpty(name)) {
+				return GenerateErrorMessage("Error adding settings section", "Name cannot be empty");
+			}
 			Guid sectionId;
 			try
 			{

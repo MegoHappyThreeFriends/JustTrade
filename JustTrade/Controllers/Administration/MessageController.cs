@@ -12,10 +12,9 @@
 	{
 		[FreeAccess]
 		[HttpGet]
-		public ActionResult Index()
-		{
-			var message = (Message)TempData["message"];
-            return PartialView("../Administrator/Message/_Index", message);
+		public ActionResult Index(string message) {
+			var msg = Message.Deserialize(message);
+			return PartialView("../Administrator/Message/_Index", msg);
 		}
 
 		[FreeAccess]
