@@ -1,9 +1,8 @@
-﻿using System.Web.Mvc;
-using JustTrade.Tools;
-using JustTrade.Tools.Attributes;
-
-namespace JustTrade.Controllers
+﻿namespace JustTrade.Controllers
 {
+	using System.Web.Mvc;
+	using JustTrade.Tools;
+	using JustTrade.Tools.Attributes;
 	using System;
 	using System.Collections.Generic;
 	using JustTrade.Database;
