@@ -79,7 +79,6 @@
 				Login = "login",
 				Password = "password".GetHashPassword()
 			};
-
 			var user2 = new User {
 				UserPermissionBindings = new List<UserPermissionBinding>{ 
 					new UserPermissionBinding {
@@ -89,10 +88,8 @@
 					}
 				}
 			};
-
 			db.Setup(x => x.FindById<User>(It.IsAny<Guid>(), false)).
 				Returns(new ResultCollection<User>(new List<User> { user2 }, null));
-
 			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).
 				Returns(new ResultCollection<User>(new List<User> { user }, null));
 			var result = controller.Login(user.Login, "password");

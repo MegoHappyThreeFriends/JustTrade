@@ -39,7 +39,7 @@
 			if (permissionTemplates == null) {
 				return new EmptyResult();
 			}
-			return UpdatePermission(GetUserIdByLogin(user.Login), permissionTemplates);
+			return UpdatePermission(newUser.Id, permissionTemplates);
 		}
 
 		[HttpPost]
@@ -147,15 +147,6 @@
 		#endregion
 
 		#region Methods: Private
-
-		private Guid GetUserIdByLogin(string login) {
-			using (var users = JTSecurity.Session.Db.Find<User>(new RepoFiler("Login", login))) {
-				if (users.Any()) {
-					return users.First().Id;
-				}
-			}
-			throw new Exception("Error get user id by Login!");
-		}
 
 		private ActionResult UpdatePermission(Guid userId, Guid[] ids) {
 			User user;

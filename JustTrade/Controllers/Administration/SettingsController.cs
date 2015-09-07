@@ -60,17 +60,10 @@ namespace JustTrade.Controllers.Administration
 				return GenerateErrorMessage("Error adding settings section", "Name cannot be empty");
 			}
 			Guid sectionId;
-			try
-			{
-				JTSecurity.Session.Db.Add(new SettingsSection() { Name = name });
-				using (var sections = JTSecurity.Session.Db.Find<SettingsSection>(new RepoFiler("Name", name)))
-				{
-					if (!sections.Any())
-					{
-						return GenerateErrorMessage("Error adding settings section", "Not found added object");
-					}
-					sectionId = sections.First().Id;
-				}
+			try {
+				var settingSection = new SettingsSection() { Name = name };
+				JTSecurity.Session.Db.Add(settingSection);
+				sectionId = settingSection.Id;
 			}
 			catch (Exception ex)
 			{
@@ -82,6 +75,9 @@ namespace JustTrade.Controllers.Administration
 		[HttpPost]
 		public ActionResult Add(string name, string value, Guid sectionId)
 		{
+			if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(value) || sectionId == Guid.Empty) {
+				return GenerateErrorMessage("Error adding settings","Name, Value or Section is empty");
+			}
 			var newSettings = new Settings()
 			{
 				Name = name,
@@ -117,8 +113,10 @@ namespace JustTrade.Controllers.Administration
 		[HttpPost]
 		public ActionResult Update(Guid id, string name, string value, Guid sectionId)
 		{
+			if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(value) || sectionId == Guid.Empty || id == Guid.Empty) {
+				return GenerateErrorMessage("Error updating settings", "Name, Value or Section is empty");
+			}
 			Settings newSettings;
-
 			using (var settingslist = JTSecurity.Session.Db.FindById<Settings>(id))
 			{
 				if (!settingslist.Any())
@@ -133,7 +131,6 @@ namespace JustTrade.Controllers.Administration
 					newSettings.Section = null;
 				}
 			}
-
 			if (newSettings.Section == null)
 			{
 				using (var sections = JTSecurity.Session.Db.FindById<SettingsSection>(sectionId))
@@ -157,14 +154,7 @@ namespace JustTrade.Controllers.Administration
 
 			try
 			{
-				var sectionRemoveList = new List<SettingsSection>();
-				using (var sections = JTSecurity.Session.Db.Find<SettingsSection>())
-				{
-					sectionRemoveList.AddRange(sections.Where(section => section.Settings.Count == 0));
-				}
-				if (sectionRemoveList.Any()) {
-					JTSecurity.Session.Db.RemoveList(sectionRemoveList);
-				}
+				RemoveUnuesdSection();
 			}
 			catch (Exception ex)
 			{
@@ -182,6 +172,9 @@ namespace JustTrade.Controllers.Administration
 				Settings item;
                 using (var settingslist = JTSecurity.Session.Db.FindById<Settings>(id))
                 {
+					if (!settingslist.Any()) {
+						return GenerateErrorMessage(Lang.Get("Record not found"), "");
+					}
 	                item = settingslist.First();
                 }
 				JTSecurity.Session.Db.Remove(item);
@@ -190,16 +183,8 @@ namespace JustTrade.Controllers.Administration
 			{
 				return GenerateErrorMessage("Error removing settings", ex);
 			}
-			try
-			{
-				var sectionRemoveList = new List<SettingsSection>();
-				using (var sections = JTSecurity.Session.Db.Find<SettingsSection>())
-				{
-					sectionRemoveList.AddRange(sections.Where(section => section.Settings.Count == 0));
-				}
-				if (sectionRemoveList.Any()) {
-					JTSecurity.Session.Db.RemoveList(sectionRemoveList);
-				}
+			try {
+				RemoveUnuesdSection();
 			}
 			catch (Exception ex)
 			{
@@ -207,6 +192,21 @@ namespace JustTrade.Controllers.Administration
 			}
             return new EmptyResult();
 		}
+
+		#region Methods: Private
+
+		private void RemoveUnuesdSection() {
+			var sectionRemoveList = new List<SettingsSection>();
+			using (var sections = JTSecurity.Session.Db.Find<SettingsSection>()) {
+				sectionRemoveList.AddRange(sections.Where(section => section.Settings.Count == 0));
+			}
+			if (sectionRemoveList.Any()) {
+				JTSecurity.Session.Db.RemoveList(sectionRemoveList);
+			}
+		}
+
+		#endregion
+
 
 	}
 

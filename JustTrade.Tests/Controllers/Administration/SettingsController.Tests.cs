@@ -99,7 +99,7 @@ namespace JustTrade.Tests.Controllers.Administration
 		}
 
 		[Test]
-		public void ShowAddUpdateSettings_ReturnCorrectData() {
+		public void AddSection_ReturnCorrectData() {
 			var session = MockTools.SetupSession();
 			var db = session.SetupDb();
 			MockTools.SetupLanguage();
@@ -111,10 +111,210 @@ namespace JustTrade.Tests.Controllers.Administration
 			};
 			db.Setup(x => x.Find<SettingsSection>(It.IsAny<RepoFiler>()))
 				.Returns(new ResultCollection<SettingsSection>(new List<SettingsSection>() { settingsSection }, null));
-			var result = controller.AddSection(settingsSection.Name);
-			db.Verify(x => x.Add(It.Is<SettingsSection>(y=>y.Name == settingsSection.Name)),Times.Once);
-			Assert.AreEqual(((ContentResult)(result)).Content, settingsSection.Id.ToString());
+			controller.AddSection(settingsSection.Name);
+			db.Verify(x => x.Add(It.Is<SettingsSection>(y => y.Name == settingsSection.Name)), Times.Once);
 		}
+
+		[Test]
+		public void Add_RedirectToMessageWithError_WhenInputParameterIsEmpty() {
+			var session = MockTools.SetupSession();
+			var db = session.SetupDb();
+			MockTools.SetupLanguage();
+			MockTools.SetupDefaultAppSettings();
+			var controller = new SettingsController();
+			var result = controller.Add(null, "value", Guid.NewGuid());
+			CheckRedirectToMessageWithError(result);
+			result = controller.Add("name", null, Guid.NewGuid());
+			CheckRedirectToMessageWithError(result);
+			result = controller.Add("name", "value", Guid.Empty);
+			CheckRedirectToMessageWithError(result);
+		}
+
+		[Test]
+		public void Add_RedirectToMessageWithError_WhenTryDuplicateEntryInOneSection() {
+			var session = MockTools.SetupSession();
+			var db = session.SetupDb();
+			MockTools.SetupLanguage();
+			MockTools.SetupDefaultAppSettings();
+			var controller = new SettingsController();
+
+			var settingsSection = new SettingsSection {
+				Name = "Section",
+				Id = Guid.NewGuid()
+			};
+			var settings = new Settings {
+				Name = "Setting",
+				Value = "SettingValue",
+				Section = settingsSection
+			};
+			db.Setup(x => x.Find<Settings>(It.IsAny<RepoFiler>()))
+				.Returns(new ResultCollection<Settings>(new List<Settings>() { settings }, null));
+			var result = controller.Add("name", "value", settingsSection.Id);
+			CheckRedirectToMessageWithError(result);
+		}
+
+		[Test]
+		public void Add_ReturnEmptyResultAndCallAddMethod_WhenAllDataIsCorrect() {
+			var session = MockTools.SetupSession();
+			var db = session.SetupDb();
+			MockTools.SetupLanguage();
+			MockTools.SetupDefaultAppSettings();
+			var controller = new SettingsController();
+			var settingsSection = new SettingsSection {
+				Name = "Section",
+				Id = Guid.NewGuid()
+			};
+			var settings = new Settings {
+				Name = "Setting",
+				Value = "SettingValue",
+				Section = settingsSection
+			};
+			db.Setup(x => x.Find<Settings>(It.IsAny<RepoFiler>()))
+				.Returns(new ResultCollection<Settings>(new List<Settings>() { settings }, null));
+			db.Setup(x => x.FindById<SettingsSection>(It.IsAny<Guid>(), false))
+				.Returns(new ResultCollection<SettingsSection>(new List<SettingsSection>() { settingsSection }, null));
+			var result = controller.Add("name", "value", Guid.NewGuid());
+			Assert.IsTrue(result is EmptyResult);
+			db.Verify(x => x.Add(
+				It.Is<Settings>(y => y.Name == "name" && y.Value == "value" && y.Section.Id == settingsSection.Id)));
+		}
+
+		[Test]
+		public void Update_RedirectToMessageWithError_WhenInputParameterIsEmpty() {
+			var session = MockTools.SetupSession();
+			var db = session.SetupDb();
+			MockTools.SetupLanguage();
+			MockTools.SetupDefaultAppSettings();
+			var controller = new SettingsController();
+			var result = controller.Update(Guid.NewGuid(), null, "value", Guid.NewGuid());
+			CheckRedirectToMessageWithError(result);
+			result = controller.Update(Guid.NewGuid(), "name", null, Guid.NewGuid());
+			CheckRedirectToMessageWithError(result);
+			result = controller.Update(Guid.NewGuid(), "name", "value", Guid.Empty);
+			CheckRedirectToMessageWithError(result);
+			result = controller.Update(Guid.Empty, "name", "value", Guid.NewGuid());
+			CheckRedirectToMessageWithError(result);
+		}
+
+		[Test]
+		public void Update_RedirectToMessageWithError_WhenSettingsRecordNotFound() {
+			var session = MockTools.SetupSession();
+			var db = session.SetupDb();
+			MockTools.SetupLanguage();
+			MockTools.SetupDefaultAppSettings();
+			var controller = new SettingsController();
+			db.Setup(x => x.FindById<Settings>(It.IsAny<Guid>(), false))
+				.Returns(new ResultCollection<Settings>(new List<Settings>() {
+				}, null));
+			var result = controller.Update(Guid.NewGuid(), "name", "value", Guid.NewGuid());
+			CheckRedirectToMessageWithError(result);
+		}
+
+
+		[Test]
+		public void Update_RedirectToMessageWithError_WhenSettingsSectionRecordNotFound() {
+			var session = MockTools.SetupSession();
+			var db = session.SetupDb();
+			MockTools.SetupLanguage();
+			MockTools.SetupDefaultAppSettings();
+			var controller = new SettingsController();
+			var settingsSection = new SettingsSection {
+				Name = "Section",
+				Id = Guid.NewGuid()
+			};
+			var settings = new Settings {
+				Name = "Setting",
+				Value = "SettingValue",
+				Section = settingsSection
+			};
+			db.Setup(x => x.FindById<SettingsSection>(It.IsAny<Guid>(), false))
+				.Returns(new ResultCollection<SettingsSection>(new List<SettingsSection>() {
+				}, null));
+
+			db.Setup(x => x.FindById<Settings>(It.IsAny<Guid>(), false))
+				.Returns(new ResultCollection<Settings>(new List<Settings>() { settings }, null));
+
+			var result = controller.Update(Guid.NewGuid(), "name", "value", Guid.NewGuid());
+			CheckRedirectToMessageWithError(result);
+		}
+
+		[Test]
+		public void Update_ReturnEmptyResultAndCallUpdateAndDeleteUnusedSection_WhenInputDataIsCorrect() {
+			var session = MockTools.SetupSession();
+			var db = session.SetupDb();
+			MockTools.SetupLanguage();
+			MockTools.SetupDefaultAppSettings();
+			var controller = new SettingsController();
+			var settingsSection = new SettingsSection {
+				Name = "Section",
+				Id = Guid.NewGuid(),
+				Settings = new List<Settings>()
+			};
+			var settingsSectionWithSettings = new SettingsSection {
+				Name = "SectionWithSettings",
+				Id = Guid.NewGuid(),
+				Settings = new List<Settings>() { new Settings() }
+			};
+			var settings = new Settings {
+				Name = "Setting",
+				Value = "SettingValue",
+				Section = settingsSection
+			};
+			db.Setup(x => x.FindById<SettingsSection>(It.IsAny<Guid>(), false))
+				.Returns(new ResultCollection<SettingsSection>(new List<SettingsSection>() { settingsSection }, null));
+			db.Setup(x => x.FindById<Settings>(It.IsAny<Guid>(), false))
+				.Returns(new ResultCollection<Settings>(new List<Settings>() { settings }, null));
+			db.Setup(x => x.Find<SettingsSection>())
+				.Returns(new ResultCollection<SettingsSection>(new List<SettingsSection>() { settingsSection, settingsSectionWithSettings }, null));
+			var result = controller.Update(Guid.NewGuid(), "name", "value", Guid.NewGuid());
+			Assert.IsTrue(result is EmptyResult);
+			db.Verify(x => x.Update(It.Is<Settings>(y => y.Name == "name" && y.Value == "value" && y.Section.Id == settingsSection.Id)));
+			db.Verify(x => x.RemoveList(It.Is<List<SettingsSection>>(y => y.Count == 1 && y[0].Id == settingsSection.Id), false));
+		}
+
+		[Test]
+		public void Remove_RedirectToMessageWithError_WhenItemNotFound() {
+			var session = MockTools.SetupSession();
+			var db = session.SetupDb();
+			MockTools.SetupLanguage();
+			MockTools.SetupDefaultAppSettings();
+			var controller = new SettingsController();
+			db.Setup(x => x.FindById<Settings>(It.IsAny<Guid>(), false))
+				.Returns(new ResultCollection<Settings>(new List<Settings>() {
+				}, null));
+			var result = controller.Remove(Guid.NewGuid());
+			CheckRedirectToMessageWithError(result);
+		}
+
+		[Test]
+		public void Remove_CallRemoveMathod_WhenAllDataCorrect() {
+			var session = MockTools.SetupSession();
+			var db = session.SetupDb();
+			MockTools.SetupLanguage();
+			MockTools.SetupDefaultAppSettings();
+			var controller = new SettingsController();
+			var settingsSection = new SettingsSection {
+				Name = "Section",
+				Id = Guid.NewGuid()
+			};
+			var settings = new Settings {
+				Id = Guid.NewGuid(),
+				Name = "Setting",
+				Value = "SettingValue",
+				Section = settingsSection
+			};
+			db.Setup(x => x.Find<SettingsSection>())
+				.Returns(new ResultCollection<SettingsSection>(new List<SettingsSection>() {
+				}, null));
+
+			db.Setup(x => x.FindById<Settings>(It.IsAny<Guid>(), false))
+				.Returns(new ResultCollection<Settings>(new List<Settings>() { settings }, null));
+
+			var result = controller.Remove(Guid.NewGuid());
+			db.Verify(x => x.Remove(It.Is<Settings>(y => y.Id == settings.Id), false));
+			Assert.IsTrue(result is EmptyResult);
+		}
+
 
 	}
 }
