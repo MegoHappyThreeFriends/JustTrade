@@ -49,6 +49,10 @@
 			case "key":
 				result = checkKey(obj);
 				break;
+			case "ip":
+				result = checkIP(obj);
+				ignoreMinMax = true;
+				break;
 			case "text":
 				break;
 			case "match":
@@ -111,6 +115,22 @@
 		}
 		addInformLabel(obj, Language.Data["Must be latin and number chars."]);
 		return false;
+	}
+
+	function checkIP(obj) {
+		var dataIsValid = true;
+		var regexIp = /^\d*.\d*.\d*.\d*$/;
+		var regexIpRange = /^\d*.\d*.\d*.\d*-\d*.\d*.\d*.\d*$/;
+		var val = obj.val().replace(/\s/g, '');
+		var ipList = val.split(",");
+		for (var i = 0; i < ipList.length; i++) {
+			if (!(regexIp.test(val) || regexIpRange.test(val))) {
+				dataIsValid = false;
+				addInformLabel(obj, Language.Data["Must be IP or IP range."]);
+				break;
+			}
+		}
+		return dataIsValid;
 	}
 
 	function checkInt(obj) {

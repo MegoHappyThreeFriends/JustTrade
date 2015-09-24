@@ -8,6 +8,9 @@
 	using NHibernate.Criterion;
 	using System.Collections.ObjectModel;
 	using System.Linq;
+	using NHibernate.Dialect;
+	using NHibernate.Transform;
+	using NHibernate.Type;
 
 	public enum RepoFilerExpr
 	{
@@ -261,6 +264,31 @@
 				transaction.Commit();
 			}
 		}
+
+		public void ServiceDatabase() {
+			using (ISession session = NHibernateHelper.OpenSession())
+			using (ITransaction transaction = session.BeginTransaction()) {
+				Dialect dialect = ((NHibernate.Impl.SessionFactoryImpl)(NHibernateHelper.SessionFactory)).Dialect;
+				if (dialect.ToString().ToLower().Contains("postgres")) {
+					ServicePostgreSqlDb(session);
+				}
+				transaction.Commit();
+			}
+		}
+
+		private void ServicePostgreSqlDb(ISession session) {
+			var tableList = session.
+				CreateSQLQuery("SELECT tablename FROM pg_catalog.pg_tables where schemaname='public';").List<string>();
+			foreach (var tableItem in tableList) {
+				var reindexTable = string.Format("vacuum full {0};", tableItem);
+				session.CreateSQLQuery(reindexTable).ExecuteUpdate();
+			}
+			foreach (var tableItem in tableList) {
+				var reindexTable = string.Format("REINDEX TABLE {0};", tableItem);
+				session.CreateSQLQuery(reindexTable).ExecuteUpdate();
+			}
+		}
+
 
 		private void AddToAccessLog<T>(T obj, AccessType accessType)
 		{

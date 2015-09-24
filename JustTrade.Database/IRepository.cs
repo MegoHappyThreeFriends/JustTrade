@@ -13,5 +13,6 @@
 		void Update<T>(T item);
 		void RemoveList<T>(IEnumerable<T> items, bool finaly = false);
 		void Remove<T>(T item, bool finaly = false);
+		void ServiceDatabase();
 	}
 }

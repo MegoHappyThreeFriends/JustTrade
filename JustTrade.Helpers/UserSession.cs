@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-
-namespace JustTrade.Helpers
+﻿namespace JustTrade.Helpers
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
 	using JustTrade.Database;
 	using JustTrade.Helpers.Interfaces;
 

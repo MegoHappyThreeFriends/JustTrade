@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-
-namespace JustTrade.Helpers
+﻿namespace JustTrade.Helpers
 {
+	using System;
+	using System.Collections;
+	using System.Collections.Generic;
+	using System.IO;
 	using System.Diagnostics;
 	using System.Linq;
 	using System.Threading;
+	using JustTrade.Helpers.ExtensionMethods;
 	using Newtonsoft.Json.Linq;
 
 	public static class Lang
@@ -86,7 +86,7 @@ namespace JustTrade.Helpers
 		}
 
 		public static string Get(string name) {
-			if (string.IsNullOrEmpty(name)) {
+			if (name.IsNullOrEmptyValue()) {
 				return string.Empty;
 			}
 			if (!_loaded) {

@@ -6,6 +6,7 @@
 	using System.Web.Mvc;
 	using JustTrade.Controllers;
 	using JustTrade.Database;
+	using JustTrade.Helpers.ExtensionMethods;
 	using JustTrade.Tests.Tools;
 	using Moq;
 	using NUnit.Framework;

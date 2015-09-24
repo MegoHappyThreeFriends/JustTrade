@@ -7,6 +7,7 @@
 	using JustTrade.Database;
 	using JustTrade.Helpers;
 	using JustTrade.Tools;
+	using JustTrade.Tools.Security;
 
 	public class DatabaseController : ControllerWithTools
 	{
@@ -31,6 +32,8 @@
 
 		[HttpGet]
 		public ActionResult DeleteUnusedObject() {
+			JTSecurity.Session.Db.ServiceDatabase();
+			return new EmptyResult();
 			if (_deleteUnusesObjectProgress.IsRunning) {
 				return GenerateErrorMessage(Lang.Get("Removal process has already begun"), "");
 			}

@@ -17,7 +17,7 @@ namespace JustTrade.Database
         #region Private
 
         private static ISessionFactory _sessionFactory;
-        private static ISessionFactory SessionFactory
+        public static ISessionFactory SessionFactory
         {
             get
             {
@@ -39,7 +39,7 @@ namespace JustTrade.Database
             return SessionForTest ?? SessionFactory.OpenSession();
         }
 
-        public static void CreateDb()
+	    public static void CreateDb()
         {
             var configuration = new Configuration();
             configuration.Configure();

@@ -8,6 +8,7 @@
 	using jsTree3.Models;
 	using Database;
 	using Helpers;
+	using JustTrade.Helpers.ExtensionMethods;
 	using Tools;
 	using Tools.Security;
 	using Newtonsoft.Json;
@@ -123,7 +124,7 @@
 			using (var permission = JTSecurity.Session.Db.FindById<PermissionTemplate>(templateId)) {
 				if (permission.Any()) {
 					PermissionTemplate item = permission.First();
-					if (!string.IsNullOrEmpty(item.PermissionRules)) {
+					if (!item.PermissionRules.IsNullOrEmptyValue()) {
 						parameters = JArray.Parse(item.PermissionRules).ToObject<string[]>().ToList();
 					}
 				}

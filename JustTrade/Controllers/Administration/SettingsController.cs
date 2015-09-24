@@ -8,6 +8,7 @@ using JustTrade.Tools.Security;
 
 namespace JustTrade.Controllers.Administration
 {
+	using JustTrade.Helpers.ExtensionMethods;
 	using Tools;
 
 	public class SettingsController : ControllerWithTools
@@ -56,7 +57,7 @@ namespace JustTrade.Controllers.Administration
 		[HttpPost]
 		public ActionResult AddSection(string name)
 		{
-			if (string.IsNullOrEmpty(name)) {
+			if (name.IsNullOrEmptyValue()) {
 				return GenerateErrorMessage("Error adding settings section", "Name cannot be empty");
 			}
 			Guid sectionId;
@@ -113,7 +114,7 @@ namespace JustTrade.Controllers.Administration
 		[HttpPost]
 		public ActionResult Update(Guid id, string name, string value, Guid sectionId)
 		{
-			if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(value) || sectionId == Guid.Empty || id == Guid.Empty) {
+			if (name.IsNullOrEmptyValue() || value.IsNullOrEmptyValue() || sectionId == Guid.Empty || id == Guid.Empty) {
 				return GenerateErrorMessage("Error updating settings", "Name, Value or Section is empty");
 			}
 			Settings newSettings;

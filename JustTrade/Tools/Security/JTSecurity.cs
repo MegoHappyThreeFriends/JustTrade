@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace JustTrade.Tools.Security
+﻿namespace JustTrade.Tools.Security
 {
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Web;
 	using JustTrade.Database;
 	using JustTrade.Helpers;
+	using JustTrade.Helpers.ExtensionMethods;
 	using Newtonsoft.Json.Linq;
 
 	public static class JTSecurity
@@ -44,7 +43,7 @@ namespace JustTrade.Tools.Security
 			using (var users = Session.Db.FindById<User>(user.Id)) {
 				var permissionBindings = users.First().UserPermissionBindings;
 				foreach (var userPermissionBinding in permissionBindings) {
-					if (!string.IsNullOrEmpty(userPermissionBinding.PermissionTemplate.PermissionRules)) {
+					if (!userPermissionBinding.PermissionTemplate.PermissionRules.IsNullOrEmptyValue()) {
 						var list = JArray.Parse(userPermissionBinding.PermissionTemplate.PermissionRules).ToObject<string[]>().ToList();
 						list = list.Distinct().ToList();
 						foreach (var item in list) {
