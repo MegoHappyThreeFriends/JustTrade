@@ -362,7 +362,7 @@
 				}
 				else
 				{
-					builder.Append(String.Format("{2}\"{0}\":\"{1}\"", propertyInfo.Name, value.ToString().Replace("\"", "\\\""),
+					builder.Append(String.Format("{2}\"{0}\":\"{1}\"", propertyInfo.Name, (value ?? "null").ToString().Replace("\"", "\\\""),
 						(builder.Length > 3 ? "," : string.Empty)));
 				}
 			}
