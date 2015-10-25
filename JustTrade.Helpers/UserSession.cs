@@ -15,7 +15,6 @@
 
 		public User User {
 			get;
-			private set;
 		}
 
 		public HashSet<string> PermissionList {

@@ -1,4 +1,6 @@
-﻿namespace JustTrade.Controllers
+﻿using System.Net;
+
+namespace JustTrade.Controllers
 {
 	using System;
 	using System.Linq;
@@ -35,7 +37,18 @@
 				return GenerateErrorMessage(Lang.Get("Error connect to db"), ex);
 			}
 			if (user != null) {
-				if (user.Password == password.GetHashPassword()) {
+				if (user.Password == password.GetHashPassword())
+				{
+					string ipAddress = GetInternalIP();
+					// allow localhost
+					if (!(ipAddress == "127.0.0.1" || ipAddress == "::1"))
+					{
+						var ipAddressList = user.AllowIPAdress.ParceIpAddresses();
+						if (!ipAddressList.Contains(IPAddress.Parse(ipAddress)))
+						{
+							return GenerateErrorMessage(Lang.Get("No entry for your ip"), string.Empty);
+						}
+					}
 					try {
 						JTSecurity.CreateSession(user);
 					} catch (Exception ex) {
@@ -46,6 +59,21 @@
 			}
 			return GenerateErrorMessage(Lang.Get("Login or password is incorrect"), string.Empty);
 		}
+
+		private string GetInternalIP()
+		{
+			string ipAddress = Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+			if (!string.IsNullOrEmpty(ipAddress))
+			{
+				string[] addresses = ipAddress.Split(',');
+				if (addresses.Length != 0)
+				{
+					return addresses[0];
+				}
+			}
+			return Request.ServerVariables["REMOTE_ADDR"];
+		}
+
 
 	}
 

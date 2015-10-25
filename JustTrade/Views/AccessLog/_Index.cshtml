@@ -1,5 +1,5 @@
 ﻿@using JustTrade.Database;
-@using JustTrade.Helpers
+@using JustTrade.Helpers;
 @model IList<AccessLog>
 
 <link rel="stylesheet" href="../Content/css/access-log.css">
@@ -16,20 +16,25 @@
 				</tr>
 			</thead>
 			<tbody>
-				@{
-					int count = 0;
+			
+			@{
+				int count = 0;
+			}
+			@foreach (var item in Model)
+			{
+				{
+					count = count + 1;
 				}
-				@foreach (var item in Model) {
-				{ count = count +1; }
-					<tr id="@item.Id" data-toggle="collapse" data-target="#demo_@count">
-						<td>@item.Time</td>
-						<td>@( item.User != null ? item.User.Name : Lang.Get("Unknown") ) </td>
-						<td>@Lang.Get(@item.Action)</td>
-					</tr>
-					<tr >
-						<td colspan="3" class="hiddenRow"><div class="collapse" id="demo_@count" json-data="@item.Data"> @item.Data </div> </td>
-					</tr>
-				}
+				<tr id="@item.Id" data-toggle="collapse" data-target="#demo_@count">
+					<td>@item.Time</td>
+					<td>@( item.User != null ? item.User.Name : Lang.Get("Unknown") ) </td>
+					<td>@Lang.Get(@item.Action)</td>
+				</tr>
+				<tr >
+					<td colspan="3" class="hiddenRow">
+						<div class="collapse" id="demo_@count" json-data="@item.Data"> @item.Data </div> </td>
+				</tr>
+			}
 			</tbody>
 		</table>
 

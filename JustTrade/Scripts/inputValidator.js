@@ -30,52 +30,28 @@
 		return result;
 	}
 
-	function validate(obj) {
-		var inputType = obj.attr("val-type");
-		var result = false;
-		var ignoreMinMax = false;
-		switch (inputType) {
-			case "int":
-				result = checkInt(obj);
-				ignoreMinMax = true;
-				break;
-			case "float":
-				result = checkFloat(obj);
-				ignoreMinMax = true;
-				break;
-			case "mask":
-				result = checkRegExp(obj);
-				break;
-			case "key":
-				result = checkKey(obj);
-				break;
-			case "ip":
-				result = checkIP(obj);
-				ignoreMinMax = true;
-				break;
-			case "text":
-				break;
-			case "match":
-				result = checkMatch(obj);
-				break;
-			default:
-				throw new Error("Not found validate type: "+inputType);
+	function addInformLabel(obj, text) {
+		var errorMessage = obj.attr("val-error-msg");
+		if (errorMessage != undefined) {
+			text = errorMessage;
 		}
-
-		if (!ignoreMinMax) {
-			var min = obj.attr("val-min");
-			if (min != undefined) {
-				result = checkMin(obj);
-			}
-
-			var max = obj.attr("val-max");
-			if (max != undefined) {
-				result = checkMax(obj);
-			}
+		var parentObj = obj.parent();
+		if ($(parentObj).hasClass("input-group")) {
+			parentObj.before("<div class='input-validate-information'> " + text + " </div>");
+		} else {
+			obj.before("<div class='input-validate-information'> " + text + " </div>");
 		}
-
-		return result;
 	}
+
+	function addInformLabelExtra(obj, text) {
+		var parentObj = obj.parent();
+		if ($(parentObj).hasClass("input-group")) {
+			parentObj.before("<div class='input-validate-information'> " + text + " </div>");
+		} else {
+			obj.before("<div class='input-validate-information'> " + text + " </div>");
+		}
+	}
+
 
 	function checkMin(obj) {
 		var min = parseInt(obj.attr("val-min"));
@@ -119,14 +95,44 @@
 
 	function checkIP(obj) {
 		var dataIsValid = true;
-		var regexIp = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/;
-		var regexIpRange = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b-\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/;
+		var regexIp = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b$/;
 		var val = obj.val().replace(/\s/g, '');
 		var ipList = val.split(",");
 		for (var i = 0; i < ipList.length; i++) {
-			if (!(regexIp.test(val) || regexIpRange.test(val))) {
+			if (!(regexIp.test(val))) {
 				dataIsValid = false;
-				addInformLabel(obj, Language.Data["Must be IP or IP range."]);
+				addInformLabel(obj, Language.Data["Must be IP"]);
+				break;
+			}
+		}
+		return dataIsValid;
+	}
+
+	function checkIPList(obj) {
+		var dataIsValid = true;
+		var regexIp = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b$/;
+		var regexIpRange = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b-\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b$/;
+		var val = obj.val().replace(/\s/g, '');
+		var ipList = val.split(",");
+		for (var i = 0; i < ipList.length; i++) {
+			if (!regexIp.test(val) && !regexIpRange.test(val)) {
+				dataIsValid = false;
+				addInformLabel(obj, Language.Data["Must be IP or IP range"]);
+				break;
+			}
+		}
+		return dataIsValid;
+	}
+
+	function checkIPRange(obj) {
+		var dataIsValid = true;
+		var regexIpRange = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b-\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b$/;
+		var val = obj.val().replace(/\s/g, '');
+		var ipList = val.split(",");
+		for (var i = 0; i < ipList.length; i++) {
+			if (!(regexIpRange.test(val))) {
+				dataIsValid = false;
+				addInformLabel(obj, Language.Data["Must be IP range"]);
 				break;
 			}
 		}
@@ -191,25 +197,60 @@
 		return false;
 	}
 
-	function addInformLabel(obj, text) {
-		var errorMessage = obj.attr("val-error-msg");
-		if (errorMessage != undefined) {
-			text = errorMessage;
+	
+	function validate(obj) {
+		var inputType = obj.attr("val-type");
+		var result = false;
+		var ignoreMinMax = false;
+		switch (inputType) {
+			case "int":
+				result = checkInt(obj);
+				ignoreMinMax = true;
+				break;
+			case "float":
+				result = checkFloat(obj);
+				ignoreMinMax = true;
+				break;
+			case "mask":
+				result = checkRegExp(obj);
+				break;
+			case "key":
+				result = checkKey(obj);
+				break;
+			case "ip":
+				result = checkIP(obj);
+				ignoreMinMax = true;
+				break;
+			case "iprange":
+				result = checkIPRange(obj);
+				ignoreMinMax = true;
+				break;
+			case "iplist":
+				result = checkIPList(obj);
+				ignoreMinMax = true;
+				break;
+			case "text":
+				break;
+			case "match":
+				result = checkMatch(obj);
+				break;
+			default:
+				throw new Error("Not found validate type: " + inputType);
 		}
-		var parentObj = obj.parent();
-		if ($(parentObj).hasClass("input-group")) {
-			parentObj.before("<div class='input-validate-information'> " + text + " </div>");
-		} else {
-			obj.before("<div class='input-validate-information'> " + text + " </div>");
+
+		if (!ignoreMinMax) {
+			var min = obj.attr("val-min");
+			if (min != undefined) {
+				result = checkMin(obj);
+			}
+
+			var max = obj.attr("val-max");
+			if (max != undefined) {
+				result = checkMax(obj);
+			}
 		}
+
+		return result;
 	}
 
-	function addInformLabelExtra(obj, text) {
-		var parentObj = obj.parent();
-		if ($(parentObj).hasClass("input-group")) {
-			parentObj.before("<div class='input-validate-information'> " + text + " </div>");
-		} else {
-			obj.before("<div class='input-validate-information'> " + text + " </div>");
-		}
-	}
 }

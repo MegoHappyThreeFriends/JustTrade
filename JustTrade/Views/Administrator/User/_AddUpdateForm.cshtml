@@ -17,7 +17,8 @@
 
 			<div class="input-group input-group-sm">
 				<span class="input-group-addon">@Lang.Get("User Name")</span>
-				<input id="Name" name="Name" type="text" class="form-control" value="@(Model != null ? Model.Name : "")" aria-describedby="basic-addon1">
+				<input id="Name" name="Name" type="text" class="form-control" 
+					value="@(Model != null ? Model.Name : "")" aria-describedby="basic-addon1">
 			</div>
 
 			<div class="input-group input-group-sm">
@@ -27,10 +28,9 @@
 			</div>
 
 			<div class="input-group input-group-sm">
-				<span class="input-group-addon">@Lang.Get("IsSuperuser")</span>
-				<input id="IsSuperuser" name="IsSuperuser" type="checkbox" value="true" 
-					@(Model != null && Model.IsSuperuser?"checked='checked'":"") class="form-control" aria-describedby="basic-addon1">
-				<input type="hidden" value="false" name="IsSuperuser" />
+				<span class="input-group-addon">@Lang.Get("AllowIpAdress")</span>
+				<input id="AllowIPAdress" name="AllowIPAdress" val-type="iplist" type="text" 
+					value="@(Model != null?Model.AllowIPAdress:"")" class="form-control">
 			</div>
 
 			<div class="input-group input-group-sm">
@@ -62,7 +62,7 @@
 <script language="javascript">
 	$(document).ready(function () {
 		$("#tagPermission").select2({
-			width: "270px",
+			width: "245px",
 			closeOnSelect: true
 		});
 		ShowDialog();

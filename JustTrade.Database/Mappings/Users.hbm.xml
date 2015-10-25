@@ -9,6 +9,7 @@
  	<property name="Name" column="name"  type="String" />
  	<property name="Login" column="login"  type="String" index="idx_login" />
   	<property name="Password" column="password" type="String" />
+	<property name="AllowIPAdress" column="allow_ip_adress" type="String" />
   	<property name="IsSuperuser" column="is_superuser" type="Boolean" />
 	<property name="Deleted" column="deleted" type="Boolean" index="idx_deleted" />
 

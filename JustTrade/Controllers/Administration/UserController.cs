@@ -29,13 +29,24 @@
 			if (existingUser.Any()) {
 				return GenerateErrorMessage(Lang.Get("User with same login already exist"), string.Empty);
 			}
+			// check ip range count 
+			try
+			{
+				user.AllowIPAdress.ParceIpAddresses();
+			}
+			catch (Exception ex)
+			{
+				return GenerateErrorMessage(ex.Message, ex.StackTrace + "\n\n" + ex.InnerException);
+			}
 			var newUser = new User {
 				Login = user.Login,
 				Password = user.Password.GetHashPassword(),
 				Name = user.Name,
-				IsSuperuser = user.IsSuperuser
+				IsSuperuser = user.IsSuperuser,
+				AllowIPAdress = user.AllowIPAdress
 			};
-			JTSecurity.Session.Db.Add(newUser);
+			
+            JTSecurity.Session.Db.Add(newUser);
 			if (permissionTemplates == null) {
 				return new EmptyResult();
 			}
@@ -54,9 +65,19 @@
 			if (existingUser == null) {
 				return GenerateErrorMessage(Lang.Get("Required user not found"), string.Empty);
 			}
+			// check ip range count 
+			try
+			{
+				user.AllowIPAdress.ParceIpAddresses();
+			}
+			catch (Exception ex)
+			{
+				return GenerateErrorMessage(ex.Message, ex.StackTrace + "\n\n" + ex.InnerException);
+			}
 			existingUser.IsSuperuser = user.IsSuperuser;
 			existingUser.Login = user.Login;
 			existingUser.Name = user.Name;
+			existingUser.AllowIPAdress = user.AllowIPAdress;
 			existingUser.Password = user.Password.GetHashPassword();
 			JTSecurity.Session.Db.Update(existingUser);
 			return UpdatePermission(user.Id, permissionTemplates);
@@ -117,7 +138,7 @@
 						x.Id,
 						x.Name,
 						x.Login,
-						x.IsSuperuser
+						x.AllowIPAdress
 					}).ToList()
 				};
 				return Json(userList, JsonRequestBehavior.AllowGet);

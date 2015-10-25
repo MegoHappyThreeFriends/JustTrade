@@ -18,7 +18,7 @@
 			<th>id</th>
 			<th>ФИО</th>
 			<th>Логин</th>
-			<th>Администратор</th>
+			<th>@Lang.Get("AllowIpAdress")</th>
 		</tr>
 	</thead>
 
@@ -278,22 +278,8 @@
 						return "<p id='" + data.Id + "'>" + (data.Name == null ? "" : data.Name) + "</p>";
 					}
 				},
-				{data: "Login"},
-				{
-					data: null,
-					render: function(data, type, row) {
-						switch (data.IsSuperuser) {
-							case true:
-								return "Да";
-								break;
-							case false:
-								return "Нет";
-								break;
-							default:
-								return "None";
-						}
-					}
-				}
+				{ data: "Login" },
+				{ data: "AllowIPAdress" }
 			],
 			"order": [[2, "desc"]],
 			"columnDefs": [

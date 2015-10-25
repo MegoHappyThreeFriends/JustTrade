@@ -34,6 +34,11 @@ namespace JustTrade.Database
 			get;
 			set;
 		}
+		public virtual string AllowIPAdress
+		{
+			get;
+			set;
+		}
 		public virtual bool IsSuperuser {
 			get;
 			set;
