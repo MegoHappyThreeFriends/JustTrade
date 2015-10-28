@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using JustTrade.Helpers.ExceptionCollection;
 using NetTools;
 
 namespace JustTrade.Helpers.ExtensionMethods
@@ -12,9 +13,18 @@ namespace JustTrade.Helpers.ExtensionMethods
 		{
 			const int maxIpCount = 255;
 			List<IPAddress> ipAddresses = new List<IPAddress>();
-			string[] ipItems = strData.Split(',');
+			string[] ipItems = strData.Trim().Split(',');
 			foreach (var ipItem in ipItems)
 			{
+				if (ipItem.Trim().Length == 0)
+				{
+					continue;
+				}
+				if (ipItem.Replace(" ", "") == "0.0.0.0")
+				{
+					ipAddresses.Add(IPAddress.Any);
+					continue;
+				}
 				IPAddressRange range;
 				try
 				{
@@ -22,17 +32,17 @@ namespace JustTrade.Helpers.ExtensionMethods
 				}
 				catch (Exception ex)
 				{
-					throw new Exception("Error parce ip address", ex);
+					throw new ParceException("Error parce ip address", ex);
 				}
 				if (range.Count() > maxIpCount)
 				{
-					throw new Exception("IP range can't be more 255");
+					throw new OutOfLimitException("IP range can't be more 255");
 				}
 				ipAddresses.AddRange(range);
 			}
-			if (ipAddresses.Contains(IPAddress.Parse("0.0.0.0")) && ipAddresses.Count > 1)
+			if (ipAddresses.Contains(IPAddress.Any) && ipAddresses.Count > 1)
 			{
-				throw new Exception("This rule does not make sense, because filter '0.0.0.0' will be allow all ip");
+				throw new HelpException("This rule does not make sense, because filter '0.0.0.0' will be allow all ip");
 			}
 			return ipAddresses;
 		}

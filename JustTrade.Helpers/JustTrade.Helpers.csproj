@@ -40,6 +40,9 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExceptionCollection\HelpException.cs" />
+    <Compile Include="ExceptionCollection\OutOfLimitException.cs" />
+    <Compile Include="ExceptionCollection\ParceException.cs" />
     <Compile Include="ExtensionMethods\IPAdressStringExtension.cs" />
     <Compile Include="ExtensionMethods\StringExtension.cs" />
     <Compile Include="Interfaces\IMail.cs" />

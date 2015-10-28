@@ -98,6 +98,7 @@
     <Compile Include="Controllers\Base.Tests.cs" />
     <Compile Include="Controllers\LoginController.Tests.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
+    <Compile Include="Helpers\IpAdressStringExtension.Tests.cs" />
     <Compile Include="Tools\MockTools.cs" />
     <Compile Include="Controllers\Administration\UserController.Tests.cs" />
     <Compile Include="Controllers\HomeController.Tests.cs" />

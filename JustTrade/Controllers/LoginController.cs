@@ -39,9 +39,9 @@ namespace JustTrade.Controllers
 			if (user != null) {
 				if (user.Password == password.GetHashPassword())
 				{
-					string ipAddress = GetInternalIP();
-					// allow localhost
-					if (!(ipAddress == "127.0.0.1" || ipAddress == "::1"))
+					string ipAddress = GetInternalIp();
+					// allow localhost and test
+					if (!(ipAddress == "127.0.0.1" || ipAddress == "::1" || ipAddress == null))
 					{
 						var ipAddressList = user.AllowIPAdress.ParceIpAddresses();
 						if (!ipAddressList.Contains(IPAddress.Parse(ipAddress)))
@@ -60,8 +60,12 @@ namespace JustTrade.Controllers
 			return GenerateErrorMessage(Lang.Get("Login or password is incorrect"), string.Empty);
 		}
 
-		private string GetInternalIP()
+		private string GetInternalIp()
 		{
+			if (Request == null)
+			{
+				return null;
+			}
 			string ipAddress = Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
 			if (!string.IsNullOrEmpty(ipAddress))
 			{

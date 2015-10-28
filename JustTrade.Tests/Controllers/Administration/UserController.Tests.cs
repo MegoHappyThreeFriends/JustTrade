@@ -23,7 +23,8 @@
 			var user = new User {
 				Login = "login",
 				Name = "name",
-				Password = "password"
+				Password = "password",
+				AllowIPAdress = "127.0.0.1"
 			};
 			db.Setup(x => x.Find<User>(It.IsAny<RepoFiler>())).Returns(new ResultCollection<User>(new List<User>(), null));
 		    ActionResult result = controller.Add(user, null);
@@ -73,12 +74,14 @@
 			var user = new User {
 				Login = "new_login",
 				Name = "name",
-				Password = "password"
+				Password = "password",
+				AllowIPAdress = "127.0.0.1"
 			};
 			var oldUser = new User {
 				Login = "login1",
 				Name = "name",
-				Password = "password"
+				Password = "password",
+				AllowIPAdress = "127.0.0.1"
 			};
 			db.Setup(x => x.FindById<User>(It.IsAny<Guid>(), false)).Returns(new ResultCollection<User>(new List<User> { oldUser }, null));
 			var result = controller.Update(user, null);
@@ -180,13 +183,15 @@
 			var user = new User {
 				Login = "new_login",
 				Name = "name",
-				Password = "password"
+				Password = "password",
+				AllowIPAdress = "127.0.0.1"
 			};
 			var oldUser = new User {
 				Login = "login1",
 				Name = "name",
 				Password = "password",
-				UserPermissionBindings = new[] { new UserPermissionBinding {
+				AllowIPAdress = "127.0.0.1",
+                UserPermissionBindings = new[] { new UserPermissionBinding {
 					Id = permissionTemplateId
 				} }
 			};
